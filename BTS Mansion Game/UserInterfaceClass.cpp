@@ -1,6 +1,7 @@
 #include "UserInterfaceClass.h"
 #include <iostream>
 
+
 void UserInterfaceClass::displayPrompt(const std::string& prompt) const
 {
 	std::cout << prompt << std::endl; //prints strng passed
@@ -19,6 +20,10 @@ std::string UserInterfaceClass::userInput() const
     std::string input;
     std::getline(std::cin, input);
     return input;
+}
+
+void UserInterfaceClass::waitForInput() const {
+    std::cin.ignore();  // Wait for the user to press Enter
 }
 
 bool UserInterFaceClass::isValidInput(const std::string& input, const std::string[] &) const

@@ -25,5 +25,7 @@ public:
 	bool isValidInput(const std::string& input, const std::string[]& ) const;
 	// will compare user input to valid options (passed through as array of strings) and will return boolean variable according to whether user input is present in array or not
 
+	void waitForInput() const;
+	// waits for user press enter to progress certain multilined dialogue
 };
 
