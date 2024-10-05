@@ -1,4 +1,4 @@
-#include "UserInterfaceClass.h"
+/* #include "UserInterfaceClass.h"
 #include <iostream>
 
 
@@ -8,7 +8,7 @@ void UserInterfaceClass::displayPrompt(const std::string& prompt) const
 }
 void UserInterfaceClass::displayMenu() const
 {
-	std::cout << "***Welcome to the BTS Mansion Game!***" << endl; //No title yet, change in future and adjust for story building etc etc
+	std::cout << "***Welcome to the BTS Mansion Game!***" << std::endl; //No title yet, change in future and adjust for story building etc etc
     std::cout << "===== Main Menu =====" << std::endl;
     std::cout << "START Game" << std::endl;
     std::cout << "QUIT" << std::endl;
@@ -31,3 +31,4 @@ bool UserInterFaceClass::isValidInput(const std::string& input, const std::strin
     //TODO: add logic
 }
 
+*/
