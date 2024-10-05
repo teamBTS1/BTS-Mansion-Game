@@ -1,4 +1,4 @@
-/* #include "UserInterfaceClass.h"
+#include "UserInterfaceClass.h"
 #include <iostream>
 
 
@@ -26,9 +26,8 @@ void UserInterfaceClass::waitForInput() const {
     std::cin.ignore();  // Wait for the user to press Enter
 }
 
-bool UserInterFaceClass::isValidInput(const std::string& input, const std::string[] &) const
+bool UserInterfaceClass::isValidInput(const std::string& input, const std::string[]) const
 {
     //TODO: add logic
+    return true;
 }
-
-*/

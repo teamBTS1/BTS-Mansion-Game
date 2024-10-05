@@ -11,8 +11,8 @@
 
 int main()
 {
-    //GameControllerClass game;
-    //game.showMenu();
+    GameControllerClass game;
+    game.showMenu();
     //std::cout << "Hello World!\n";
 }
 

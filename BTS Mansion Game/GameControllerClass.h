@@ -1,5 +1,5 @@
 
-/*
+
 #pragma once
 #ifndef GAMECONTROLLER_H
 #define GAMECONTROLLER_H
@@ -10,7 +10,7 @@
 
 class GameControllerClass
 {
-	Game controller class is responsible for driving the game, it will contain functions to start and end the game and utilizes the UserInterfaceClass to process inputs etc.
+	//Game controller class is responsible for driving the game, it will contain functions to start and end the game and utilizes the UserInterfaceClass to process inputs etc.
 
 	private: 
 	UserInterfaceClass UI;
@@ -32,5 +32,4 @@ public:
 
 };
 
-
-*/
+#endif
