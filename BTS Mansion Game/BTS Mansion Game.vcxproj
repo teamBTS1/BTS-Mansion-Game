@@ -135,6 +135,7 @@
     <ClCompile Include="PickUpItemClass.cpp" />
     <ClCompile Include="PlayerClass.cpp" />
     <ClCompile Include="RoomClass.cpp" />
+    <ClCompile Include="Door.cpp" />
     <ClCompile Include="UserInterfaceClass.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +146,7 @@
     <ClInclude Include="PickUpItemClass.h" />
     <ClInclude Include="PlayerClass.h" />
     <ClInclude Include="RoomClass.h" />
+    <ClInclude Include="Door.h" />
     <ClInclude Include="UserInterfaceClass.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

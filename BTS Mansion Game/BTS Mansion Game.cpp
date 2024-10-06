@@ -6,6 +6,7 @@
 #include "PlayerClass.h"
 #include "UserInterfaceClass.h"
 #include "ItemClass.h"
+#include "Door.h"
 
 #include <iostream>
 
