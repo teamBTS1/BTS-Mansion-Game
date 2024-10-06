@@ -18,6 +18,7 @@ GameControllerClass::GameControllerClass() {
 }
 
 void GameControllerClass::startGame() {
+    displayBackstory();
     gameLoop();
 }
 
@@ -26,13 +27,12 @@ void GameControllerClass::displayBackstory() {
     std::string line;
 
     while (std::getline(stream, line)) { //algorithm to display story line by line, user will press enter via waitForInput() function form UI class
-        std::cout << line << std::endl;
+        UI.displayPrompt(line);
         UI.waitForInput();                
     }
 }
 
 void GameControllerClass::gameLoop() {
-    displayBackstory();
     while (true) {
         UI.displayPrompt("What would you like to do? (type 'QUIT' to exit the game)");
         std::string command = UI.userInput();
