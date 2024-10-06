@@ -5,11 +5,13 @@
 #include<iostream>
 #include<string>
 #include "PickUpItemClass.h" //Include header for PickUpItemClass
+#include "UserInterfaceClass.h" // Included header for UserInterFaceClass
 class InteractClass
 {
 private:
 	std::string inputMessage;
 	std::string outputMessage;
+	UserInterfaceClass ui; // UserInterfaceClass for input and output
 public:
 	//Constructor
 	InteractClass();
@@ -22,8 +24,12 @@ public:
 	void runInteraction();
 	// function to display object description
 	void displayDescription();
-	
+	// function to pick up an item
 	void pickupItem(const PickUpItemClass& item);
+	// function to use UserInterfaceClass
+	void useUserInterface();
+
 	//Only write declarations here, actual code will be in cpp file.
+
 };
 #endif 

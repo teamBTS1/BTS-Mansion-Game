@@ -21,10 +21,16 @@ void InteractClass::runInteraction() {
     std::cout << outputMessage << std::endl;
 
 }
+//function to display object description
 void InteractClass::displayDescription() {
-    std::cout << " " << std::endl;
+    ui.displayPrompt(" "); // uses userinterface class to display description 
 }
+//Function to Pickup an item
 void InteractClass::pickupItem(const PickUpItemClass& item) {
     std::cout << " " << std::endl;
+}
+//function to use UserInterfaceClass
+void InteractClass::useUserInterface() {
+    //
 }
 
