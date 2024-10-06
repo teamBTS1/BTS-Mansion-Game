@@ -10,48 +10,94 @@ of the item when player picks it up and shown when player
 looks in their inventory.
 */
 
-class Item
-{
-private: 
-	string name;
-	string description;
-
-public: 
-	Item()
+	ItemClass::ItemClass()
 	{
 		name = " ";
 		description = " ";
+		keyID = " ";
+		isConsumable = false;
+		value = 0;
 	}
 
-	Item(string n, string des)
+	ItemClass::ItemClass(std::string n, std::string desc) 		//Constructor for a note
 	{
 		name = n;
-		description = des;
+		description = desc;
+		keyID = " ";
+		isConsumable = false;
+		value = 0;
 	}
 
-	string getName()
+	ItemClass::ItemClass(string n, string desc, string id, bool consumable) //Constructor for a key
 	{
-		return name;
+		name = n;
+		description = desc;
+		keyID = id;
+		isConsumable = consumable;
+		value = 0;
 	}
 
-	void setName(string newName)
+	ItemClass::ItemClass(string n, string desc, int val, bool consumable) //Constructor for a consumable
 	{
-		name = newName;
+		name = n;
+		description = desc;
+		value = val;
+		isConsumable = consumable;
+		keyID = " ";
 	}
 
-	string getDescription()
+	string ItemClass::getName()
 	{
-		return description;
+		return name; //Returns item name
 	}
 
-	void setDescription(string newDescription)
+	void ItemClass::setName(string newName)
 	{
-		description = newDescription;
+		name = newName; //Sets item name
 	}
 
-	void displayItem()
+	string ItemClass::getDescription()
+	{
+		return description; //Returns item description
+	}
+
+	void ItemClass::setDescription(string newDescription)
+	{
+		description = newDescription; //Sets item description
+	}
+
+	string ItemClass::getKeyID()
+	{
+		return keyID; //Returns key ID
+	}
+
+	void ItemClass::setKeyID(string id)
+	{
+		keyID = id; //Sets key ID
+	}
+
+	int ItemClass::getValue()
+	{
+		return value; //Returns value of item
+	}
+
+	void ItemClass::setValue(int val)
+	{
+		value = val; //Sets value of item
+	}
+
+	bool ItemClass::getIsConsumable()
+	{
+		return isConsumable; //Returns if an item is a consumable
+	}
+
+	void ItemClass::setIsConsumable(bool consumable)
+	{
+		isConsumable = consumable; //Sets if an item is a consumable
+	}
+
+	void ItemClass::displayItem()
 	{
 		cout << "Item: " << name << endl;
-		cout << "Description: " << description << endl;
+		cout << "Description: " << description << endl; //Displays item and description (for testing purposes, assuming UI class handles all input output)
 	}
-};
