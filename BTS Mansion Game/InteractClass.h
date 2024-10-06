@@ -4,27 +4,26 @@
 
 #include<iostream>
 #include<string>
-using namespace std;
+#include "PickUpItemClass.h" //Include header for PickUpItemClass
 class InteractClass
 {
 private:
-	string inputMessage;
-	string outputMessage;
+	std::string inputMessage;
+	std::string outputMessage;
 public:
 	//Constructor
 	InteractClass();
 
 	// Funtion to set input message 
-	void setInputMessage(const string& message);
+	void setInputMessage(const std::string& message);
 	// function to set output message 
-	void setOutputMessage(const string& message);
-	// function for input from player
-	void getUserInput();
-	// function to output message
-	void displayInput();
+	void setOutputMessage(const std::string& message);
 	//function to interact with object or statue
 	void runInteraction();
-
+	// function to display object description
+	void displayDescription();
+	
+	void pickupItem(const PickUpItemClass& item);
 	//Only write declarations here, actual code will be in cpp file.
 };
 #endif 

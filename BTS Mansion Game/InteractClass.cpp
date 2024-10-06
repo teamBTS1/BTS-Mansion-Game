@@ -1,7 +1,9 @@
 #include "InteractClass.h"
 // Constructor
-InteractClass::InteractClass() : inputMessage(""), outputMessage("") {}
-
+InteractClass::InteractClass() {
+    inputMessage = " ";
+    outputMessage = " ";
+}
 // Function to set input message
 void InteractClass::setInputMessage(const std::string& message) {
     inputMessage = message;
@@ -11,20 +13,18 @@ void InteractClass::setInputMessage(const std::string& message) {
 void InteractClass::setOutputMessage(const std::string& message) {
     outputMessage = message;
 }
-
-// Function to get input from the user
-void InteractClass::getUserInput() {
-    std::cout << inputMessage << std::endl;
-    std::getline(std::cin, inputMessage); // get user input
-}
-
-// Function to display the output message
-void InteractClass::displayInput() {
-    std::cout << outputMessage << std::endl;
-}
-
-// Function to interact (combine input/output operations)
+// Function to interact with item or object
 void InteractClass::runInteraction() {
-    getUserInput();
-    displayInput();
+    //input interaction message;
+    std::cout << inputMessage << std::endl;
+    //output interaction message
+    std::cout << outputMessage << std::endl;
+
 }
+void InteractClass::displayDescription() {
+    std::cout << " " << std::endl;
+}
+void InteractClass::pickupItem(const PickUpItemClass& item) {
+    std::cout << " " << std::endl;
+}
+
