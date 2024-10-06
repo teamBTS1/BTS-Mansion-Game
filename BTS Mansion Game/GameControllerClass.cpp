@@ -42,7 +42,7 @@ void GameControllerClass::gameLoop() {
             return;  // Exit the game loop
         }
         else {
-            UI.displayPrompt("prompt: " + command);
+            UI.displayPrompt("prompt: " + command); // For testing, it will be different from this this just to meet our acceptance criteria for the story
             //game logic will be contained here 
         }
     }
