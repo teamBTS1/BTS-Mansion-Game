@@ -13,16 +13,18 @@ class RoomClass
 {
 	//Class to represent an in-game location.
 private:
-	Door door;
+	Door roomDoor;
 	std::string roomDescription; //Variable that stores a description of the room
 	std::string roomName; //Variable that stores the name of the room
-	//TODO: need a way to indicate direction of room connections - not sure if that should be done here or in another class
-	//TODO: declare a list of pointers to all connected rooms
+	//Need a way to indicate direction of room connections - not sure if that should be done here or in another class
+	
+	
 
 
 public:
 	RoomClass(); //Default constructor
 	RoomClass(std::string description); 
+	RoomClass(std::string description, Door door, RoomClass rooms[], ItemClass items[]);
 	Door GetDoor(); //Returns the door associated with the room
 	std::string GetDescription(); //Returns a description of the room
 	std::string GetFullDescription(); //Returns the full description of the room as a concatenated string, including all items and connecting rooms.
