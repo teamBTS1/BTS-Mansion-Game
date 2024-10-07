@@ -10,10 +10,14 @@ RoomClass::RoomClass(std::string description)
 {
 }
 
-RoomClass::RoomClass(std::string description, Door door, RoomClass rooms[], ItemClass items[])
+RoomClass::RoomClass(std::string description, Door door)
 {
-	
 }
+
+RoomClass::RoomClass(std::string description, bool isLockedRoom)
+{
+}
+
 
 Door RoomClass::GetDoor()
 {
@@ -22,7 +26,7 @@ Door RoomClass::GetDoor()
 
 std::string RoomClass::GetDescription()
 {
-	return std::string();
+	return roomDescription;
 }
 
 std::string RoomClass::GetFullDescription()
@@ -32,7 +36,7 @@ std::string RoomClass::GetFullDescription()
 
 std::string RoomClass::GetName()
 {
-	return std::string();
+	return roomName;
 }
 
 void RoomClass::ReplaceDescription(std::string newDescription)
