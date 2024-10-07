@@ -38,7 +38,19 @@ std::string UserInterfaceClass::userInput()
 }
 
 void UserInterfaceClass::waitForInput() const {
-    std::cin.ignore();  // Wait for the user to press Enter
+    std::string input;
+    while (true) 
+    {
+        std::getline(std::cin, input);
+        if (input.empty())
+        {
+            break;
+        }
+        else
+        {
+            std::cout << "Invalid input, please press Enter key to continue story\n";
+        }
+    }
 }
 
 bool UserInterfaceClass::isValidInput(const std::string[]) const
