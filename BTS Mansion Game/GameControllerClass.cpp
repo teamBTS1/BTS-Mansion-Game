@@ -31,17 +31,14 @@ void GameControllerClass::pickUpNoteSequence() {
     ItemClass note1("Welcome Note", "You have entered the mansion"); // define note item
     InteractClass interactWithNote; // define interact class
     PickUpItemClass myPickUpClass(note1); // define pickup class
-    
     UserInterfaceClass Myuserinterface;
     
-    Myuserinterface.displayPrompt("enter PICKUP to pick up the note");
-
-    Myuserinterface.waitForInput();
-
-
-
     std::cout << "You are in room 1, there is a note on the ground next to you" << std::endl; //Room Message
-    
+
+    Myuserinterface.displayPrompt("enter PICKUP to pick up the note");
+    Myuserinterface.userInput(); 
+   
+   
     interactWithNote.setInputMessage("You have picked up the note!"); //message when
     
     
