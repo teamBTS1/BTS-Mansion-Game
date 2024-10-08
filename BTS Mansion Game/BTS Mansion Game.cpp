@@ -12,9 +12,30 @@
 
 int main()
 {
-    GameControllerClass game;
-    game.showMenu();
-    //std::cout << "Hello World!\n";
+    std::cout << "You are in room 1, there is a note on the ground next to you" << std::endl;
+
+
+
+    PlayerClass myPlayer;
+    ItemClass note1("Welcome Note", "You have entered the mansion");
+    InteractClass interactWithNote;
+
+    PickUpItemClass myPickUpClass(note1);
+    interactWithNote.setInputMessage("You have picked up the note!"); 
+
+    myPickUpClass.addToInventory(myPlayer); 
+
+    std::vector<ItemClass> myInventory = myPlayer.getInventory();
+    int inventorySize = myPlayer.getInventorySize(); 
+
+    for (int i = 0; i < inventorySize; i++)
+    {
+        std::cout << myInventory[i].getName() << std::endl;
+    }
+   
+
+
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
