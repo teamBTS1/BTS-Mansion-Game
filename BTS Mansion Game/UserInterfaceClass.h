@@ -11,6 +11,7 @@ private:
 	std::string current_input;
 public:
 	UserInterfaceClass();
+	//Constructor for user interface class
 	void displayPrompt(const std::string& prompt) const; 
 	//display prompt will display any stinrg "prompt" given to the function
 	void displayMenu() const;

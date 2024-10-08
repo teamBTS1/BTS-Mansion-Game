@@ -6,8 +6,11 @@ RoomClass::RoomClass()
 {
 }
 
-RoomClass::RoomClass(std::string description)
+RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options)
 {
+	this->roomDescription = description;
+	this->roomName = name;
+	this->RoomOptions = options;
 }
 
 
@@ -26,6 +29,11 @@ RoomClass::RoomClass(std::string description, bool isLockedRoom)
 Door RoomClass::GetDoor()
 {
 	return roomDoor;
+}
+
+std::list<std::string> RoomClass::GetRoomOption() 
+{
+	return RoomOptions;
 }
 
 std::string RoomClass::GetDescription()

@@ -24,6 +24,8 @@ public:
 	
 	int getCandles(); //returns number of candles player has
 	void addCandle(); //Adds ONE candle to the number of candles player has
+	std::string getRoomName(); //returns string of name of users current room
+	std::string getRoomDescription(); //returns string of current room description
 
 	int getSanity(); //Returns sanity value of player
 	void setSanity(int sanityValue); //Set the sanity value
