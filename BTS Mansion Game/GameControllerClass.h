@@ -31,7 +31,8 @@ public:
 	//mber function which will exit game loop if chosen
 	void pickUpNoteSequence(); 
 	//function that displays option to pick up note in room A
-
+	void displayInventory();
+	// shows inventory
 };
 
 #endif
