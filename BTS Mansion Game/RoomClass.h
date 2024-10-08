@@ -4,6 +4,7 @@
 
 
 #include <list>
+#include <string>
 #include "Door.h"
 #include "ItemClass.h"
 
@@ -26,7 +27,7 @@ private:
 public:
 	RoomClass(); //Default constructor
 	RoomClass(std::string description); //Constructor that only takes the description as input.
-	RoomClass(std::string description, Door door);
+	RoomClass(std::string description, Door &door);
 	RoomClass(std::string description, bool isLockedRoom);
 	Door GetDoor(); //Returns the door associated with the room
 	std::string GetDescription(); //Returns a description of the room
@@ -34,6 +35,7 @@ public:
 	std::string GetName(); //Returns the name of the room
 	void ReplaceDescription(std::string newDescription); //Replaces the room description with a new one.
 	void AmendDescription(std::string addition); //Adds the inputted string to the end of the room description.
+
 
 
 };

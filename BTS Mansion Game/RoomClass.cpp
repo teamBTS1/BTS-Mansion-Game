@@ -10,9 +10,13 @@ RoomClass::RoomClass(std::string description)
 {
 }
 
-RoomClass::RoomClass(std::string description, Door door)
+
+
+RoomClass::RoomClass(std::string description, Door &door)
 {
 }
+
+
 
 RoomClass::RoomClass(std::string description, bool isLockedRoom)
 {
@@ -46,3 +50,5 @@ void RoomClass::ReplaceDescription(std::string newDescription)
 void RoomClass::AmendDescription(std::string addition)
 {
 }
+
+

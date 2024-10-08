@@ -2,6 +2,7 @@
 #ifndef PLAYERCLASS_H
 #define PLAYERCLASS_H
 
+
 #include "ItemClass.h"
 #include "RoomClass.h"
 #include <string>
@@ -9,6 +10,8 @@
 
 class PlayerClass
 {
+#ifndef debug
+
 	//Only write declarations here, actual code will be in cpp file.
 private:
 	int numCandles; //Variable to keep track of number of candles collected
@@ -33,6 +36,6 @@ public:
 	int getInventorySize() const; //Returns size of inventory
 	void useItem(ItemClass item); //Check if consumable, then if true, remove from inventory and display effect of item
 	ItemClass getItem(std::string n); //Returns copy of specific item from inventory for inspection displayed by UI class
+#endif
 };
-
 #endif
