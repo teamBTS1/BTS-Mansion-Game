@@ -31,15 +31,37 @@ void GameControllerClass::pickUpNoteSequence() {
     ItemClass note1("Welcome Note", "You have entered the mansion"); // define note item
     InteractClass interactWithNote; // define interact class
     PickUpItemClass myPickUpClass(note1); // define pickup class
+    
+    UserInterfaceClass Myuserinterface;
+    
+    Myuserinterface.displayPrompt("enter PICKUP to pick up the note");
+
+    Myuserinterface.waitForInput();
+
+
 
     std::cout << "You are in room 1, there is a note on the ground next to you" << std::endl; //Room Message
-
+    
     interactWithNote.setInputMessage("You have picked up the note!"); //message when
     
     
     //Need to create the user interaction to add item to inventory
     myPickUpClass.addToInventory(myPlayer);
+    if (Myuserinterface.getCurrentInput() == "PICKUP")
+    {
+        
+        myPickUpClass.addToInventory(myPlayer);  // Add the note to the player's inventory
 
+        Myuserinterface.displayPrompt("Item in Inventory!"); // Message upon successful interaction
+
+    }
+    else 
+    {
+        // If the user didn't type "PICKUP",
+        std::cout << "You did not pick up the note. Try 'PICKUP'." << std::endl;
+    }
+
+    
     //Need to create user interaction to display inventory
     std::vector<ItemClass> myInventory = myPlayer.getInventory();
     int inventorySize = myPlayer.getInventorySize();

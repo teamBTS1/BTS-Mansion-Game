@@ -46,10 +46,17 @@ void UserInterfaceClass::waitForInput() const {
         {
             break;
         }
-        else
+        else if (input == "PICKUP")
+        {
+            break;
+        }
+        else 
         {
             std::cout << "Invalid input, please press Enter key to continue story\n";
         }
+      
+       
+        
     }
 }
 
