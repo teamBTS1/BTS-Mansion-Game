@@ -33,6 +33,8 @@ public:
 	//function that displays option to pick up note in room A
 	void displayInventory();
 	// shows inventory
+	void viewInventory();
+	//prompts to view inventory
 };
 
 #endif

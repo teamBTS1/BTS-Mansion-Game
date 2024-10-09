@@ -47,7 +47,7 @@ void GameControllerClass::pickUpNoteSequence() {
     if (Myuserinterface.getCurrentInput() == "PICKUP")
     { 
         myPickUpClass.addToInventory(myPlayer);  // Add the note to the player's inventory
-        Myuserinterface.displayPrompt("You Have Picked Up an Item. Enter INVENTORY to view"); // Message upon successful interaction
+        Myuserinterface.displayPrompt("You Have Picked Up an Item."); // Message upon successful interaction
     }
     else 
     {
@@ -55,6 +55,36 @@ void GameControllerClass::pickUpNoteSequence() {
         std::cout << "You did not pick up the note. Try 'PICKUP'." << std::endl;
     }
   
+}
+
+void GameControllerClass::viewInventory() {
+
+    PlayerClass myPlayer;
+    UserInterfaceClass Myuserinterface;
+
+    std::cout << "Want to check what items you have?" << std::endl; //Room Message
+
+    Myuserinterface.displayPrompt("enter INVENTORY to view your inventory.");
+    Myuserinterface.userInput();
+
+
+    //Need to create the user interaction to view inventory
+    if (Myuserinterface.getCurrentInput() == "INVENTORY")
+    {
+        PlayerClass myPlayer;
+        std::vector<ItemClass> myInventory = myPlayer.getInventory();
+        int inventorySize = myPlayer.getInventorySize();
+        for (int i = 0; i < inventorySize; i++)
+        {
+            std::cout << myInventory[i].getName() << std::endl;
+        }
+    }
+    else
+    {
+        // If the user didn't type "INVENTORY",
+        std::cout << "You did not enter the correct input. Try 'INVENTORY'." << std::endl;
+    }
+
 }
 
 
@@ -77,10 +107,7 @@ void GameControllerClass::gameLoop() {
             endGame();  // Call endGame method
             return;  // Exit the game loop
         }
-        else if (command == "INVENTORY") {
-            // Call a method to display the inventory
-            displayInventory();
-        }
+    
         else {
             UI.displayPrompt("prompt: " + command); // For testing, it will be different from this just to meet our acceptance criteria for the story
             //game logic will be contained here 
@@ -88,26 +115,6 @@ void GameControllerClass::gameLoop() {
     }
 }
 
-
-
-void GameControllerClass::displayInventory() {
-    PlayerClass myPlayer;
-    std::vector<ItemClass> myInventory = myPlayer.getInventory();
-    int inventorySize = myPlayer.getInventorySize();
-    for (int i = 0; i < inventorySize; i++)
-    {
-        std::cout << myInventory[i].getName() << std::endl;
-    }
-    if (inventorySize == 0) {
-        UI.displayPrompt("Your inventory is empty.");
-        return; // Exit the method if the inventory is empty
-    }
-
-    UI.displayPrompt("Your inventory contains:");
-    for (int i = 0; i < inventorySize; i++) {
-        UI.displayPrompt(myInventory[i].getName()); // Display each item's name
-    }
-}
 
 void GameControllerClass::showMenu() {
     while (true) {
