@@ -27,7 +27,7 @@ void InteractClass::runInteraction() {
 }
 //function to display object description
 void InteractClass::displayDescription() {
-    ui.displayPrompt("You have seen a statue with intresting marks "); // uses userinterface class to display description 
+    ui.displayPrompt("You have seen a statue with interesting marks "); // uses userinterface class to display description 
 }
 //Function to Pickup an item
 void InteractClass::pickupItem(const PickUpItemClass& item) {

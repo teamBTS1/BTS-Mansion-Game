@@ -82,7 +82,7 @@ void GameControllerClass::showMenu() {
 void GameControllerClass::interactWithStatueSequence() {
 
     PlayerClass myPlayer; // Create an instance of the player
-    ItemClass statue("Statue\n", "This statue is ...."); // Define the statue as an item
+    ItemClass statue("Statue\n", "This statue is a woman carrying book"); // Define the statue as an item
     InteractClass interactWithStatue; // Define the interaction class
     UserInterfaceClass Myuserinterface; // Interface for handling input/output
 
