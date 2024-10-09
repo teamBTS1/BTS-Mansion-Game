@@ -1,7 +1,16 @@
 
 #include "GameControllerClass.h"
+#include "RoomClass.h"
+#include "InteractClass.h"
+#include "PickUpItemClass.h"
+#include "MovementClass.h"
+#include "PlayerClass.h"
+#include "UserInterfaceClass.h"
+#include "ItemClass.h"
+#include "Door.h"
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 
 GameControllerClass::GameControllerClass() {
     // Initialize backstory in the constructor
@@ -68,6 +77,74 @@ void GameControllerClass::showMenu() {
             UI.displayPrompt("Invalid choice. Please try again.");
         }
     }
+}
+
+void GameControllerClass::interactWithStatueSequence() {
+
+    PlayerClass myPlayer; // Create an instance of the player
+    ItemClass statue("Statue\n", "This statue is ...."); // Define the statue as an item
+    InteractClass interactWithStatue; // Define the interaction class
+    UserInterfaceClass Myuserinterface; // Interface for handling input/output
+
+    std::cout << "You have found a statue." << std::endl;
+
+    Myuserinterface.displayPrompt("You can INTERACT with the statue, READ its description ,or EXIT. Enter INTERACT,READ or EXIT:");
+
+    // Loop until the user interacts with the statue or exits
+    while (true) {
+        Myuserinterface.userInput(); // Get the user's input
+
+        // Convert input to uppercase for case-insensitive comparison
+        std::string input = Myuserinterface.getCurrentInput();
+        std::transform(input.begin(), input.end(), input.begin(), ::toupper);
+
+        if (input == "READ") {
+            // Display the description of the statue
+            Myuserinterface.displayPrompt(statue.getDescription());
+
+            // After reading, give an option to interact or exit
+            Myuserinterface.displayPrompt("You can now INTERACT with the statue or EXIT. Enter INTERACT or EXIT:");
+
+            // Loop again to get valid input for interacting or exiting
+            while (true) {
+                Myuserinterface.userInput(); // Get user input again
+
+                input = Myuserinterface.getCurrentInput();
+                std::transform(input.begin(), input.end(), input.begin(), ::toupper);
+
+                if (input == "INTERACT") {
+                    interactWithStatue.setInputMessage("You've touched the statue");
+                    interactWithStatue.runInteraction();  // Run interaction logic for the statue
+                    break; // Exit the loop after interaction
+                }
+                else if (input == "EXIT") {
+                    std::cout << "You have chosen to exit the interaction." << std::endl;
+                    break; // Exit the loop if they choose to exit
+                }
+                else {
+                    // Invalid input, ask again
+                    std::cout << "Invalid input. Please type 'INTERACT' to interact with the statue or 'EXIT' to leave." << std::endl;
+                }
+            }
+
+            // Exit the outer loop after valid action (interact or exit)
+            break;
+        }
+        else if (input == "INTERACT") {
+            interactWithStatue.setInputMessage("You've touched the statue.");
+            interactWithStatue.runInteraction();  // Run interaction logic for the statue
+            break; // Exit the loop after interaction
+        }
+        else if (input == "EXIT") {
+            std::cout << "You have chosen to exit the interaction." << std::endl;
+            break; // Exit the loop
+        }
+        else {
+            // Invalid input, prompt user to enter a valid option
+            std::cout << "Invalid input. Please type 'READ' to read the description, 'INTERACT' to interact with the statue, or 'EXIT' to leave." << std::endl;
+        }
+    }
+    std::cout << "Interaction with the statue completed." << std::endl;
 }
 
 void GameControllerClass::endGame() {

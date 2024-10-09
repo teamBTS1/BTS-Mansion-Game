@@ -33,34 +33,6 @@ void InteractClass::displayDescription() {
 void InteractClass::pickupItem(const PickUpItemClass& item) {
     std::cout << "" << std::endl;
 }
-// funtion to handle interaction proccess with statue in room A
-void InteractClass::interactWithStatue() {
-    int choice;
-    do {
-        std::cout << "You are in front of a statue , what do you want to do??\n";
-        std::cout << "1.Read the description\n";
-        std::cout << "2.Interact with Statue\n";
-        std::cout << "3.Exit the interaction\n";
-        std::cout << "Enter your choice (1 ,2, or 3):";
-        std::cin >> choice;
-
-        //Input validation and loop for correct choice
-        if (choice == 1) {
-            displayDescription();
-        }
-        else if (choice == 2)
-        {
-            runInteraction();
-        }
-        else if (choice == 3) {
-            std::cout << "Exiting the interaction\n";
-        }
-        else
-        {
-            std::cout << "Invalid Choice try again" << std::endl;
-        }
-    } while (choice != 3);// keep looping until user selects exit 
-}
 //function to use UserInterfaceClass
 void InteractClass::useUserInterface() {
     //

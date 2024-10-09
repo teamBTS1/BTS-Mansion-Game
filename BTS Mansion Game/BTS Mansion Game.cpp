@@ -12,15 +12,8 @@
 
 int main()
 {
-    InteractClass interact; // create instance on Interactclass 
-
-    // Display Interaction with the statue 
-    interact.interactWithStatue();
-    //Moved the interact class to the front so it would run first so it could be tested 
-    return 0;
-   // GameControllerClass game;
-   // game.showMenu();
-    //std::cout << "Hello World!\n";
+    GameControllerClass game; // create instance on Interactclass 
+    game.interactWithStatueSequence();
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

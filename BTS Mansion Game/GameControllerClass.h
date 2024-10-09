@@ -29,7 +29,8 @@ public:
 	//function to display backstory to user
 	void endGame();
 	//mber function which will exit game loop if chosen
-
+	void interactWithStatueSequence();
+	//Function that displays option to interact ,read or exit the statue.
 };
 
 #endif
