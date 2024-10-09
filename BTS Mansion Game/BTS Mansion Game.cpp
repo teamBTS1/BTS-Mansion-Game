@@ -12,8 +12,10 @@
 
 int main()
 {
+    PlayerClass player;
     GameControllerClass game;
-    game.pickUpNoteSequence(); 
+    game.pickUpNoteSequence(player); 
+    game.viewInventory(player);
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

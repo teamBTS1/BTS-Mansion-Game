@@ -6,6 +6,7 @@
 
 #include <string>
 #include "UserInterfaceClass.h"
+#include "PlayerClass.h"
 
 
 class GameControllerClass
@@ -29,11 +30,11 @@ public:
 	//function to display backstory to user
 	void endGame();
 	//mber function which will exit game loop if chosen
-	void pickUpNoteSequence(); 
+	void pickUpNoteSequence(PlayerClass& myPlayer); 
 	//function that displays option to pick up note in room A
 	void displayInventory();
 	// shows inventory
-	void viewInventory();
+	void viewInventory(PlayerClass& myPlayer);
 	//prompts to view inventory
 };
 
