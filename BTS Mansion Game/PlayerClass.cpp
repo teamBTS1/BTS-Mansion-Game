@@ -38,6 +38,16 @@ RoomClass PlayerClass::getRoom()
 	return currentRoom; //Returns current room
 }
 
+std::string PlayerClass::getRoomName()
+{
+	return currentRoom.GetName();
+}
+
+std::string PlayerClass::getRoomDescription()
+{
+	return currentRoom.GetDescription();
+}
+
 void PlayerClass::setRoom(RoomClass room)
 {
 	currentRoom = room; //Sets current room

@@ -27,13 +27,11 @@ void Door::setDoorKeyID(std::string id)
 	doorKeyID = id;
 }
 
-void Door::unlockDoor(PlayerClass& player)
+void Door::unlockDoor(std::list<ItemClass> inventory)
 {
-	for (int i = 0; i < player.getInventorySize(); i++)
+	for (auto item : inventory)
 	{
-		if (player.getInventory()[i].getKeyID() == doorKeyID)
-		{
+		if (item.getKeyID() == doorKeyID)
 			isLocked = false;
-		}
 	}
 }
