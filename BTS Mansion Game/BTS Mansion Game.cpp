@@ -12,6 +12,10 @@
 
 int main()
 {
+    PlayerClass player;
+    GameControllerClass game;
+    game.pickUpNoteSequence(player); 
+    game.viewInventory(player);
     GameControllerClass game; // create instance on Interactclass 
     game.interactWithStatueSequence();
 }

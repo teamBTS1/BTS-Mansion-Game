@@ -2,6 +2,7 @@
 #ifndef PLAYERCLASS_H
 #define PLAYERCLASS_H
 
+
 #include "ItemClass.h"
 #include "RoomClass.h"
 #include <string>
@@ -9,6 +10,8 @@
 
 class PlayerClass
 {
+#ifndef debug
+
 	//Only write declarations here, actual code will be in cpp file.
 private:
 	int numCandles; //Variable to keep track of number of candles collected
@@ -22,6 +25,8 @@ public:
 	
 	int getCandles(); //returns number of candles player has
 	void addCandle(); //Adds ONE candle to the number of candles player has
+	std::string getRoomName(); //returns string of name of users current room
+	std::string getRoomDescription(); //returns string of current room description
 
 	int getSanity(); //Returns sanity value of player
 	void setSanity(int sanityValue); //Set the sanity value
@@ -34,6 +39,6 @@ public:
 	int getInventorySize() const; //Returns size of inventory
 	void useItem(ItemClass item); //Check if consumable, then if true, remove from inventory and display effect of item
 	ItemClass getItem(std::string n); //Returns copy of specific item from inventory for inspection displayed by UI class
+#endif
 };
-
 #endif

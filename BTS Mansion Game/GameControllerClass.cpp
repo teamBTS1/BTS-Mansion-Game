@@ -10,6 +10,7 @@
 #include "Door.h"
 #include <iostream>
 #include <sstream>
+#include <list>
 #include <algorithm>
 
 GameControllerClass::GameControllerClass() {
@@ -26,10 +27,88 @@ GameControllerClass::GameControllerClass() {
         "\nWhat the fuck?";
 }
 
+
 void GameControllerClass::startGame() {
     displayBackstory();
     gameLoop();
 }
+
+void GameControllerClass::pickUpNoteSequence(PlayerClass& myPlayer) {
+
+    ItemClass note1("Welcome Note", "You have entered the mansion"); // define note item
+    InteractClass interactWithNote; // define interact class
+    PickUpItemClass myPickUpClass(note1); // define pickup class
+    UserInterfaceClass Myuserinterface;
+    
+    std::cout << "You are in room 1, there is a note on the ground next to you" << std::endl; //Room Message
+
+    Myuserinterface.displayPrompt("enter PICKUP to pick up the item");
+    Myuserinterface.userInput(); 
+   
+   
+    interactWithNote.setInputMessage("You have picked up the note!"); //message when ITEM IS PICKED UP
+    
+    
+    //Need to create the user interaction to add item to inventory
+    if (Myuserinterface.getCurrentInput() == "PICKUP")
+    { 
+        myPickUpClass.addToInventory(myPlayer);  // Add the note to the player's inventory
+        Myuserinterface.displayPrompt("You Have Picked Up an Item."); // Message upon successful interaction
+    }
+    else 
+    {
+        // If the user didn't type "PICKUP",
+        std::cout << "You did not pick up the note. Try 'PICKUP'." << std::endl;
+    }
+  
+}
+
+void GameControllerClass::viewInventory(PlayerClass& myPlayer) {
+
+    UserInterfaceClass Myuserinterface; //Lines 62-65 are for testing purposes to make sure code works, prompting user won't be necessary
+    //since prompting will be done after user has already asked to open inventory and then this function will be called
+
+    std::cout << "Want to check what items you have?" << std::endl; //Room Message
+
+    Myuserinterface.displayPrompt("Enter INVENTORY to view your inventory.");
+    Myuserinterface.userInput();
+
+
+    //Need to create the user interaction to view inventory
+    if (Myuserinterface.getCurrentInput() == "INVENTORY")
+    {
+        std::cout << std::endl << std::endl;
+        std::vector<ItemClass> myInventory = myPlayer.getInventory(); //Setting myInventory to direct reference of players inventory
+        int inventorySize = myPlayer.getInventorySize();
+        for (int i = 0; i < inventorySize; i++)
+        {
+            std::cout << myInventory[i].getName() << std::endl; //Printing all of the users inventory
+        }
+        
+        Myuserinterface.displayPrompt("Type the name of an item to get its description.");
+        Myuserinterface.userInput(); //Allowing user to inspect from inventory getting input
+
+        for (int i = 0; i < inventorySize; i++)
+        {
+            if (myInventory[i].getName() == Myuserinterface.getCurrentInput()) //Checking all the input and printing the description of entered item
+            {
+                std::cout << myInventory[i].getName() << ": " << myInventory[i].getDescription() << std::endl;
+            }
+            else
+            {
+                std::cout << "The item you entered is not in your inventory." << std::endl;
+            }
+        }
+
+    }
+    else
+    {
+        // If the user didn't type "INVENTORY",
+        std::cout << "You did not enter the correct input. Try 'INVENTORY'." << std::endl;
+    }
+
+}
+
 
 void GameControllerClass::displayBackstory() {
     std::istringstream stream(GameControllerClass::backstory);
@@ -42,20 +121,46 @@ void GameControllerClass::displayBackstory() {
 }
 
 void GameControllerClass::gameLoop() {
+    /*we initialize the rooms and player class in the beginning. In the future we will probably wrap this in a function or refactor this class to remove clutter from gameLoop*/
+    RoomClass roomA = RoomClass("You are now in room A, In front of you is room B", "A", std::list<std::string>{"B"});
+    RoomClass roomB = RoomClass("You are now in room B, behind you is room A", "B", std::list<std::string>{"A"});
+    PlayerClass userPlayer = PlayerClass(roomA);
+    std::string startingRoom = "A";
+
     while (true) {
-        UI.displayPrompt("What would you like to do? (type 'QUIT' to exit the game)");
+        UI.displayPrompt(userPlayer.getRoomDescription());
+        UI.displayPrompt("\nWhat would you like to do? (type 'QUIT' to exit the game)"); //user input 
         std::string command = UI.userInput();
+        RoomClass currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
 
         if (command == "QUIT") {
             endGame();  // Call endGame method
             return;  // Exit the game loop
         }
+    
         else {
-            UI.displayPrompt("prompt: " + command); // For testing, it will be different from this this just to meet our acceptance criteria for the story
-            //game logic will be contained here 
+            //std::string current_room = userPlayer.getRoomName();
+            std::list<std::string> validInputs = currentRoom_temp.GetRoomOption();
+            if (std::find(validInputs.begin(), validInputs.end(), command) != validInputs.end()) //algorithm to parse command in valid room options
+            {
+                UI.displayPrompt("\nyou moved to " + command);
+
+                /*before you read: THIS IS A TEMPORARY FUNCTIONALITY FOR ROOM DETECTION THIS WILL BE REFACTORED WHEN WE DECIDE HOW TO BUILD OUR MAP*/
+                if (command == "B") { //if valid option was B
+                    userPlayer.setRoom(roomB);  //set this to current room
+                }
+                else if (command == "A") { //if valid option was A
+                    userPlayer.setRoom(roomA); 
+                }
+            }
+            else
+            { //catch invalid input NOTE - in the future we will refactor to utilize UI class input validation
+                UI.displayPrompt("\nYou tried to choose your option but you couldn't move your body. It seems like there is an unforseen force telling you can't perform that action..You look around again\n");
+            }
         }
     }
 }
+
 
 void GameControllerClass::showMenu() {
     while (true) {
@@ -148,6 +253,6 @@ void GameControllerClass::interactWithStatueSequence() {
 }
 
 void GameControllerClass::endGame() {
-    UI.displayPrompt("Exiting the game. Thank you for playing!");
+    UI.displayPrompt("\nYour world disappears around you. You are still aware but there is nothing, like someone pulled the plug on your brain - Am I dead?\n...You wonder if this will end.\nThank you for playing");
     exit(0);  // Exit the game
 }
