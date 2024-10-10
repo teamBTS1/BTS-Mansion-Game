@@ -14,9 +14,11 @@ int main()
 {
     PlayerClass player;
     GameControllerClass game;
-    game.pickUpNoteSequence(player); 
-    game.viewInventory(player);
-    game.interactWithStatueSequence();
+
+    game.startGame(); 
+    //game.pickUpNoteSequence(player); 
+    //game.viewInventory(player);
+    //game.interactWithStatueSequence();
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
