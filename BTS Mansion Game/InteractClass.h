@@ -28,6 +28,8 @@ public:
 	void pickupItem(const PickUpItemClass& item);
 	// function to use UserInterfaceClass
 	void useUserInterface();
+	// funtion to handle the interaction with statue
+	void interactWithStatue();
 
 	//Only write declarations here, actual code will be in cpp file.
 

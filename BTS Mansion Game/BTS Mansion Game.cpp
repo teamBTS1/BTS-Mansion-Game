@@ -16,6 +16,8 @@ int main()
     GameControllerClass game;
     game.pickUpNoteSequence(player); 
     game.viewInventory(player);
+    GameControllerClass game; // create instance on Interactclass 
+    game.interactWithStatueSequence();
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

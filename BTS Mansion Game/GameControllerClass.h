@@ -36,6 +36,8 @@ public:
 	// shows inventory
 	void viewInventory(PlayerClass& myPlayer);
 	//prompts to view inventory
+	void interactWithStatueSequence();
+	//Function that displays option to interact ,read or exit the statue.
 };
 
 #endif

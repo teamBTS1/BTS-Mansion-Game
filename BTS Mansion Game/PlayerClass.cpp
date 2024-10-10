@@ -1,6 +1,6 @@
 #include "PlayerClass.h"
 
-PlayerClass::PlayerClass() 
+PlayerClass::PlayerClass()
 {
 	numCandles = 0;
 	sanityMeter = 100;
@@ -88,4 +88,3 @@ ItemClass PlayerClass::getItem(std::string n)
 		}
 	}
 }
-
