@@ -32,6 +32,83 @@ void GameControllerClass::startGame() {
     gameLoop();
 }
 
+void GameControllerClass::pickUpNoteSequence(PlayerClass& myPlayer) {
+
+    ItemClass note1("Welcome Note", "You have entered the mansion"); // define note item
+    InteractClass interactWithNote; // define interact class
+    PickUpItemClass myPickUpClass(note1); // define pickup class
+    UserInterfaceClass Myuserinterface;
+    
+    std::cout << "You are in room 1, there is a note on the ground next to you" << std::endl; //Room Message
+
+    Myuserinterface.displayPrompt("enter PICKUP to pick up the item");
+    Myuserinterface.userInput(); 
+   
+   
+    interactWithNote.setInputMessage("You have picked up the note!"); //message when ITEM IS PICKED UP
+    
+    
+    //Need to create the user interaction to add item to inventory
+    if (Myuserinterface.getCurrentInput() == "PICKUP")
+    { 
+        myPickUpClass.addToInventory(myPlayer);  // Add the note to the player's inventory
+        Myuserinterface.displayPrompt("You Have Picked Up an Item."); // Message upon successful interaction
+    }
+    else 
+    {
+        // If the user didn't type "PICKUP",
+        std::cout << "You did not pick up the note. Try 'PICKUP'." << std::endl;
+    }
+  
+}
+
+void GameControllerClass::viewInventory(PlayerClass& myPlayer) {
+
+    UserInterfaceClass Myuserinterface; //Lines 62-65 are for testing purposes to make sure code works, prompting user won't be necessary
+    //since prompting will be done after user has already asked to open inventory and then this function will be called
+
+    std::cout << "Want to check what items you have?" << std::endl; //Room Message
+
+    Myuserinterface.displayPrompt("Enter INVENTORY to view your inventory.");
+    Myuserinterface.userInput();
+
+
+    //Need to create the user interaction to view inventory
+    if (Myuserinterface.getCurrentInput() == "INVENTORY")
+    {
+        std::cout << std::endl << std::endl;
+        std::vector<ItemClass> myInventory = myPlayer.getInventory(); //Setting myInventory to direct reference of players inventory
+        int inventorySize = myPlayer.getInventorySize();
+        for (int i = 0; i < inventorySize; i++)
+        {
+            std::cout << myInventory[i].getName() << std::endl; //Printing all of the users inventory
+        }
+        
+        Myuserinterface.displayPrompt("Type the name of an item to get its description.");
+        Myuserinterface.userInput(); //Allowing user to inspect from inventory getting input
+
+        for (int i = 0; i < inventorySize; i++)
+        {
+            if (myInventory[i].getName() == Myuserinterface.getCurrentInput()) //Checking all the input and printing the description of entered item
+            {
+                std::cout << myInventory[i].getName() << ": " << myInventory[i].getDescription() << std::endl;
+            }
+            else
+            {
+                std::cout << "The item you entered is not in your inventory." << std::endl;
+            }
+        }
+
+    }
+    else
+    {
+        // If the user didn't type "INVENTORY",
+        std::cout << "You did not enter the correct input. Try 'INVENTORY'." << std::endl;
+    }
+
+}
+
+
 void GameControllerClass::displayBackstory() {
     std::istringstream stream(GameControllerClass::backstory);
     std::string line;
@@ -59,6 +136,7 @@ void GameControllerClass::gameLoop() {
             endGame();  // Call endGame method
             return;  // Exit the game loop
         }
+    
         else {
             //std::string current_room = userPlayer.getRoomName();
             std::list<std::string> validInputs = currentRoom_temp.GetRoomOption();
@@ -81,6 +159,7 @@ void GameControllerClass::gameLoop() {
         }
     }
 }
+
 
 void GameControllerClass::showMenu() {
     while (true) {

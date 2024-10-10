@@ -20,6 +20,7 @@ private:
 	std::vector<ItemClass> Inventory; //Vector Array of Item Class objects for inventory
 	
 public:
+	PlayerClass(); 
 	PlayerClass(RoomClass room); //constuctor (set to default values)
 	
 	int getCandles(); //returns number of candles player has

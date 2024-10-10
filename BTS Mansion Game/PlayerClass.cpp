@@ -1,5 +1,11 @@
 #include "PlayerClass.h"
 
+PlayerClass::PlayerClass() 
+{
+	numCandles = 0;
+	sanityMeter = 100;
+}
+
 PlayerClass::PlayerClass(RoomClass room)
 {
 	numCandles = 0;
