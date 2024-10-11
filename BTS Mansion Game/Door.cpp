@@ -6,10 +6,11 @@ Door::Door()
 	doorKeyID = " ";
 }
 
-Door::Door(bool locked, std::string id)
+Door::Door(bool locked, std::string id, std::string newDescription)
 {
 	isLocked = locked;
 	doorKeyID = id;
+	openDoorDescription = newDescription;
 }
 
 bool Door::getIsLocked()
@@ -34,4 +35,10 @@ void Door::unlockDoor(std::list<ItemClass> inventory)
 		if (item.getKeyID() == doorKeyID)
 			isLocked = false;
 	}
+}
+
+
+std::string Door::returnOpenDoorDescription()
+{
+	return openDoorDescription;
 }

@@ -48,6 +48,11 @@ std::string PlayerClass::getRoomDescription()
 	return currentRoom.GetDescription();
 }
 
+void PlayerClass::addItem(ItemClass item)
+{
+	Inventory.push_back(item); //adds item to inventory, test description
+}
+
 void PlayerClass::setRoom(RoomClass room)
 {
 	currentRoom = room; //Sets current room
@@ -87,4 +92,19 @@ ItemClass PlayerClass::getItem(std::string n)
 			return unknownItem; //Returns unknown item to show item not found
 		}
 	}
+}
+
+bool PlayerClass::inInventory(std::string name) const
+{
+	for (auto item : Inventory) {
+		if (item.getName() == name) {
+			return true; // Item found in inventory
+		}
+	}
+	return false; // No match found
+}
+
+void PlayerClass::removeItem(std::string n)
+{
+//for joey: add functionality to remove the item
 }

@@ -27,6 +27,7 @@ public:
 	void addCandle(); //Adds ONE candle to the number of candles player has
 	std::string getRoomName(); //returns string of name of users current room
 	std::string getRoomDescription(); //returns string of current room description
+	void addItem(ItemClass item); //gives user item in their inventory
 
 	int getSanity(); //Returns sanity value of player
 	void setSanity(int sanityValue); //Set the sanity value
@@ -39,6 +40,8 @@ public:
 	int getInventorySize() const; //Returns size of inventory
 	void useItem(ItemClass item); //Check if consumable, then if true, remove from inventory and display effect of item
 	ItemClass getItem(std::string n); //Returns copy of specific item from inventory for inspection displayed by UI class
+	void removeItem(std::string n); //removes item from inventory
+	bool inInventory(std::string name) const;  //returns true or false of an items existence in inventory
 #endif
 };
 #endif

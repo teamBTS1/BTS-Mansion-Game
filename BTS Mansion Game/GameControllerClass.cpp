@@ -122,10 +122,17 @@ void GameControllerClass::displayBackstory() {
 
 void GameControllerClass::gameLoop() {
     /*we initialize the rooms and player class in the beginning. In the future we will probably wrap this in a function or refactor this class to remove clutter from gameLoop*/
-    RoomClass roomA = RoomClass("You are now in room A, In front of you is room B", "A", std::list<std::string>{"B"});
+    Door doorC = Door(true, "DOOR", "You are now in room A, In front of you is room B and C"); // create door
+    RoomClass roomA = RoomClass("You are now in room A, In front of you is room B and DOOR", "A", std::list<std::string>{"B","DOOR"}, doorC); 
+    RoomClass roomC = RoomClass("You are now in Room C, behind you is room A", "C", std::list<std::string>{"A"});
     RoomClass roomB = RoomClass("You are now in room B, behind you is room A", "B", std::list<std::string>{"A"});
+
+
     PlayerClass userPlayer = PlayerClass(roomA);
+    ItemClass KEY = ItemClass("KEY","KEY");
+    userPlayer.addItem(KEY);
     std::string startingRoom = "A";
+
 
     while (true) {
         UI.displayPrompt(userPlayer.getRoomDescription());
@@ -145,12 +152,31 @@ void GameControllerClass::gameLoop() {
             {
                 UI.displayPrompt("\nyou moved to " + command);
 
-                /*before you read: THIS IS A TEMPORARY FUNCTIONALITY FOR ROOM DETECTION THIS WILL BE REFACTORED WHEN WE DECIDE HOW TO BUILD OUR MAP*/
+                /*before you read: THIS IS A TEMPORARY FUNCTIONALITY FOR ROOM DETECTION THIS WILL BE REFACTORED WHEN WE DECIDE HOW TO BUILD OUR MAP
+                TODO: setup hashmap for corresponding rooms, implement functionality to minimize conditional nesting*/
+
                 if (command == "B") { //if valid option was B
                     userPlayer.setRoom(roomB);  //set this to current room
                 }
                 else if (command == "A") { //if valid option was A
                     userPlayer.setRoom(roomA); 
+                }
+                else if (command == "DOOR") {
+                    if (userPlayer.inInventory("KEY"))
+                    {
+                        //userPlayer.removeItem("KEY")  <- FOR JOEY: IMPLEMENT REMOVE LOGIC SO ITEM IS NO LONGER IN INVENTORY
+                        UI.displayPrompt("You unlock the door with the key in your pocket");
+                        roomA.unlockDoor(); //unlocks door, sets description to different openDoor description through
+                        roomA.setRoomOption(std::list<std::string>{"B", "C"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
+                        userPlayer.setRoom(roomA); //set room
+                    }
+                    else
+                    {
+                        UI.displayPrompt("The door is locked");
+                    }
+                }
+                else if (command == "C") {
+                    userPlayer.setRoom(roomC);
                 }
             }
             else
