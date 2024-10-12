@@ -164,7 +164,7 @@ void GameControllerClass::gameLoop() {
                 else if (command == "DOOR") {
                     if (userPlayer.inInventory("KEY"))
                     {
-                        //userPlayer.removeItem("KEY")  <- FOR JOEY: IMPLEMENT REMOVE LOGIC SO ITEM IS NO LONGER IN INVENTORY
+                        userPlayer.useItem("KEY");  
                         UI.displayPrompt("You unlock the door with the key in your pocket");
                         roomA.unlockDoor(); //unlocks door, sets description to different openDoor description through
                         roomA.setRoomOption(std::list<std::string>{"B", "C"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity

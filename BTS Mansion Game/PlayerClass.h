@@ -39,6 +39,7 @@ public:
 	std::vector<ItemClass> viewInventory() const; //Returns a copy of inventory array for displaying in UI class
 	int getInventorySize() const; //Returns size of inventory
 	void useItem(ItemClass item); //Check if consumable, then if true, remove from inventory and display effect of item
+	void useItem(std::string itemName); //Overload of useItem that takes the name of an item as a string rather than passing in an item object
 	ItemClass getItem(std::string n); //Returns copy of specific item from inventory for inspection displayed by UI class
 	void removeItem(std::string n); //removes item from inventory
 	bool inInventory(std::string name) const;  //returns true or false of an items existence in inventory

@@ -73,9 +73,34 @@ int PlayerClass::getInventorySize() const
 	return Inventory.size(); //Returns size of inventory
 }
 
-void PlayerClass::useItem(ItemClass item)
+/*The method overload that passes in an ItemClass should maybe be phased out, since the easiest way to use an item is
+* to pass in the name of the item we want as a string rather than using an entire item object.
+* The useItem method is called when the player tries to use an item
+*/
+void PlayerClass::useItem(ItemClass item)//This overload of useItem simply gets the name string from the passed in item, then passes that to the overload of useItem that takes a string as input.
 {
-	//Functionality not complete
+	useItem(item.getName());
+}
+
+void PlayerClass::useItem(std::string itemName)//Method for using and removing (if applicable) an item from the player's inventory, taking the name of the item as input
+{
+	/*
+	* We step through the list of items in Inventory one item at a time and check to see if they match the name passed into the method.
+	*/
+	for (int i = 0; i < Inventory.size(); i++)
+	{
+		if (Inventory.at(i).getName() == itemName)
+		{
+			//If we want to include any item use logic within the ItemClass object itself, that should get called here.
+
+			if (Inventory.at(i).getIsConsumable())//If the item has the property isConsumable, we delete it from the inventory.
+			{
+				Inventory.erase(Inventory.begin() + i);
+			}   
+			return; //If we've found an appropriate item, we exit the method. If the player has three consumable items called "MATCH" for instance, we only want to use one and not all three
+		}
+	}
+	return;
 }
 
 ItemClass PlayerClass::getItem(std::string n)
