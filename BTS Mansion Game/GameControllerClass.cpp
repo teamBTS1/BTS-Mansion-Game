@@ -130,7 +130,7 @@ void GameControllerClass::gameLoop() {
 
     PlayerClass userPlayer = PlayerClass(roomA);
     ItemClass KEY = ItemClass("KEY","KEY");
-    userPlayer.addItem(KEY);
+    userPlayer.addItem(KEY);    //Temp line, to be removed when key has been added to Room B
     std::string startingRoom = "A";
 
 
