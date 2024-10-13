@@ -122,8 +122,12 @@ void GameControllerClass::displayBackstory() {
 
 void GameControllerClass::gameLoop() {
     /*we initialize the rooms and player class in the beginning. In the future we will probably wrap this in a function or refactor this class to remove clutter from gameLoop*/
-    RoomClass roomA = RoomClass("You are now in room A, In front of you is room B", "A", std::list<std::string>{"B"});
-    RoomClass roomB = RoomClass("You are now in room B, behind you is room A", "B", std::list<std::string>{"A"});
+    ItemClass keyB("Key B", "Rusty key", "BBBB", true); //Initialzing items TEMP key B
+    ItemClass noteA("Note A", "A note with dust and cobwebs all over, with a picture of a burger on it."); //Defining TEMP note A
+    std::vector <ItemClass> roomA_Items = {noteA};
+    std::vector <ItemClass> roomB_Items = {keyB};
+    RoomClass roomA = RoomClass("You are now in room A, In front of you is room B", "A", std::list<std::string>{"B"}, roomA_Items);
+    RoomClass roomB = RoomClass("You are now in room B, behind you is room A", "B", std::list<std::string>{"A"}, roomB_Items);
     PlayerClass userPlayer = PlayerClass(roomA);
     std::string startingRoom = "A";
 
@@ -133,11 +137,37 @@ void GameControllerClass::gameLoop() {
         std::string command = UI.userInput();
         RoomClass currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
 
+        std::cout << currentRoom_temp.getItems()[0].getName();
+
         if (command == "QUIT") {
             endGame();  // Call endGame method
             return;  // Exit the game loop
         }
     
+        else if (command == "INVENTORY")
+        {
+            viewInventory(userPlayer); //Call view inventory function
+        }
+
+        else if (command == "PICKUP") //If user wants to pick up item
+        {
+            std::cout << currentRoom_temp.getItemsLength();
+            UI.displayPrompt("What item would you like to pick up?"); 
+            command = UI.userInput(); //Getting item to be picked up
+            for (int i = 0; i <= currentRoom_temp.getItemsLength(); i++)
+            {
+                std::cout << "Entered for loop";
+                ItemClass itm = currentRoom_temp.getItems().at(i); //Looping through each item in room to check if exits
+                std::cout << itm.getName();
+                if (itm.getName() == command)
+                {
+                    PickUpItemClass pickUp(itm);
+                    pickUp.addToInventory(userPlayer);
+                    std::cout << "You picked up " << itm.getName() << "." << std::endl;
+                }
+            }
+        }
+
         else {
             //std::string current_room = userPlayer.getRoomName();
             std::list<std::string> validInputs = currentRoom_temp.GetRoomOption();
