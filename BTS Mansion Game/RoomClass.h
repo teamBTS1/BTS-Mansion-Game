@@ -43,6 +43,7 @@ public:
 	void AmendDescription(std::string addition); //Adds the inputted string to the end of the room description.
 	std::vector<ItemClass> getItems(); //Gets list of items in room
 	void displayRoomItems(); //Display room items
+	void RemoveItem(ItemClass itm); //Removes item from inventory
 	const int getItemsLength(); //Returns length of items vector
 
 };

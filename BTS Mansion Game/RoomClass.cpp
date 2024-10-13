@@ -4,6 +4,7 @@
 
 RoomClass::RoomClass()
 {
+
 }
 
 RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<ItemClass> itemList)
@@ -68,10 +69,28 @@ std::vector<ItemClass> RoomClass::getItems()
 
 void RoomClass::displayRoomItems()
 {
+	std::cout << "Items inside this room are: " << std::endl;
 	for (int i = 0; i < itemsLength; i++)
 	{
 		std::cout << items[i].getName() << std::endl;
 	}
+}
+
+void RoomClass::RemoveItem(ItemClass itm)
+{
+
+	itemsLength -= 1;
+	/*
+	for (int i = 0; i < itemsLength; i++)
+	{
+		if (items[i].getName() == itm.getName())
+		{
+			auto pos = items.begin() + i;
+			items.erase(items.begin());
+
+		}
+	}
+	*/
 }
 
 const int RoomClass::getItemsLength()
