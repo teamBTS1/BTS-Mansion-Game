@@ -154,7 +154,7 @@ void GameControllerClass::gameLoop() {
             std::cout << currentRoom_temp.getItemsLength();
             UI.displayPrompt("What item would you like to pick up?"); 
             command = UI.userInput(); //Getting item to be picked up
-            for (int i = 0; i <= currentRoom_temp.getItemsLength(); i++)
+            for (int i = 0; i < roomA_Items.size(); i++)
             {
                 std::cout << "Entered for loop";
                 ItemClass itm = currentRoom_temp.getItems().at(i); //Looping through each item in room to check if exits

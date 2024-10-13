@@ -11,10 +11,7 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 	this->roomDescription = description;
 	this->roomName = name;
 	this->RoomOptions = options;
-	for (int i = 0; i < items.size(); i++)
-	{
-		items.push_back(itemList[i]);
-	}
+	items = itemList;
 	this->itemsLength = items.size();
 }
 
