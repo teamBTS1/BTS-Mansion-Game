@@ -52,7 +52,7 @@ void GameControllerClass::pickUpNoteSequence(PlayerClass& myPlayer) {
     //Need to create the user interaction to add item to inventory
     if (Myuserinterface.getCurrentInput() == "PICKUP")
     { 
-        myPickUpClass.addToInventory(myPlayer);  // Add the note to the player's inventory
+        //myPickUpClass.addToInventory(myPlayer);  // Add the note to the player's inventory
         Myuserinterface.displayPrompt("You Have Picked Up an Item."); // Message upon successful interaction
     }
     else 
@@ -133,7 +133,7 @@ void GameControllerClass::gameLoop() {
 
     while (true) {
         UI.displayPrompt(userPlayer.getRoomDescription());
-        RoomClass currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
+        RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
         currentRoom_temp.displayRoomItems(); //Displaying room items, TEMP function until can implement into UI class
         UI.displayPrompt("\nWhat would you like to do? (type 'QUIT' to exit the game)"); //user input 
         std::string command = UI.userInput();
@@ -160,7 +160,8 @@ void GameControllerClass::gameLoop() {
                 if (itm.getName() == command)
                 {
                     PickUpItemClass pickUp(itm); //Picking up item the user requested to pick up
-                    pickUp.addToInventory(userPlayer, currentRoom_temp);
+                    pickUp.addToInventory(userPlayer, roomA);
+                    //roomA.RemoveItem(noteA);
                     //currentRoom_temp.RemoveItem(itm);
                     std::cout << "You picked up " << itm.getName() << "." << std::endl << std::endl;
                 }

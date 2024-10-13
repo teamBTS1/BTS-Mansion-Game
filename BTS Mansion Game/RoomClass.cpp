@@ -76,21 +76,11 @@ void RoomClass::displayRoomItems()
 	}
 }
 
+
 void RoomClass::RemoveItem(ItemClass itm)
 {
-
-	itemsLength -= 1;
-	/*
-	for (int i = 0; i < itemsLength; i++)
-	{
-		if (items[i].getName() == itm.getName())
-		{
-			auto pos = items.begin() + i;
-			items.erase(items.begin());
-
-		}
-	}
-	*/
+	items.erase(items.begin());
+	itemsLength--;
 }
 
 const int RoomClass::getItemsLength()

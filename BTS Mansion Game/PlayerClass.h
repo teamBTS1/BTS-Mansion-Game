@@ -31,8 +31,8 @@ public:
 	int getSanity(); //Returns sanity value of player
 	void setSanity(int sanityValue); //Set the sanity value
 
-	RoomClass getRoom(); //Returns room player is in
-	void setRoom(RoomClass room); //Sets the room the player is in
+	RoomClass& getRoom(); //Returns room player is in
+	void setRoom(RoomClass &room); //Sets the room the player is in
 
 	std::vector<ItemClass>& getInventory(); //Returns whole array of direct reference to inventory
 	std::vector<ItemClass> viewInventory() const; //Returns a copy of inventory array for displaying in UI class
