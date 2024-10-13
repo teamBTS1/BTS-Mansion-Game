@@ -33,7 +33,7 @@ void PlayerClass::setSanity(int sanityValue)
 	sanityMeter = sanityValue; //Setting sanity meter
 }
 
-RoomClass PlayerClass::getRoom()
+RoomClass& PlayerClass::getRoom()
 {
 	return currentRoom; //Returns current room
 }
@@ -48,12 +48,7 @@ std::string PlayerClass::getRoomDescription()
 	return currentRoom.GetDescription();
 }
 
-void PlayerClass::addItem(ItemClass item)
-{
-	Inventory.push_back(item); //adds item to inventory, test description
-}
-
-void PlayerClass::setRoom(RoomClass room)
+void PlayerClass::setRoom(RoomClass &room)
 {
 	currentRoom = room; //Sets current room
 }

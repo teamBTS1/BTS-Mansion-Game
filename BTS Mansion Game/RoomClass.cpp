@@ -4,13 +4,16 @@
 
 RoomClass::RoomClass()
 {
+
 }
 
-RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options)
+RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<ItemClass> itemList)
 {
 	this->roomDescription = description;
 	this->roomName = name;
 	this->RoomOptions = options;
+	items = itemList;
+	this->itemsLength = items.size();
 }
 
 
@@ -72,4 +75,28 @@ void RoomClass::AmendDescription(std::string addition)
 {
 }
 
+std::vector<ItemClass> RoomClass::getItems()
+{
+	return items;
+}
 
+void RoomClass::displayRoomItems()
+{
+	std::cout << "Items inside this room are: " << std::endl;
+	for (int i = 0; i < itemsLength; i++)
+	{
+		std::cout << items[i].getName() << std::endl;
+	}
+}
+
+
+void RoomClass::RemoveItem(ItemClass itm)
+{
+	items.erase(items.begin());
+	itemsLength--;
+}
+
+const int RoomClass::getItemsLength()
+{
+	return itemsLength;
+}

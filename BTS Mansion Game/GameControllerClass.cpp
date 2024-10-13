@@ -52,7 +52,7 @@ void GameControllerClass::pickUpNoteSequence(PlayerClass& myPlayer) {
     //Need to create the user interaction to add item to inventory
     if (Myuserinterface.getCurrentInput() == "PICKUP")
     { 
-        myPickUpClass.addToInventory(myPlayer);  // Add the note to the player's inventory
+        //myPickUpClass.addToInventory(myPlayer);  // Add the note to the player's inventory
         Myuserinterface.displayPrompt("You Have Picked Up an Item."); // Message upon successful interaction
     }
     else 
@@ -82,7 +82,7 @@ void GameControllerClass::viewInventory(PlayerClass& myPlayer) {
         int inventorySize = myPlayer.getInventorySize();
         for (int i = 0; i < inventorySize; i++)
         {
-            std::cout << myInventory[i].getName() << std::endl; //Printing all of the users inventory
+            std::cout << myInventory[i].getName() << std::endl << std::endl; //Printing all of the users inventory
         }
         
         Myuserinterface.displayPrompt("Type the name of an item to get its description.");
@@ -128,6 +128,11 @@ void GameControllerClass::gameLoop() {
     RoomClass roomB = RoomClass("You are now in room B, behind you is room A", "B", std::list<std::string>{"A"});
 
 
+    ItemClass keyB("KEY B", "Rusty key", "BBBB", true); //Initialzing items TEMP key B
+    ItemClass noteA("NOTE A", "A note with dust and cobwebs all over, with a picture of a burger on it."); //Defining TEMP note A
+    std::vector <ItemClass> roomA_Items = {noteA};
+    std::vector <ItemClass> roomB_Items = {keyB};
+
     PlayerClass userPlayer = PlayerClass(roomA);
     ItemClass KEY = ItemClass("KEY","KEY"); //Temp line, to be removed when key has been added to Room B
     userPlayer.addItem(KEY);    //Temp line, to be removed when key has been added to Room B
@@ -136,15 +141,41 @@ void GameControllerClass::gameLoop() {
 
     while (true) {
         UI.displayPrompt(userPlayer.getRoomDescription());
+        RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
+        currentRoom_temp.displayRoomItems(); //Displaying room items, TEMP function until can implement into UI class
         UI.displayPrompt("\nWhat would you like to do? (type 'QUIT' to exit the game)"); //user input 
         std::string command = UI.userInput();
-        RoomClass currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
+
 
         if (command == "QUIT") {
             endGame();  // Call endGame method
             return;  // Exit the game loop
         }
     
+        else if (command == "INVENTORY")
+        {
+            viewInventory(userPlayer); //Call view inventory function
+        }
+
+        else if (command == "PICKUP") //If user wants to pick up item
+        {
+            UI.displayPrompt("What item would you like to pick up?"); 
+            command = UI.userInput(); //Getting item to be picked up
+            for (int i = 0; i < currentRoom_temp.getItemsLength(); i++)
+            {
+                ItemClass itm = currentRoom_temp.getItems().at(i); //Looping through each item in room to check if exits
+                //std::cout << itm.getName();
+                if (itm.getName() == command)
+                {
+                    PickUpItemClass pickUp(itm); //Picking up item the user requested to pick up
+                    pickUp.addToInventory(userPlayer, roomA);
+                    //roomA.RemoveItem(noteA);
+                    //currentRoom_temp.RemoveItem(itm);
+                    std::cout << "You picked up " << itm.getName() << "." << std::endl << std::endl;
+                }
+            }
+        }
+
         else {
             //std::string current_room = userPlayer.getRoomName();
             std::list<std::string> validInputs = currentRoom_temp.GetRoomOption();
