@@ -10,12 +10,12 @@ class InteractClass
 {
 private:
 	std::string inputMessage;
-	std::string outputMessage;
+	std::string interactMessage;
 	UserInterfaceClass ui; // UserInterfaceClass for input and output
 public:
 	//Constructor
 	InteractClass();
-
+	InteractClass(std::string inMssg, std::string intMssg); //Constructor taking input and interact message
 	// Funtion to set input message 
 	void setInputMessage(const std::string& message);
 	// function to set output message 

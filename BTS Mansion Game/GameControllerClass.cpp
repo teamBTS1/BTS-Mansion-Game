@@ -35,7 +35,7 @@ void GameControllerClass::startGame() {
 
 void GameControllerClass::pickUpNoteSequence(PlayerClass& myPlayer) {
 
-    ItemClass note1("Welcome Note", "You have entered the mansion"); // define note item
+    ItemClass note1("Welcome Note", "You have entered the mansion", true); // define note item
     InteractClass interactWithNote; // define interact class
     PickUpItemClass myPickUpClass(note1); // define pickup class
     UserInterfaceClass Myuserinterface;
@@ -108,9 +108,12 @@ void GameControllerClass::gameLoop() {
     /*we initialize the rooms and player class in the beginning. In the future we will probably wrap this in a function or refactor this class to remove clutter from gameLoop*/
     Door doorC = Door(true, "BBBB", "You are now in room A, In front of you is room B and C"); // create door
     
-    ItemClass keyB("KEY B", "Rusty key", "BBBB", true); //Initialzing items TEMP key B
-    ItemClass noteA("NOTE A", "A note with dust and cobwebs all over, with a picture of a burger on it."); //Defining TEMP note A
-    std::vector <ItemClass> roomA_Items = { noteA }; //Creating items
+    ItemClass statueA("STATUE", "This statue is a woman carrying book", false); // Define the statue as an item
+    InteractClass userInteractStatueA("Would you like to INTERACT with the statue?", "You feel a wave of knowledge wash over you, like you've learned something from someone previously here before you."); //Defining statue interaction
+
+    ItemClass keyB("KEY B", "Rusty key", "BBBB", true, true); //Initialzing items TEMP key B
+    ItemClass noteA("NOTE A", "A note with dust and cobwebs all over, with a picture of a burger on it.", true); //Defining TEMP note A
+    std::vector <ItemClass> roomA_Items = { noteA, statueA }; //Creating items
     std::vector <ItemClass> roomB_Items = { keyB };
     
     RoomClass roomA = RoomClass("You are now in room A, In front of you is room B and DOOR", "A", std::list<std::string>{"B","DOOR"}, doorC, roomA_Items); 
@@ -139,22 +142,51 @@ void GameControllerClass::gameLoop() {
             viewInventory(userPlayer); //Call view inventory function
         }
 
-        else if (command == "PICKUP") //If user wants to pick up item
+        else if (command == "INSPECT") //If user wants to pick up item
         {
-            UI.displayPrompt("What item would you like to pick up?"); 
+            currentRoom_temp.displayRoomItems();
+            UI.displayPrompt("What item would you like to inspect?"); 
             command = UI.userInput(); //Getting item to be picked up
-            for (int i = 0; i < currentRoom_temp.getItemsLength(); i++)
+            
+            if (currentRoom_temp.getRoomItemByName(command).getName() == command) //Checks if there is an item in the room same as item user wants to inspect
             {
-                ItemClass itm = currentRoom_temp.getItems().at(i); //Looping through each item in room to check if exits
-                //std::cout << itm.getName();
-                if (itm.getName() == command)
+                std::string itemName = command;
+                UI.displayPrompt(currentRoom_temp.getRoomItemByName(itemName).getDescription());
+                
+                if (currentRoom_temp.getRoomItemByName(itemName).getCanPickUp() == true) //Run Pick up sequence
                 {
-                    PickUpItemClass pickUp(itm); //Picking up item the user requested to pick up
-                    pickUp.addToInventory(userPlayer);
-                    currentRoom_temp.RemoveItem(itm);
-                    std::cout << "You picked up " << itm.getName() << "." << std::endl << std::endl;
+                    UI.displayPrompt("Type PICKUP to pick up.");
+                    command = UI.userInput();
+
+                    if (command == "PICKUP")
+                    {
+                        if (currentRoom_temp.getRoomItemByName(itemName).getCanPickUp() == true) //Run pick up sequence
+                        {
+                            for (int i = 0; i < currentRoom_temp.getItemsLength(); i++)
+                            {
+                                ItemClass itm = currentRoom_temp.getItems().at(i); //Looping through each item in room to check if exits
+                                //std::cout << itm.getName();
+                                if (itm.getName() == itemName)
+                                {
+                                    PickUpItemClass pickUp(itm); //Picking up item the user requested to pick up
+                                    pickUp.addToInventory(userPlayer);
+                                    currentRoom_temp.RemoveItem(itm);
+                                    std::cout << "You picked up " << itm.getName() << "." << std::endl << std::endl;
+                                }
+                            }
+                        }
+                     }                                           
+                }
+         
+                else //Run interact sequence if not pick up able object
+                {
+                    userInteractStatueA.runInteraction(); //Runs interaction with item
+
+
                 }
             }
+            
+            
         }
 
         else {
@@ -226,7 +258,7 @@ void GameControllerClass::showMenu() {
 void GameControllerClass::interactWithStatueSequence() {
 
     PlayerClass myPlayer; // Create an instance of the player
-    ItemClass statue("Statue\n", "This statue is a woman carrying book"); // Define the statue as an item
+    ItemClass statue("Statue\n", "This statue is a woman carrying book", false); // Define the statue as an item
     InteractClass interactWithStatue; // Define the interaction class
     UserInterfaceClass Myuserinterface; // Interface for handling input/output
 

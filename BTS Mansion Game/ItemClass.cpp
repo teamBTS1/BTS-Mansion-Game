@@ -17,33 +17,47 @@ looks in their inventory.
 		keyID = " ";
 		isConsumable = false;
 		value = 0;
+		canPickUp = false;
 	}
 
-	ItemClass::ItemClass(std::string n, std::string desc) 		//Constructor for a note
+	ItemClass::ItemClass(std::string n, std::string desc) //Constructor for unknownItem (Dev use)
 	{
 		name = n;
 		description = desc;
 		keyID = " ";
 		isConsumable = false;
 		value = 0;
+		canPickUp = false;
 	}
 
-	ItemClass::ItemClass(string n, string desc, string id, bool consumable) //Constructor for a key
+	ItemClass::ItemClass(std::string n, std::string desc, bool pickUp) 		//Constructor for a note
+	{
+		name = n;
+		description = desc;
+		keyID = " ";
+		isConsumable = false;
+		value = 0;
+		canPickUp = pickUp;
+	}
+
+	ItemClass::ItemClass(string n, string desc, string id, bool consumable, bool pickUp) //Constructor for a key
 	{
 		name = n;
 		description = desc;
 		keyID = id;
 		isConsumable = consumable;
 		value = 0;
+		canPickUp = pickUp;
 	}
 
-	ItemClass::ItemClass(string n, string desc, int val, bool consumable) //Constructor for a consumable
+	ItemClass::ItemClass(string n, string desc, int val, bool consumable, bool pickUp) //Constructor for a consumable
 	{
 		name = n;
 		description = desc;
 		value = val;
 		isConsumable = consumable;
 		keyID = " ";
+		canPickUp = pickUp;
 	}
 
 	string ItemClass::getName()
@@ -94,6 +108,16 @@ looks in their inventory.
 	void ItemClass::setIsConsumable(bool consumable)
 	{
 		isConsumable = consumable; //Sets if an item is a consumable
+	}
+
+	bool ItemClass::getCanPickUp()
+	{
+		return canPickUp; //Returns if an item can be picked up
+	}
+
+	void ItemClass::setCanPickUp(bool pickup)
+	{
+		canPickUp = pickup; //Sets if pick up is true or false
 	}
 
 	void ItemClass::displayItem()

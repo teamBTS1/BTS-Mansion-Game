@@ -101,6 +101,19 @@ std::vector<ItemClass> RoomClass::getItems()
 	return items;
 }
 
+ItemClass RoomClass::getRoomItemByName(std::string name)
+{
+	for (int i = 0; i < itemsLength; i++)
+	{
+		if (name == items[i].getName())
+		{
+			return items[i];
+		}
+	}
+	ItemClass unknownItem;
+	return unknownItem;
+}
+
 void RoomClass::displayRoomItems()
 {
 	std::cout << "Items inside this room are: " << std::endl;
