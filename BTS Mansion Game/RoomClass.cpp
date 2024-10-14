@@ -7,6 +7,13 @@ RoomClass::RoomClass()
 
 }
 
+RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options)
+{
+	this->roomDescription = description;
+	this->roomName = name;
+	this->RoomOptions = options;
+}
+
 RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<ItemClass> itemList)
 {
 	this->roomDescription = description;

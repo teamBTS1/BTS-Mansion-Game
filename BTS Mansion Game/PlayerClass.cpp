@@ -28,6 +28,11 @@ int PlayerClass::getSanity()
 	return sanityMeter; //Getting sanity meter
 }
 
+void PlayerClass::addItem(ItemClass item)
+{
+	Inventory.push_back(item); //adds item to inventory, test description
+}
+
 void PlayerClass::setSanity(int sanityValue)
 {
 	sanityMeter = sanityValue; //Setting sanity meter

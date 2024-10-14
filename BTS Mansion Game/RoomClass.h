@@ -30,7 +30,10 @@ private:
 
 public:
 	RoomClass(); //Default constructor
-	RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<ItemClass> itemList); //Constructor that takes name and description as input.
+	RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<ItemClass> itemList);
+	RoomClass(std::string description, std::string name, std::list<std::string> options, Door& door);//Constructor that takes name and description as input.
+	RoomClass(std::string description, std::string name, std::list<std::string> options);
+
 	RoomClass(std::string description, Door &door);
 	RoomClass(std::string description, bool isLockedRoom);
 	Door GetDoor(); //Returns the door associated with the room
