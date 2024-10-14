@@ -68,15 +68,7 @@ void GameControllerClass::viewInventory(PlayerClass& myPlayer) {
     UserInterfaceClass Myuserinterface; //Lines 62-65 are for testing purposes to make sure code works, prompting user won't be necessary
     //since prompting will be done after user has already asked to open inventory and then this function will be called
 
-    std::cout << "Want to check what items you have?" << std::endl; //Room Message
-
-    Myuserinterface.displayPrompt("Enter INVENTORY to view your inventory.");
-    Myuserinterface.userInput();
-
-
     //Need to create the user interaction to view inventory
-    if (Myuserinterface.getCurrentInput() == "INVENTORY")
-    {
         std::cout << std::endl << std::endl;
         std::vector<ItemClass> myInventory = myPlayer.getInventory(); //Setting myInventory to direct reference of players inventory
         int inventorySize = myPlayer.getInventorySize();
@@ -99,14 +91,6 @@ void GameControllerClass::viewInventory(PlayerClass& myPlayer) {
                 std::cout << "The item you entered is not in your inventory." << std::endl;
             }
         }
-
-    }
-    else
-    {
-        // If the user didn't type "INVENTORY",
-        std::cout << "You did not enter the correct input. Try 'INVENTORY'." << std::endl;
-    }
-
 }
 
 
@@ -123,19 +107,17 @@ void GameControllerClass::displayBackstory() {
 void GameControllerClass::gameLoop() {
     /*we initialize the rooms and player class in the beginning. In the future we will probably wrap this in a function or refactor this class to remove clutter from gameLoop*/
     Door doorC = Door(true, "DOOR", "You are now in room A, In front of you is room B and C"); // create door
-    RoomClass roomA = RoomClass("You are now in room A, In front of you is room B and DOOR", "A", std::list<std::string>{"B","DOOR"}, doorC); 
-    RoomClass roomC = RoomClass("You are now in Room C, behind you is room A", "C", std::list<std::string>{"A"});
-    RoomClass roomB = RoomClass("You are now in room B, behind you is room A", "B", std::list<std::string>{"A"});
-
-
+    
     ItemClass keyB("KEY B", "Rusty key", "BBBB", true); //Initialzing items TEMP key B
     ItemClass noteA("NOTE A", "A note with dust and cobwebs all over, with a picture of a burger on it."); //Defining TEMP note A
-    std::vector <ItemClass> roomA_Items = {noteA};
-    std::vector <ItemClass> roomB_Items = {keyB};
+    std::vector <ItemClass> roomA_Items = { noteA }; //Creating items
+    std::vector <ItemClass> roomB_Items = { keyB };
+    
+    RoomClass roomA = RoomClass("You are now in room A, In front of you is room B and DOOR", "A", std::list<std::string>{"B","DOOR"}, doorC, roomA_Items); 
+    RoomClass roomC = RoomClass("You are now in Room C, behind you is room A", "C", std::list<std::string>{"A"});
+    RoomClass roomB = RoomClass("You are now in room B, behind you is room A", "B", std::list<std::string>{"A"}, roomB_Items);
 
     PlayerClass userPlayer = PlayerClass(roomA);
-    ItemClass KEY = ItemClass("KEY","KEY"); //Temp line, to be removed when key has been added to Room B
-    userPlayer.addItem(KEY);    //Temp line, to be removed when key has been added to Room B
     std::string startingRoom = "A";
 
 
@@ -168,9 +150,8 @@ void GameControllerClass::gameLoop() {
                 if (itm.getName() == command)
                 {
                     PickUpItemClass pickUp(itm); //Picking up item the user requested to pick up
-                    pickUp.addToInventory(userPlayer, roomA);
-                    //roomA.RemoveItem(noteA);
-                    //currentRoom_temp.RemoveItem(itm);
+                    pickUp.addToInventory(userPlayer);
+                    currentRoom_temp.RemoveItem(itm);
                     std::cout << "You picked up " << itm.getName() << "." << std::endl << std::endl;
                 }
             }
@@ -193,9 +174,9 @@ void GameControllerClass::gameLoop() {
                     userPlayer.setRoom(roomA); 
                 }
                 else if (command == "DOOR") {
-                    if (userPlayer.inInventory("KEY"))
+                    if (userPlayer.inInventory("KEY B"))
                     {
-                        userPlayer.useItem("KEY");  
+                        userPlayer.useItem("KEY B");  
                         UI.displayPrompt("You unlock the door with the key in your pocket");
                         roomA.unlockDoor(); //unlocks door, sets description to different openDoor description through
                         roomA.setRoomOption(std::list<std::string>{"B", "C"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity

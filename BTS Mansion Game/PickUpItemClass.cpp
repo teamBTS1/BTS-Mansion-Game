@@ -20,8 +20,8 @@ void PickUpItemClass::setItemToBePickedUp(ItemClass item)
 	itemToBePickedUp = item; //Sets item to be picked up
 }
 
-void PickUpItemClass::addToInventory(PlayerClass& player, RoomClass& room)
+void PickUpItemClass::addToInventory(PlayerClass& player)
 {
 	player.getInventory().push_back(itemToBePickedUp); //Getting player inventory direct reference and adding inventory item to vector array
-	room.RemoveItem(itemToBePickedUp);
+	//room.RemoveItem(itemToBePickedUp);
 }

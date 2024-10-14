@@ -21,7 +21,7 @@ public:
 	ItemClass getItemToBePickedUp(); //Return item to be picked up
 	void setItemToBePickedUp(ItemClass item); //Set item to be picked up
 
-	void addToInventory(PlayerClass &player, RoomClass &room); //adds item to inventory using direct reference
+	void addToInventory(PlayerClass &player); //adds item to inventory using direct reference
 };
 
 #endif

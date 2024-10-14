@@ -14,6 +14,25 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 	this->RoomOptions = options;
 }
 
+RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, Door& door)
+{
+	this->roomDescription = description;
+	this->roomName = name;
+	this->RoomOptions = options;
+	roomDoor = door;
+}
+
+RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, Door& door, std::vector<ItemClass> itemList)
+{
+	this->roomDescription = description;
+	this->roomName = name;
+	this->RoomOptions = options;
+	roomDoor = door;
+	items = itemList;
+	this->itemsLength = items.size();
+}
+
+
 RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<ItemClass> itemList)
 {
 	this->roomDescription = description;
@@ -25,13 +44,8 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 
 
 
-RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, Door& door)
-{
-	this->roomDescription = description;
-	this->roomName = name;
-	this->RoomOptions = options;
-	roomDoor = door;
-}
+
+
 
 
 Door RoomClass::GetDoor()

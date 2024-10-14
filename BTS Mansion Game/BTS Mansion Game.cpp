@@ -11,23 +11,7 @@
 #include <iostream>
 
 int main()
-{
-    ItemClass itm1("Item 1", "Item 1");
-    ItemClass itm2("Item 2", "Item 2");
-    ItemClass itm3("Item 3", "Item 3");
-    std::vector <ItemClass> itmVec;
-    itmVec.push_back(itm1);
-    itmVec.push_back(itm2);
-    itmVec.push_back(itm3);
-    cout << itmVec.at(0).getName() << std::endl;
-    cout << itmVec.at(1).getName() << std::endl;
-    cout << itmVec.at(2).getName() << std::endl;
-    itmVec.erase(itmVec.begin());
-    cout << itmVec.at(0).getName() << std::endl;
-    cout << itmVec.at(1).getName() << std::endl;
-
-
-    
+{  
     PlayerClass player;
     GameControllerClass game;
 
