@@ -40,9 +40,11 @@ public:
 	int getInventorySize() const; //Returns size of inventory
 	void useItem(ItemClass item); //Check if consumable, then if true, remove from inventory and display effect of item
 	void useItem(std::string itemName); //Overload of useItem that takes the name of an item as a string rather than passing in an item object
+	void useKey(std::string id); //Uses key items same functioanlity as above but for keys
 	ItemClass getItem(std::string n); //Returns copy of specific item from inventory for inspection displayed by UI class
 	void removeItem(std::string n); //removes item from inventory
 	bool inInventory(std::string name) const;  //returns true or false of an items existence in inventory
+	std::string searchForKey(std::string id); //Returns key id of key needed for a door from player inventory
 #endif
 };
 #endif

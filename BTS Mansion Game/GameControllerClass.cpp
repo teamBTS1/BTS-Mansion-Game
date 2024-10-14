@@ -106,7 +106,7 @@ void GameControllerClass::displayBackstory() {
 
 void GameControllerClass::gameLoop() {
     /*we initialize the rooms and player class in the beginning. In the future we will probably wrap this in a function or refactor this class to remove clutter from gameLoop*/
-    Door doorC = Door(true, "DOOR", "You are now in room A, In front of you is room B and C"); // create door
+    Door doorC = Door(true, "BBBB", "You are now in room A, In front of you is room B and C"); // create door
     
     ItemClass keyB("KEY B", "Rusty key", "BBBB", true); //Initialzing items TEMP key B
     ItemClass noteA("NOTE A", "A note with dust and cobwebs all over, with a picture of a burger on it."); //Defining TEMP note A
@@ -174,15 +174,16 @@ void GameControllerClass::gameLoop() {
                     userPlayer.setRoom(roomA); 
                 }
                 else if (command == "DOOR") {
-                    if (userPlayer.inInventory("KEY B"))
+                    if (userPlayer.getRoom().GetDoor().getDoorKeyID() == userPlayer.searchForKey(userPlayer.getRoom().GetDoor().getDoorKeyID()))
                     {
-                        userPlayer.useItem("KEY B");  
+                        userPlayer.useKey(userPlayer.searchForKey(userPlayer.getRoom().GetDoor().getDoorKeyID())); //Uses correct key from inventory
                         UI.displayPrompt("You unlock the door with the key in your pocket");
-                        roomA.unlockDoor(); //unlocks door, sets description to different openDoor description through
-                        roomA.setRoomOption(std::list<std::string>{"B", "C"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
-                        userPlayer.setRoom(roomA); //set room
+                        currentRoom_temp.unlockDoor(); //unlocks door, sets description to different openDoor description through
+                        currentRoom_temp.setRoomOption(std::list<std::string>{"B", "C"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
+                        userPlayer.setRoom(currentRoom_temp); //set room
                     }
                     else
+
                     {
                         UI.displayPrompt("The door is locked");
                     }
