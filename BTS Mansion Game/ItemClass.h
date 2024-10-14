@@ -3,7 +3,7 @@
 #define ITEMCLASS_H
 
 #include <string>
-
+#include "InteractClass.h"
 class ItemClass
 {
 	
@@ -15,6 +15,7 @@ private:
 	int value; //Value of any consumable (sanity pills heal amount)
 	bool isConsumable; //Tracks whether item can be consumed or not
 	bool canPickUp; //Tracks whether item can be picked up or not
+	InteractClass interaction;
 
 public:
 	ItemClass(); //Constructors
@@ -42,6 +43,9 @@ public:
 	void setCanPickUp(bool pickUp); //Sets canPickUp to T/F
 
 	void displayItem(); //Displays item and description
+
+	InteractClass getInteraction(); //Returns interaction
+	void setInteraction(InteractClass interact); //Sets interaction
 };
 
 #endif
