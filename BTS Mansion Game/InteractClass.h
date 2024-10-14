@@ -4,8 +4,10 @@
 
 #include<iostream>
 #include<string>
+
 #include "PickUpItemClass.h" //Include header for PickUpItemClass
 #include "UserInterfaceClass.h" // Included header for UserInterFaceClass
+
 class InteractClass
 {
 private:

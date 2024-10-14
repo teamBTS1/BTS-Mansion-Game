@@ -3,10 +3,13 @@
 #define ITEMCLASS_H
 
 #include <string>
-#include "InteractClass.h"
+//#include "InteractClass.h"
+
+
+class InteractClass; 
+
 class ItemClass
 {
-	
 	//Only write declarations here, actual code will be in cpp file.
 private:
 	std::string name; //Stores item name
@@ -15,7 +18,7 @@ private:
 	int value; //Value of any consumable (sanity pills heal amount)
 	bool isConsumable; //Tracks whether item can be consumed or not
 	bool canPickUp; //Tracks whether item can be picked up or not
-	InteractClass interaction;
+	InteractClass* interaction;
 
 public:
 	ItemClass(); //Constructors
@@ -23,6 +26,7 @@ public:
 	ItemClass(std::string n, std::string desc, bool pickUp); //Constructor for a note
 	ItemClass(std::string n, std::string desc, std::string id, bool consumable, bool canPickUp); //Constructor for a key
 	ItemClass(std::string n, std::string desc, int val, bool consumable, bool canPickUp); //Constructor for a consumable
+	ItemClass(std::string n, std::string desc, bool pickUp, InteractClass* interact);
 
 	std::string getName(); //Return item name
 	void setName(std::string newName); //Sets item to a new name
@@ -44,8 +48,8 @@ public:
 
 	void displayItem(); //Displays item and description
 
-	InteractClass getInteraction(); //Returns interaction
-	void setInteraction(InteractClass interact); //Sets interaction
+	InteractClass* getInteraction(); //Returns interaction
+	void setInteraction(InteractClass* interact); //Sets interaction
 };
 
 #endif

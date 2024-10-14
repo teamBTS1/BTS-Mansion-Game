@@ -1,4 +1,5 @@
 #include "ItemClass.h"
+#include "InteractClass.h"
 #include<iostream>
 #include<string>
 
@@ -28,6 +29,17 @@ looks in their inventory.
 		isConsumable = false;
 		value = 0;
 		canPickUp = false;
+	}
+
+	ItemClass::ItemClass(std::string n, std::string desc, bool pickUp, InteractClass* interact)         //Constructor for an interactable object
+	{
+		name = n;
+		description = desc;
+		keyID = " ";
+		isConsumable = false;
+		value = 0;
+		canPickUp = pickUp;
+		interaction = interact;
 	}
 
 	ItemClass::ItemClass(std::string n, std::string desc, bool pickUp) 		//Constructor for a note

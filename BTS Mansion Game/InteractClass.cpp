@@ -20,23 +20,13 @@ void InteractClass::setOutputMessage(const std::string& message) {
     interactMessage = message;
 }
 
-ItemClass::ItemClass(std::string n, std::string desc, bool pickUp, InteractClass interact)         //Constructor for an interactable object
-{
-    name = n;
-    description = desc;
-    keyID = " ";
-    isConsumable = false;
-    value = 0;
-    canPickUp = pickUp;
-    interaction = interact;
-}
 
-InteractClass ItemClass::getInteraction()
+InteractClass* ItemClass::getInteraction()
 {
     return interaction;
 }
 
-void ItemClass::setInteraction(InteractClass interact)
+void ItemClass::setInteraction(InteractClass* interact)
 {
     interaction = interact;
 }

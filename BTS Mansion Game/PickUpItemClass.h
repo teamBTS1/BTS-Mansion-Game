@@ -2,11 +2,13 @@
 #ifndef PICKUPITEMCLASS_H
 #define PICKUPITEMCLASS_H
 
-#include "ItemClass.h"
+
 #include "PlayerClass.h"
 #include "RoomClass.h"
 #include <string>
+//#include "ItemClass.h"
 
+class ItemClass; 
 
 class PickUpItemClass
 {
