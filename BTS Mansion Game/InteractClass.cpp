@@ -21,29 +21,25 @@ void InteractClass::setOutputMessage(const std::string& message) {
 }
 
 
-InteractClass* ItemClass::getInteraction()
-{
-    return interaction;
-}
 
-void ItemClass::setInteraction(InteractClass* interact)
-{
-    interaction = interact;
-}
 // Function to interact with item or object
 void InteractClass::runInteraction() {
+    UserInterfaceClass ui;
     //input interaction message;
-    std::cout << inputMessage << std::endl;
+    ui.displayPrompt(inputMessage);
     //simulate user input demonstrate
-    std::string action;
-    std::cout << "Enter action (INTERACT): ";
-    std::cin >> action;
-    if (action == "INTERACT")
+    ui.displayPrompt("Enter action (INTERACT): ");
+    ui.userInput();
+
+    if (ui.getCurrentInput() == "INTERACT")
     {
         //output interaction message
-        std::cout << interactMessage << std::endl;
+        ui.displayPrompt(interactMessage);
     }
-    std::cout << "You walk away." << std::endl;
+    else {
+        ui.displayPrompt("You walk away.");
+    }
+ 
 
 }
 //function to display object description

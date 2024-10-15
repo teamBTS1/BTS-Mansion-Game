@@ -107,9 +107,9 @@ void GameControllerClass::gameLoop() {
     /*we initialize the rooms and player class in the beginning. In the future we will probably wrap this in a function or refactor this class to remove clutter from gameLoop*/
     Door doorC = Door(true, "BBBB", "You are now in room A, In front of you is room B and C"); // create door
     
-    ItemClass statueA("STATUE", "This statue is a woman carrying book", false); // Define the statue as an item
-    InteractClass userInteractStatueA("Would you like to INTERACT with the statue?", "You feel a wave of knowledge wash over you, like you've learned something from someone previously here before you."); //Defining statue interaction
-
+    InteractClass *userInteractStatueA = new InteractClass("Would you like to INTERACT with the statue?", "You feel a wave of knowledge wash over you, like you've learned something from someone previously here before you."); //Defining statue interaction
+    ItemClass statueA("STATUE", "This statue is a woman carrying book", false, userInteractStatueA); // Define the statue as an item
+ 
     ItemClass keyB("KEY B", "Rusty key", "BBBB", true, true); //Initialzing items TEMP key B
     ItemClass noteA("NOTE A", "A note with dust and cobwebs all over, with a picture of a burger on it.", true); //Defining TEMP note A
     std::vector <ItemClass> roomA_Items = { noteA, statueA }; //Creating items

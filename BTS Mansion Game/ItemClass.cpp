@@ -19,6 +19,7 @@ looks in their inventory.
 		isConsumable = false;
 		value = 0;
 		canPickUp = false;
+		interaction = nullptr;
 	}
 
 	ItemClass::ItemClass(std::string n, std::string desc) //Constructor for unknownItem (Dev use)
@@ -29,6 +30,7 @@ looks in their inventory.
 		isConsumable = false;
 		value = 0;
 		canPickUp = false;
+		interaction = nullptr;
 	}
 
 	ItemClass::ItemClass(std::string n, std::string desc, bool pickUp, InteractClass* interact)         //Constructor for an interactable object
@@ -50,6 +52,7 @@ looks in their inventory.
 		isConsumable = false;
 		value = 0;
 		canPickUp = pickUp;
+		interaction = nullptr;
 	}
 
 	ItemClass::ItemClass(string n, string desc, string id, bool consumable, bool pickUp) //Constructor for a key
@@ -60,6 +63,7 @@ looks in their inventory.
 		isConsumable = consumable;
 		value = 0;
 		canPickUp = pickUp;
+		interaction = nullptr;
 	}
 
 	ItemClass::ItemClass(string n, string desc, int val, bool consumable, bool pickUp) //Constructor for a consumable
@@ -70,6 +74,7 @@ looks in their inventory.
 		isConsumable = consumable;
 		keyID = " ";
 		canPickUp = pickUp;
+		interaction = nullptr;
 	}
 
 	string ItemClass::getName()
@@ -136,4 +141,14 @@ looks in their inventory.
 	{
 		cout << "Item: " << name << endl;
 		cout << "Description: " << description << endl; //Displays item and description (for testing purposes, assuming UI class handles all input output)
+	}
+
+	InteractClass* ItemClass::getInteraction()
+	{
+		return interaction;
+	}
+
+	void ItemClass::setInteraction(InteractClass* interact)
+	{
+		interaction = interact;
 	}
