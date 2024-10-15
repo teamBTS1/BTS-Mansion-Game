@@ -116,7 +116,6 @@ void GameControllerClass::gameLoop() {
     std::vector <ItemClass> roomB_Items = { keyB };
     
 
-
     //The adrenaline rushes from your brain and your eyes begin to focus, still trying to grasp the enormity of the situation, and the mansion itself"
 
 
@@ -203,10 +202,10 @@ void GameControllerClass::gameLoop() {
                 /*before you read: THIS IS A TEMPORARY FUNCTIONALITY FOR ROOM DETECTION THIS WILL BE REFACTORED WHEN WE DECIDE HOW TO BUILD OUR MAP
                 TODO: setup hashmap for corresponding rooms, implement functionality to minimize conditional nesting*/
 
-                if (command == "LOUNGE") { //if valid option was B
+                if (command == "B") { //if valid option was B
                     userPlayer.setRoom(roomB);  //set this to current room
                 }
-                else if (command == "FOYER") { //if valid option was A
+                else if (command == "A") { //if valid option was A
                     userPlayer.setRoom(roomA); 
                 }
                 else if (command == "DOOR") {
@@ -224,7 +223,7 @@ void GameControllerClass::gameLoop() {
                         UI.displayPrompt("The door is locked");
                     }
                 }
-                else if (command == "LIBRARY") {
+                else if (command == "C") {
                     userPlayer.setRoom(roomC);
                 }
             }
