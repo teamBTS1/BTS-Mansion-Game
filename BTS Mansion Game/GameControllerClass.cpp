@@ -24,10 +24,9 @@ GameControllerClass::GameControllerClass() {
         "\nWith options running thin and desparate to find your friend, you approach the cave with the flashlight of your phone."
         "\nThe more you walk, the more you notice the detail in the walls of the cave. Fresh granite soon becomes tile."
         "\nYou reach what seems to be the Foyer of a mansion. You turn around and see the inside of 8 foot double doors."
-        "\nWhat the fuck?";
+        "\nWhat the fuck?"
+        "\n----------------------";
 }
-
-
 void GameControllerClass::startGame() {
     displayBackstory();
     gameLoop();
@@ -116,9 +115,15 @@ void GameControllerClass::gameLoop() {
     std::vector <ItemClass> roomA_Items = { noteA, statueA }; //Creating items
     std::vector <ItemClass> roomB_Items = { keyB };
     
-    RoomClass roomA = RoomClass("You are now in room A, In front of you is room B and DOOR", "A", std::list<std::string>{"B","DOOR"}, doorC, roomA_Items); 
-    RoomClass roomC = RoomClass("You are now in Room C, behind you is room A", "C", std::list<std::string>{"A"});
-    RoomClass roomB = RoomClass("You are now in room B, behind you is room A", "B", std::list<std::string>{"A"}, roomB_Items);
+
+
+    //The adrenaline rushes from your brain and your eyes begin to focus, still trying to grasp the enormity of the situation, and the mansion itself"
+
+
+    RoomClass roomA = RoomClass("You enter the foyer, you can see a NOTE on the ground, and a STATUE beside it.   Further back you can see a room which appears to be a LOUNGE.\n", "A", std::list<std::string>{"B","DOOR"}, doorC, roomA_Items); 
+    RoomClass roomB = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "B", std::list<std::string>{"A"}, roomB_Items);
+    RoomClass roomC = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous safe, it appears to accept a 4 digit code.\n", "C", std::list<std::string>{"A"});
+
 
     PlayerClass userPlayer = PlayerClass(roomA);
     std::string startingRoom = "A";
@@ -128,7 +133,7 @@ void GameControllerClass::gameLoop() {
         UI.displayPrompt(userPlayer.getRoomDescription());
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
         currentRoom_temp.displayRoomItems(); //Displaying room items, TEMP function until can implement into UI class
-        UI.displayPrompt("\nWhat would you like to do? (type 'QUIT' to exit the game)"); //user input 
+        UI.displayPrompt("\nYou cant contain your curiosity and have the urge to INSPECT the items in the room. (type 'QUIT' to exit the game)\n"); //user input 
         std::string command = UI.userInput();
 
 
@@ -145,7 +150,7 @@ void GameControllerClass::gameLoop() {
         else if (command == "INSPECT") //If user wants to pick up item
         {
             currentRoom_temp.displayRoomItems();
-            UI.displayPrompt("What item would you like to inspect?"); 
+            UI.displayPrompt("What item would you like to inspect?\n"); 
             command = UI.userInput(); //Getting item to be picked up
             
             if (currentRoom_temp.getRoomItemByName(command).getName() == command) //Checks if there is an item in the room same as item user wants to inspect
@@ -155,7 +160,7 @@ void GameControllerClass::gameLoop() {
                 
                 if (currentRoom_temp.getRoomItemByName(itemName).getCanPickUp() == true) //Run Pick up sequence
                 {
-                    UI.displayPrompt("Type PICKUP to pick up.");
+                    UI.displayPrompt("Type PICKUP to pick up the item");
                     command = UI.userInput();
 
                     if (command == "PICKUP")
@@ -180,9 +185,8 @@ void GameControllerClass::gameLoop() {
          
                 else //Run interact sequence if not pick up able object
                 {
-                    userInteractStatueA.runInteraction(); //Runs interaction with item
-
-
+                    //userInteractStatueA.runInteraction(); //Runs interaction with item
+                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(); 
                 }
             }
             
@@ -199,17 +203,17 @@ void GameControllerClass::gameLoop() {
                 /*before you read: THIS IS A TEMPORARY FUNCTIONALITY FOR ROOM DETECTION THIS WILL BE REFACTORED WHEN WE DECIDE HOW TO BUILD OUR MAP
                 TODO: setup hashmap for corresponding rooms, implement functionality to minimize conditional nesting*/
 
-                if (command == "B") { //if valid option was B
+                if (command == "LOUNGE") { //if valid option was B
                     userPlayer.setRoom(roomB);  //set this to current room
                 }
-                else if (command == "A") { //if valid option was A
+                else if (command == "FOYER") { //if valid option was A
                     userPlayer.setRoom(roomA); 
                 }
                 else if (command == "DOOR") {
                     if (userPlayer.getRoom().GetDoor().getDoorKeyID() == userPlayer.searchForKey(userPlayer.getRoom().GetDoor().getDoorKeyID()))
                     {
                         userPlayer.useKey(userPlayer.searchForKey(userPlayer.getRoom().GetDoor().getDoorKeyID())); //Uses correct key from inventory
-                        UI.displayPrompt("You unlock the door with the key in your pocket");
+                        UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the LIBRARY\n");
                         currentRoom_temp.unlockDoor(); //unlocks door, sets description to different openDoor description through
                         currentRoom_temp.setRoomOption(std::list<std::string>{"B", "C"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
                         userPlayer.setRoom(currentRoom_temp); //set room
@@ -220,7 +224,7 @@ void GameControllerClass::gameLoop() {
                         UI.displayPrompt("The door is locked");
                     }
                 }
-                else if (command == "C") {
+                else if (command == "LIBRARY") {
                     userPlayer.setRoom(roomC);
                 }
             }
