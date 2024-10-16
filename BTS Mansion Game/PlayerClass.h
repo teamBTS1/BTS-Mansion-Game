@@ -16,12 +16,12 @@ class PlayerClass
 private:
 	int numCandles; //Variable to keep track of number of candles collected
 	int sanityMeter; //Variable to track the value of the sanity meter
-	RoomClass currentRoom; //Stores the current room the player is currently in
+	RoomClass* currentRoom; //Stores the current room the player is currently in
 	std::vector<ItemClass> Inventory; //Vector Array of Item Class objects for inventory
 	
 public:
 	PlayerClass();
-	PlayerClass(RoomClass room); //constuctor (set to default values)
+	PlayerClass(RoomClass &room); //constuctor (set to default values)
 	
 	int getCandles(); //returns number of candles player has
 	void addCandle(); //Adds ONE candle to the number of candles player has

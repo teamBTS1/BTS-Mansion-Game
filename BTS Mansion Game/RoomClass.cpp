@@ -105,10 +105,12 @@ ItemClass& RoomClass::getRoomItemByName(std::string name)
 {
 	for (int i = 0; i < itemsLength; i++)
 	{
+		
 		if (name == items[i].getName())
 		{
 			return items[i];
 		}
+
 	}
 	ItemClass unknownItem;
 	return unknownItem;
@@ -116,11 +118,15 @@ ItemClass& RoomClass::getRoomItemByName(std::string name)
 
 void RoomClass::displayRoomItems()
 {
+
+	std::cout << "-----------" << endl;
 	std::cout << "Items inside this room are: " << std::endl;
+	std::cout << endl;
 	for (int i = 0; i < itemsLength; i++)
 	{
 		std::cout << items[i].getName() << std::endl;
 	}
+	std::cout << endl;
 }
 
 
@@ -145,8 +151,10 @@ const int RoomClass::getItemsLength()
 void RoomClass::displayAdjacentRooms()
 {
 	std::cout << "Rooms you can go to: " << std::endl;
+	std::cout << endl;
 	for (const std::string& room : RoomOptions)
 	{
 		std::cout << room << std::endl;
 	}
+	std::cout << endl;
 }

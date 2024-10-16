@@ -18,7 +18,7 @@ private:
 	int value; //Value of any consumable (sanity pills heal amount)
 	bool isConsumable; //Tracks whether item can be consumed or not
 	bool canPickUp; //Tracks whether item can be picked up or not
-	InteractClass* interaction;
+	InteractClass* interaction = nullptr;
 
 public:
 	ItemClass(); //Constructors

@@ -6,11 +6,11 @@ PlayerClass::PlayerClass()
 	sanityMeter = 100;
 }
 
-PlayerClass::PlayerClass(RoomClass room)
+PlayerClass::PlayerClass(RoomClass &room)
 {
 	numCandles = 0;
 	sanityMeter = 100;
-	currentRoom = room; //Setting default values
+	currentRoom = &room; //Setting default values
 }
 
 int PlayerClass::getCandles()
@@ -40,22 +40,22 @@ void PlayerClass::setSanity(int sanityValue)
 
 RoomClass& PlayerClass::getRoom()
 {
-	return currentRoom; //Returns current room
+	return *currentRoom; //Returns current room
 }
 
 std::string PlayerClass::getRoomName()
 {
-	return currentRoom.GetName();
+	return currentRoom->GetName();
 }
 
 std::string PlayerClass::getRoomDescription()
 {
-	return currentRoom.GetDescription();
+	return currentRoom->GetDescription();
 }
 
 void PlayerClass::setRoom(RoomClass &room)
 {
-	currentRoom = room; //Sets current room
+	currentRoom = &room; //Sets current room
 }
 
 std::vector<ItemClass>& PlayerClass::getInventory() //Returns reference to inventory for direct modification and use (Like using a key or sanity pill)

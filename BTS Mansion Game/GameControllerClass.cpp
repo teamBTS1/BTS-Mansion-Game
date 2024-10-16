@@ -25,6 +25,8 @@ GameControllerClass::GameControllerClass() {
         "\nThe more you walk, the more you notice the detail in the walls of the cave. Fresh granite soon becomes tile."
         "\nYou reach what seems to be the Foyer of a mansion. You turn around and see the inside of 8 foot double doors."
         "\nWhat the fuck?"
+        "\n----------------------"
+        "\n INSTRUCTIONS: Any word that is in all caps, such as INSPECT, PICKUP or GARDEN, is a keyword and can be inputted for an action"
         "\n----------------------";
 }
 void GameControllerClass::startGame() {
@@ -111,7 +113,7 @@ void GameControllerClass::gameLoop() {
     ItemClass statueA("STATUE", "This statue is a woman carrying book", false, userInteractStatueA); // Define the statue as an item
  
     ItemClass keyB("KEY B", "Rusty key", "BBBB", true, true); //Initialzing items TEMP key B
-    ItemClass noteA("NOTE A", "A note with dust and cobwebs all over, with a picture of a burger on it.", true); //Defining TEMP note A
+    ItemClass noteA("NOTE A", "A note with dust and cobwebs all over", true); //Defining TEMP note A
     std::vector <ItemClass> roomA_Items = { noteA, statueA }; //Creating items
     std::vector <ItemClass> roomB_Items = { keyB };
     
@@ -133,6 +135,7 @@ void GameControllerClass::gameLoop() {
         RoomClass &currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
         UI.displayPrompt(userPlayer.getRoomDescription());
         currentRoom_temp.displayRoomItems(); //Displaying room items, TEMP function until can implement into UI class
+        std::cout << endl; 
         currentRoom_temp.displayAdjacentRooms(); //Displaying adjacent rooms, TEMP function until can implement into UI class
         UI.displayPrompt("\nYou cant contain your curiosity and have the urge to INSPECT the items in the room. (type 'QUIT' to exit the game)\n"); //user input 
         std::string command = UI.userInput();
@@ -157,7 +160,9 @@ void GameControllerClass::gameLoop() {
             if (currentRoom_temp.getRoomItemByName(command).getName() == command) //Checks if there is an item in the room same as item user wants to inspect
             {
                 std::string itemName = command;
+                std::cout << endl;
                 UI.displayPrompt(currentRoom_temp.getRoomItemByName(itemName).getDescription());
+                std::cout << endl;
                 
                 if (currentRoom_temp.getRoomItemByName(itemName).getCanPickUp() == true) //Run Pick up sequence
                 {
@@ -178,7 +183,10 @@ void GameControllerClass::gameLoop() {
                                     pickUp.addToInventory(userPlayer);
                                     currentRoom_temp.RemoveItem(itm);
                                     userPlayer.setRoom(currentRoom_temp);
-                                    std::cout << "You picked up " << itm.getName() << "." << std::endl << std::endl;
+                                    std::cout << endl;
+                                    std::cout << "You picked up " << itemName << "." << std::endl << std::endl;
+                                    std::cout << "-----------" << endl;
+                                    break; 
                                 }
                             }
                         }
