@@ -123,13 +123,14 @@ void GameControllerClass::gameLoop() {
     RoomClass roomB = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER"}, roomB_Items);
     RoomClass roomC = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous safe, it appears to accept a 4 digit code.\n", "LIBRARY", std::list<std::string>{"FOYER"}, doorC);
 
+    //roomA.RemoveItem(noteA);
 
     PlayerClass userPlayer = PlayerClass(roomA);
     std::string startingRoom = "A";
 
 
     while (true) {
-        RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
+        RoomClass &currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
         UI.displayPrompt(userPlayer.getRoomDescription());
         currentRoom_temp.displayRoomItems(); //Displaying room items, TEMP function until can implement into UI class
         currentRoom_temp.displayAdjacentRooms(); //Displaying adjacent rooms, TEMP function until can implement into UI class
@@ -169,13 +170,14 @@ void GameControllerClass::gameLoop() {
                         {
                             for (int i = 0; i < currentRoom_temp.getItemsLength(); i++)
                             {
-                                ItemClass itm = currentRoom_temp.getItems().at(i); //Looping through each item in room to check if exits
+                                ItemClass &itm = currentRoom_temp.getItems().at(i); //Looping through each item in room to check if exists
                                 //std::cout << itm.getName();
                                 if (itm.getName() == itemName)
                                 {
                                     PickUpItemClass pickUp(itm); //Picking up item the user requested to pick up
                                     pickUp.addToInventory(userPlayer);
                                     currentRoom_temp.RemoveItem(itm);
+                                    userPlayer.setRoom(currentRoom_temp);
                                     std::cout << "You picked up " << itm.getName() << "." << std::endl << std::endl;
                                 }
                             }
@@ -214,21 +216,29 @@ void GameControllerClass::gameLoop() {
                 else if (command == "DOOR") {
                     if (currentRoom_temp.GetDoor().getIsLocked() == true)                     
                     {
-                        if (userPlayer.getRoom().GetDoor().getDoorKeyID() == userPlayer.searchForKey(userPlayer.getRoom().GetDoor().getDoorKeyID()))
+                        if (userPlayer.getInventorySize() != 0)
                         {
-                            userPlayer.useKey(userPlayer.searchForKey(userPlayer.getRoom().GetDoor().getDoorKeyID())); //Uses correct key from inventory
-                            UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the LIBRARY\n");
-                            currentRoom_temp.unlockDoor(); //unlocks door, sets description to different openDoor description through
-                            doorC.unlockDoor();
-                            currentRoom_temp.setRoomOption(std::list<std::string>{"LOUNGE", "LIBRARY"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
-                            userPlayer.setRoom(currentRoom_temp); //set room
+                            if (userPlayer.getRoom().GetDoor().getDoorKeyID() == userPlayer.searchForKey(userPlayer.getRoom().GetDoor().getDoorKeyID()))
+                            {
+                                userPlayer.useKey(userPlayer.searchForKey(userPlayer.getRoom().GetDoor().getDoorKeyID())); //Uses correct key from inventory
+                                UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the LIBRARY\n");
+                                currentRoom_temp.unlockDoor(); //unlocks door, sets description to different openDoor description through
+                                doorC.unlockDoor();
+                                currentRoom_temp.setRoomOption(std::list<std::string>{"LOUNGE", "LIBRARY"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
+                                userPlayer.setRoom(currentRoom_temp); //set room
 
-                            //currentRoom_temp = userPlayer.getRoom();
-                        }   
+                                //currentRoom_temp = userPlayer.getRoom();
+                            }
+                            else
+                            {
+                                UI.displayPrompt("The door is locked");
+                            }
+                        }
                         else
                         {
                             UI.displayPrompt("The door is locked");
                         }
+                        
                     }
                     else
                      {

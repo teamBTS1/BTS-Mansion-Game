@@ -49,8 +49,8 @@ public:
 	void unlockDoor(); //unlocks door
 	void ReplaceDescription(std::string newDescription); //Replaces the room description with a new one.
 	void AmendDescription(std::string addition); //Adds the inputted string to the end of the room description.
-	ItemClass getRoomItemByName(std::string name); //Returns item in room by name
-	std::vector<ItemClass> getItems(); //Gets list of items in room
+	ItemClass& getRoomItemByName(std::string name); //Returns item in room by name
+	std::vector<ItemClass>& getItems(); //Gets list of items in room
 	void displayRoomItems(); //Display room items
 	void RemoveItem(ItemClass itm); //Removes item from inventory
 	const int getItemsLength(); //Returns length of items vector

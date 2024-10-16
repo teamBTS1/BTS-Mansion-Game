@@ -96,12 +96,12 @@ void RoomClass::AmendDescription(std::string addition)
 {
 }
 
-std::vector<ItemClass> RoomClass::getItems()
+std::vector<ItemClass>& RoomClass::getItems()
 {
 	return items;
 }
 
-ItemClass RoomClass::getRoomItemByName(std::string name)
+ItemClass& RoomClass::getRoomItemByName(std::string name)
 {
 	for (int i = 0; i < itemsLength; i++)
 	{
@@ -126,8 +126,15 @@ void RoomClass::displayRoomItems()
 
 void RoomClass::RemoveItem(ItemClass itm)
 {
-	items.erase(items.begin());
-	itemsLength--;
+	for (auto it = items.begin(); it != items.end(); it++)
+	{
+		if (it->getName() == itm.getName())
+		{
+			items.erase(it);
+			itemsLength--;
+			return;
+		}
+	}
 }
 
 const int RoomClass::getItemsLength()
