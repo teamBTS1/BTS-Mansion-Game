@@ -6,6 +6,7 @@
 //#include "PlayerClass.h"
 #include <string>
 #include <list>
+#include <vector>
 #include "ItemClass.h"
 
 class Door
@@ -24,7 +25,7 @@ public:
 	std::string getDoorKeyID(); //Returns key id for door
 	void setDoorKeyID(std::string id); //Sets key id for door
 
-	void unlockDoor(std::list<ItemClass> inventory); //Searches whole inventory of player for corresponding key, then unlocks if has it
+	void unlockDoor(); //Searches whole inventory of player for corresponding key, then unlocks if has it
 	//Doesn't unlock if doesn't have correct key, takes key out of inventory cause of direct reference
 
 	std::string returnOpenDoorDescription(); // takes in string of door description that is open that replaces description of room to one when dooor is unlocked

@@ -28,13 +28,9 @@ void Door::setDoorKeyID(std::string id)
 	doorKeyID = id;
 }
 
-void Door::unlockDoor(std::list<ItemClass> inventory)
+void Door::unlockDoor()
 {
-	for (auto item : inventory)
-	{
-		if (item.getKeyID() == doorKeyID)
-			isLocked = false;
-	}
+	isLocked = false;
 }
 
 

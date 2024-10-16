@@ -105,7 +105,7 @@ void GameControllerClass::displayBackstory() {
 
 void GameControllerClass::gameLoop() {
     /*we initialize the rooms and player class in the beginning. In the future we will probably wrap this in a function or refactor this class to remove clutter from gameLoop*/
-    Door doorC = Door(true, "BBBB", "You are now in room A, In front of you is room B and C"); // create door
+    Door doorC = Door(true, "BBBB", "You are now in the FOYER, In front of you is the LOUNGE and LIBRARY"); // create door
     
     InteractClass *userInteractStatueA = new InteractClass("Would you like to INTERACT with the statue?", "You feel a wave of knowledge wash over you, like you've learned something from someone previously here before you."); //Defining statue interaction
     ItemClass statueA("STATUE", "This statue is a woman carrying book", false, userInteractStatueA); // Define the statue as an item
@@ -119,9 +119,9 @@ void GameControllerClass::gameLoop() {
     //The adrenaline rushes from your brain and your eyes begin to focus, still trying to grasp the enormity of the situation, and the mansion itself"
 
 
-    RoomClass roomA = RoomClass("You enter the foyer, you can see a NOTE on the ground, and a STATUE beside it.   Further back you can see a room which appears to be a LOUNGE.\n", "A", std::list<std::string>{"B","DOOR"}, doorC, roomA_Items); 
-    RoomClass roomB = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "B", std::list<std::string>{"A"}, roomB_Items);
-    RoomClass roomC = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous safe, it appears to accept a 4 digit code.\n", "C", std::list<std::string>{"A"});
+    RoomClass roomA = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE","DOOR"}, doorC, roomA_Items); 
+    RoomClass roomB = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER"}, roomB_Items);
+    RoomClass roomC = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous safe, it appears to accept a 4 digit code.\n", "LIBRARY", std::list<std::string>{"FOYER"}, doorC);
 
 
     PlayerClass userPlayer = PlayerClass(roomA);
@@ -129,9 +129,10 @@ void GameControllerClass::gameLoop() {
 
 
     while (true) {
-        UI.displayPrompt(userPlayer.getRoomDescription());
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
+        UI.displayPrompt(userPlayer.getRoomDescription());
         currentRoom_temp.displayRoomItems(); //Displaying room items, TEMP function until can implement into UI class
+        currentRoom_temp.displayAdjacentRooms(); //Displaying adjacent rooms, TEMP function until can implement into UI class
         UI.displayPrompt("\nYou cant contain your curiosity and have the urge to INSPECT the items in the room. (type 'QUIT' to exit the game)\n"); //user input 
         std::string command = UI.userInput();
 
@@ -202,29 +203,42 @@ void GameControllerClass::gameLoop() {
                 /*before you read: THIS IS A TEMPORARY FUNCTIONALITY FOR ROOM DETECTION THIS WILL BE REFACTORED WHEN WE DECIDE HOW TO BUILD OUR MAP
                 TODO: setup hashmap for corresponding rooms, implement functionality to minimize conditional nesting*/
 
-                if (command == "B") { //if valid option was B
+                if (command == "LOUNGE") { //if valid option was B
                     userPlayer.setRoom(roomB);  //set this to current room
+                    //currentRoom_temp = userPlayer.getRoom(); //setting temp room to userPlayers room
                 }
-                else if (command == "A") { //if valid option was A
+                else if (command == "FOYER") { //if valid option was A
                     userPlayer.setRoom(roomA); 
+                    //currentRoom_temp = userPlayer.getRoom();
                 }
                 else if (command == "DOOR") {
-                    if (userPlayer.getRoom().GetDoor().getDoorKeyID() == userPlayer.searchForKey(userPlayer.getRoom().GetDoor().getDoorKeyID()))
+                    if (currentRoom_temp.GetDoor().getIsLocked() == true)                     
                     {
-                        userPlayer.useKey(userPlayer.searchForKey(userPlayer.getRoom().GetDoor().getDoorKeyID())); //Uses correct key from inventory
-                        UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the LIBRARY\n");
-                        currentRoom_temp.unlockDoor(); //unlocks door, sets description to different openDoor description through
-                        currentRoom_temp.setRoomOption(std::list<std::string>{"B", "C"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
-                        userPlayer.setRoom(currentRoom_temp); //set room
+                        if (userPlayer.getRoom().GetDoor().getDoorKeyID() == userPlayer.searchForKey(userPlayer.getRoom().GetDoor().getDoorKeyID()))
+                        {
+                            userPlayer.useKey(userPlayer.searchForKey(userPlayer.getRoom().GetDoor().getDoorKeyID())); //Uses correct key from inventory
+                            UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the LIBRARY\n");
+                            currentRoom_temp.unlockDoor(); //unlocks door, sets description to different openDoor description through
+                            doorC.unlockDoor();
+                            currentRoom_temp.setRoomOption(std::list<std::string>{"LOUNGE", "LIBRARY"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
+                            userPlayer.setRoom(currentRoom_temp); //set room
+
+                            //currentRoom_temp = userPlayer.getRoom();
+                        }   
+                        else
+                        {
+                            UI.displayPrompt("The door is locked");
+                        }
                     }
                     else
-
-                    {
-                        UI.displayPrompt("The door is locked");
+                     {
+                        userPlayer.setRoom(roomC);
+                        //currentRoom_temp = userPlayer.getRoom();
                     }
                 }
-                else if (command == "C") {
+                else if (command == "LIBRARY") {
                     userPlayer.setRoom(roomC);
+                    //currentRoom_temp = userPlayer.getRoom();
                 }
             }
             else

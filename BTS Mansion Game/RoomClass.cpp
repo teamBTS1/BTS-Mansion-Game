@@ -134,3 +134,12 @@ const int RoomClass::getItemsLength()
 {
 	return itemsLength;
 }
+
+void RoomClass::displayAdjacentRooms()
+{
+	std::cout << "Rooms you can go to: " << std::endl;
+	for (const std::string& room : RoomOptions)
+	{
+		std::cout << room << std::endl;
+	}
+}
