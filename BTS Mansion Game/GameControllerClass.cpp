@@ -121,9 +121,17 @@ void GameControllerClass::gameLoop() {
     //The adrenaline rushes from your brain and your eyes begin to focus, still trying to grasp the enormity of the situation, and the mansion itself"
 
 
-    RoomClass roomA = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE","DOOR"}, doorC, roomA_Items); 
+    RoomClass roomA = RoomClass("You enter the foyer, the walls are lined with faded wallpaper... There also appears to be a portal that leads to another part of the mansion.\n",
+        "FOYER", std::list<std::string>{"LOUNGE", "DOOR", "PORTAL"}, doorC, roomA_Items);
     RoomClass roomB = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER"}, roomB_Items);
     RoomClass roomC = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous safe, it appears to accept a 4 digit code.\n", "LIBRARY", std::list<std::string>{"FOYER"}, doorC);
+    RoomClass roomD = RoomClass("You step into the portal, and feel a strange pull as reality warps around you. Moments later, you find yourself in a different part of the mansion.",
+        "PORTAL", std::list<std::string>{}, doorC, std::vector<ItemClass>{});
+
+    RoomClass roomE = RoomClass("You are now upstairs. The area is dimly lit, and there are several doors leading to other parts of the mansion. The air feels heavy.",
+        "UPSTAIRS", std::list<std::string>{}, std::vector<ItemClass>{});
+
+
 
     //roomA.RemoveItem(noteA);
 
@@ -221,6 +229,12 @@ void GameControllerClass::gameLoop() {
                     userPlayer.setRoom(roomA); 
                     //currentRoom_temp = userPlayer.getRoom();
                 }
+                else if (command == "PORTAL") {
+                    userPlayer.setRoom(roomD); // Move to the portal room first
+                    UI.displayPrompt("You have entered the portal and now find yourself upstairs.");
+                    userPlayer.setRoom(roomE); // Automatically move to the upstairs room
+                }
+
                 else if (command == "DOOR") {
                     if (currentRoom_temp.GetDoor().getIsLocked() == true)                     
                     {
