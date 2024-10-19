@@ -8,6 +8,7 @@
 #include "UserInterfaceClass.h"
 #include "ItemClass.h"
 #include "Door.h"
+#include "Puzzle.h"
 #include <iostream>
 #include <sstream>
 #include <list>
