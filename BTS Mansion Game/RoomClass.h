@@ -18,7 +18,8 @@ class RoomClass
 {
 	//Class to represent an in-game location.
 private:
-	Door roomDoor;
+	std::vector<Door> roomDoors; 
+
 	std::string roomDescription; //Variable that stores a description of the room
 	std::string roomName; //Variable that stores the name of the room
 	//Need a way to indicate direction of room connections - not sure if that should be done here or in another class
@@ -32,13 +33,14 @@ private:
 public:
 	RoomClass(); //Default constructor
 	RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<ItemClass> itemList);
-	RoomClass(std::string description, std::string name, std::list<std::string> options, Door& door);//Constructor that takes name and description as input.
-	RoomClass(std::string description, std::string name, std::list<std::string> options, Door& door, std::vector<ItemClass> itemList); //Constructor for door and itemlist
+	RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<Door>& doors);//Constructor that takes name and description as input.
+	RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<Door>& doors, std::vector<ItemClass> itemList); //Constructor for door and itemlist
 	RoomClass(std::string description, std::string name, std::list<std::string> options); //Basic constructor
 
-	RoomClass(std::string description, Door &door);
+	RoomClass(std::string description, std::vector<Door>& doors);
 	RoomClass(std::string description, bool isLockedRoom);
-	Door GetDoor(); //Returns the door associated with the room
+	std::vector <Door>& GetDoors(); //Returns the door associated with the room
+	void unlockDoor(int doorIndex); 
 	std::string GetDescription(); //Returns a description of the room
 	void setRoomDescription(std::string newDescription); //sets room description
 	std::string GetFullDescription(); //Returns the full description of the room as a concatenated string, including all items and connecting rooms.

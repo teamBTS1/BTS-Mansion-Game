@@ -116,14 +116,36 @@ void GameControllerClass::gameLoop() {
     ItemClass noteA("NOTE A", "A note with dust and cobwebs all over", true); //Defining TEMP note A
     std::vector <ItemClass> roomA_Items = { noteA, statueA }; //Creating items
     std::vector <ItemClass> roomB_Items = { keyB };
+
+
+    //Room A Doors
+    std::vector<Door> FoyerDoors = { doorC };
+
+
+
+    //Library Items
+    InteractClass* userInteractSafe = new InteractClass("Would you like to look at the safe?", "Please enter a 4 digit code");
+    ItemClass Book("Old Book", "An old book which appears to belong to a bookshelf", "BookKey", true, true); 
+    ItemClass Safe("Metal Safe", "A safe that appears to accept a 4 digit code", false, userInteractSafe);
+
+    Door HiddenBookshelf = Door(true, "BookKey", "****You place the book on the shelf. The Bookshelf begins to move, screaching across the woodenfloor, it reveals the staircase leading down to the HIDDENSECTION********");
+
+    std::vector <ItemClass> library_Items = { Book,Safe };
+
+    std::vector <Door> Library_Doors = { HiddenBookshelf, doorC };
     
+    //Hidden Section Items
+    ItemClass Candle1("Candle 1", "A candle with pentagram etchings", true);
+    std::vector <ItemClass> hiddensection_Items = { Candle1 }; 
 
-    //The adrenaline rushes from your brain and your eyes begin to focus, still trying to grasp the enormity of the situation, and the mansion itself"
 
 
-    RoomClass roomA = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE","DOOR"}, doorC, roomA_Items); 
+    RoomClass roomA = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE","DOOR"}, FoyerDoors, roomA_Items);
     RoomClass roomB = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER"}, roomB_Items);
-    RoomClass roomC = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous safe, it appears to accept a 4 digit code.\n", "LIBRARY", std::list<std::string>{"FOYER"}, doorC);
+    RoomClass roomC = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous SAFE, it appears to accept a 4 digit code. You also see a BOOKSHELF with a missing book. There is a BOOK on the table  \n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF"}, Library_Doors, library_Items);
+    RoomClass HiddenSection = RoomClass("You now enter the hidden section, nothing is safe here, you feel a presense linger, as if it was plucking your heartstrings, there is a table with a candle on top", "HIDDEN SECTION", std::list<std::string>{"LIBRARY"}, hiddensection_Items);
+
+
 
     //roomA.RemoveItem(noteA);
 
@@ -222,20 +244,30 @@ void GameControllerClass::gameLoop() {
                     //currentRoom_temp = userPlayer.getRoom();
                 }
                 else if (command == "DOOR") {
-                    if (currentRoom_temp.GetDoor().getIsLocked() == true)                     
-                    {
-                        if (userPlayer.getInventorySize() != 0)
-                        {
-                            if (userPlayer.getRoom().GetDoor().getDoorKeyID() == userPlayer.searchForKey(userPlayer.getRoom().GetDoor().getDoorKeyID()))
-                            {
-                                userPlayer.useKey(userPlayer.searchForKey(userPlayer.getRoom().GetDoor().getDoorKeyID())); //Uses correct key from inventory
-                                UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the LIBRARY\n");
-                                currentRoom_temp.unlockDoor(); //unlocks door, sets description to different openDoor description through
-                                doorC.unlockDoor();
-                                currentRoom_temp.setRoomOption(std::list<std::string>{"LOUNGE", "LIBRARY"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
-                                userPlayer.setRoom(currentRoom_temp); //set room
 
-                                //currentRoom_temp = userPlayer.getRoom();
+                    std::vector<Door>& doors = currentRoom_temp.GetDoors();
+                    for (int i = 0; i < doors.size(); i++) {
+                        if (doors[i].getIsLocked()) 
+                        {
+                            if (userPlayer.getInventorySize() != 0)
+                            {
+                                std::string playerKey = userPlayer.searchForKey(doors[i].getDoorKeyID());
+                                if (doors[i].getDoorKeyID() == playerKey)
+                                {
+
+                                    userPlayer.useKey(playerKey); //Uses correct key from inventory
+                                    UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the LIBRARY\n");
+                                    currentRoom_temp.unlockDoor(i); //unlocks door, sets description to different openDoor description through
+                                    doors[i].unlockDoor();
+                                    currentRoom_temp.setRoomOption(std::list<std::string>{"LOUNGE", "LIBRARY"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
+                                    userPlayer.setRoom(currentRoom_temp); //set room
+
+                                    //currentRoom_temp = userPlayer.getRoom();
+                                }
+                                else
+                                {
+                                    UI.displayPrompt("The door is locked");
+                                }
                             }
                             else
                             {
@@ -244,19 +276,57 @@ void GameControllerClass::gameLoop() {
                         }
                         else
                         {
-                            UI.displayPrompt("The door is locked");
+                            userPlayer.setRoom(roomC);
+                            //currentRoom_temp = userPlayer.getRoom();
                         }
-                        
-                    }
-                    else
-                     {
-                        userPlayer.setRoom(roomC);
-                        //currentRoom_temp = userPlayer.getRoom();
                     }
                 }
                 else if (command == "LIBRARY") {
                     userPlayer.setRoom(roomC);
                     //currentRoom_temp = userPlayer.getRoom();
+                }
+                else if (command == "BOOKSHELF"){
+                    
+                    std::vector<Door>& doors = currentRoom_temp.GetDoors();
+                    for (int i = 0; i < doors.size(); i++) {
+                        if (doors[i].getIsLocked()) 
+                        {
+                            if (userPlayer.getInventorySize() != 0)
+                            {
+                                std::string playerKey = userPlayer.searchForKey(doors[i].getDoorKeyID());
+                                if (doors[i].getDoorKeyID() == playerKey)
+                                {
+
+                                    userPlayer.useKey(playerKey); //Uses correct key from inventory
+                                    UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the LIBRARY\n");
+                                    currentRoom_temp.unlockDoor(i); //unlocks door, sets description to different openDoor description through
+                                    doors[i].unlockDoor();
+                                    currentRoom_temp.setRoomOption(std::list<std::string>{"FOYER", "HIDDENSECTION"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
+                                    userPlayer.setRoom(currentRoom_temp); //set room
+
+                                    //currentRoom_temp = userPlayer.getRoom();
+                                }
+                                else
+                                {
+                                    UI.displayPrompt("The door is locked");
+                                }
+                            }
+                            else
+                            {
+                                UI.displayPrompt("The door is locked");
+                            }
+                        }
+                        else
+                        {
+                            userPlayer.setRoom(HiddenSection);
+                            //currentRoom_temp = userPlayer.getRoom();
+                        }
+                    }
+
+
+                }
+                else if (command == "HIDDENSECTION") {
+                    userPlayer.setRoom(HiddenSection);
                 }
             }
             else
