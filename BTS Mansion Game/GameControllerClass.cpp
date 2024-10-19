@@ -129,7 +129,8 @@ void GameControllerClass::gameLoop() {
         "PORTAL", std::list<std::string>{}, doorC, std::vector<ItemClass>{});
 
     RoomClass roomE = RoomClass("You are now upstairs. The area is dimly lit, and there are several doors leading to other parts of the mansion. The air feels heavy.",
-        "UPSTAIRS", std::list<std::string>{}, std::vector<ItemClass>{});
+        "UPSTAIRS", std::list<std::string>{"PORTAL"}, std::vector<ItemClass>{});  // Add PORTAL as an option
+
 
 
 
@@ -230,10 +231,17 @@ void GameControllerClass::gameLoop() {
                     //currentRoom_temp = userPlayer.getRoom();
                 }
                 else if (command == "PORTAL") {
-                    userPlayer.setRoom(roomD); // Move to the portal room first
-                    UI.displayPrompt("You have entered the portal and now find yourself upstairs.");
-                    userPlayer.setRoom(roomE); // Automatically move to the upstairs room
+                    if (userPlayer.getRoom().GetName() == "UPSTAIRS") {
+                        userPlayer.setRoom(roomA);  // If user is upstairs, return to Room A via the portal
+                        UI.displayPrompt("You step through the portal and find yourself back in the foyer (Room A).");
+                    }
+                    else {
+                        userPlayer.setRoom(roomD);  // Move to the portal room first
+                        UI.displayPrompt("You have entered the portal and now find yourself upstairs.");
+                        userPlayer.setRoom(roomE);  // Automatically move to the upstairs room
+                    }
                 }
+
 
                 else if (command == "DOOR") {
                     if (currentRoom_temp.GetDoor().getIsLocked() == true)                     
