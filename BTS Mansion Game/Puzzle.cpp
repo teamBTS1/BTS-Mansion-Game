@@ -2,7 +2,28 @@
 
 Puzzle::Puzzle()
 {
+	
+
+}
+
+Puzzle::Puzzle(std::string descrpition)
+{
+
+}
+
+Puzzle::Puzzle(ItemClass reward)
+{
+	_reward = reward;
 	_isSolved = false;
+}
+
+Puzzle::Puzzle(ItemClass reward, std::string description)
+{
+}
+
+std::string Puzzle::getDescription()
+{
+	return _description;
 }
 
 bool Puzzle::isSolved()
