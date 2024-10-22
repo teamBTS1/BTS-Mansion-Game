@@ -20,7 +20,8 @@ class RoomClass
 	//Class to represent an in-game location.
 private:
 	std::vector<Door> roomDoors; 
-
+	bool isRitual; //bool value that determines whether room is ritual room, default value is false
+	int candles; // Candle count, will only be used for the ritual room
 	std::string roomDescription; //Variable that stores a description of the room
 	std::string roomName; //Variable that stores the name of the room
 	//Need a way to indicate direction of room connections - not sure if that should be done here or in another class
@@ -36,6 +37,7 @@ public:
 	RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<ItemClass> itemList);
 	RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<Door>& doors);//Constructor that takes name and description as input.
 	RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<Door>& doors, std::vector<ItemClass> itemList); //Constructor for door and itemlist
+	RoomClass(std::string description, std::string name, std::list<std::string> options, bool isRitual); // Consturctor for ritual room
 	RoomClass(std::string description, std::string name, std::list<std::string> options); //Basic constructor
 
 	RoomClass(std::string description, std::vector<Door>& doors);
@@ -58,6 +60,10 @@ public:
 	void RemoveItem(ItemClass itm); //Removes item from inventory
 	const int getItemsLength(); //Returns length of items vector
 	void displayAdjacentRooms(); //Displays adjacent rooms
+
+	void addCandle(); // adds candle to candle count in ritual room
+	int getCandleValue(); // returns value of candles in ritual room, will be important for 
+	bool returnRitualStatus();
 };
 
 #endif

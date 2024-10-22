@@ -159,6 +159,38 @@ std::string PlayerClass::searchForKey(std::string id)
 	}
 }
 
+bool PlayerClass::searchForCandle()
+{
+	for (auto item : Inventory) {
+		if (item.getName() == "CANDLE") {
+			return true;
+		}
+	}
+}
+
+void PlayerClass::useCandle()
+{
+	/*
+	* We step through the list of items in Inventory one item at a time and check to see if they match the name passed into the method.
+	*/
+	for (int i = 0; i < Inventory.size(); i++)
+	{
+		if (Inventory.at(i).getName() == "CANDLE")
+		{
+			//If we want to include any item use logic within the ItemClass object itself, that should get called here.
+
+			if (Inventory.at(i).getIsConsumable())//If the item has the property isConsumable, we delete it from the inventory.
+			{
+				Inventory.erase(Inventory.begin() + i);
+			}
+			return; //If we've found an appropriate item, we exit the method. If the player has three consumable items called "MATCH" for instance, we only want to use one and not all three
+		}
+	}
+	return;
+}
+
+
+
 void PlayerClass::removeItem(std::string n)
 {
 //for joey: add functionality to remove the item

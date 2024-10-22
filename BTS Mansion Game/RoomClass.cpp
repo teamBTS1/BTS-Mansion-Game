@@ -43,10 +43,34 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 }
 
 
+RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, bool ritual)
+{
+	/*this will default to true in the declaration, we just need another constructor so we can set this rooms status to ritual
+	*/
+	this->roomDescription = description;
+	this->roomName = name;
+	this->RoomOptions = options;
+	this->isRitual = ritual;
+	this->isRitual = false; //default value of room, will be modified in ritual room constuctor
+	this->candles = 0; // default value for candles is 0
+
+}
+
+int RoomClass::getCandleValue()
+{
+	return candles;
+}
 
 
+void RoomClass::addCandle()
+{
+	this->candles += 1;
+}
 
-
+bool RoomClass::returnRitualStatus()
+{
+	return isRitual;
+}
 
 std::vector<Door>& RoomClass::GetDoors()
 {
