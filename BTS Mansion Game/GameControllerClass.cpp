@@ -163,15 +163,15 @@ void GameControllerClass::gameLoop() {
         std::string command = UI.userInput();
 
 
-        if (command == "CANDLE" && userPlayer.getRoomName() == "RITUAL ROOM") //user will type candle in input section to place a candle, if their in the RITUAL ROOM
+        if (command == "CANDLE" && userPlayer.getRoomName() == "RITUAL ROOM") //user will type candle in input section to place a candle, only a valid input if they are in the RITUAL ROOM
         {
             if (userPlayer.getInventorySize() != 0)
             {
                 if (userPlayer.inInventory("CANDLE"))
                 {
-                    userPlayer.useCandle(); //Uses Candle from inventory, is removed
+                    userPlayer.useItem("CANDLE"); //Uses Candle from inventory, is removed
                     UI.displayPrompt("You have placed a candle\n");
-                    currentRoom_temp.addCandle();
+                    currentRoom_temp.addCandle(); 
                     UI.displayPrompt(std::to_string(currentRoom_temp.getCandleValue()));// for testing purposes to see if candle is added to room
                     continue;
                 }

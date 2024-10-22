@@ -46,7 +46,6 @@ public:
 	bool inInventory(std::string name) const;  //returns true or false of an items existence in inventory
 	std::string searchForKey(std::string id); //Returns key id of key needed for a door from player inventory
 	bool searchForCandle(); //returns whether candle is in user inventory
-	void useCandle();
 #endif
 };
 #endif
