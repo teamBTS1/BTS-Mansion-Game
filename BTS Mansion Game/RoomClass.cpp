@@ -16,20 +16,20 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 	this->RoomOptions = options;
 }
 
-RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, Door& door)
+RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<Door>& doors)
 {
 	this->roomDescription = description;
 	this->roomName = name;
 	this->RoomOptions = options;
-	roomDoor = door;
+	roomDoors = doors;
 }
 
-RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, Door& door, std::vector<ItemClass> itemList)
+RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<Door>& doors, std::vector<ItemClass> itemList)
 {
 	this->roomDescription = description;
 	this->roomName = name;
 	this->RoomOptions = options;
-	roomDoor = door;
+	roomDoors = doors;
 	items = itemList;
 	this->itemsLength = items.size();
 }
@@ -50,9 +50,9 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 
 
 
-Door RoomClass::GetDoor()
+std::vector<Door>& RoomClass::GetDoors()
 {
-	return roomDoor;
+	return roomDoors;
 }
 
 std::list<std::string> RoomClass::GetRoomOption() 
@@ -85,9 +85,11 @@ std::string RoomClass::GetName()
 	return roomName;
 }
 
-void RoomClass::unlockDoor()
+void RoomClass::unlockDoor(int doorIndex)
 {
-	setRoomDescription(roomDoor.returnOpenDoorDescription()); //change description state of room
+	if (doorIndex >= 0 && doorIndex < roomDoors.size()) {
+		setRoomDescription(roomDoors[doorIndex].returnOpenDoorDescription()); //change description state of room
+	}
 }
 
 void RoomClass::ReplaceDescription(std::string newDescription)
