@@ -27,6 +27,7 @@ private:
 	std::list<std::string> RoomOptions; //list of room options in string
 	std::vector<ItemClass> items; //List of items that are contained in the room.
 	int itemsLength;
+	Puzzle roomPuzzle;
 	
 
 
