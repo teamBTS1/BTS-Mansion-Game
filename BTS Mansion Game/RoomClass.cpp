@@ -7,8 +7,6 @@ RoomClass::RoomClass()
 
 }
 
-
-
 RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options)
 {
 	this->roomDescription = description;
