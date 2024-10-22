@@ -137,14 +137,17 @@ void GameControllerClass::gameLoop() {
     std::vector <ItemClass> upstairsItems = { noteUpA };
 
     RoomClass roomE = RoomClass("You are now upstairs. The area is dimly lit, and there are several doors leading to other parts of the mansion. There is a set of double doors at the end of the hallway with a complex lock. The lock has two halves of a dais empty, that form an opening mechanism similair to a safe. There is also a three word combination lock on the wall in between two of the rooms.",
-        "UPSTAIRS", std::list<std::string>{"PORTAL", "MIRROR ROOM 1", "MIRROR ROOM 2", "DOUBLE DOORS"}, doorMaster, upstairsItems);  // Add PORTAL as an option
+        "UPSTAIRS", std::list<std::string>{"PORTAL", "MIRROR ROOM 1", "MIRROR ROOM 2", "STORYTELLER'S ROOM", "GALLERY", "DOUBLE DOORS"}, doorMaster, upstairsItems);  // Add PORTAL as an option
   
 
 
     //Defining upstairs rooms
     RoomClass roomUpA = RoomClass("You enter a grand parlor bathed in soft, golden sunlight streaming through tall, arched windows. The room is elegantly furnished, with a velvet chaise lounge positioned in the center, its deep burgundy fabric complementing the warm tones of the oak-paneled walls. A large, ornate mirror hangs above a marble fireplace on the north wall. On a small table beside the chaise, a crystal vase holds a single white rose, perfectly fresh. The air smells faintly of lavender, adding a serene ambiance to the room. A plush rug, embroidered with intricate floral patterns, covers the floor, leading to a door on the opposite side of the room.", "MIRROR ROOM 1", std::list<string>{"UPSTAIRS"});
     RoomClass roomUpB = RoomClass("Stepping into this parlor feels eerily familiar. Bathed in soft golden moonlight streaming through tall, arched windows. The room is elegantly furnished, with a velvet chaise lounge positioned in the center, its deep forest green fabric complementing the warm tones of the oak-paneled walls. A large, ornate mirror hangs above a marble fireplace on the north wall. On a small table beside the chaise, a crystal vase holds a single black rose, perfectly fresh. The air smells faintly of soot, adding a serene ambiance to the room. A plush rug, embroidered with intricate floral patterns, covers the floor, leading to a door on the opposite side of the room.", "MIRROR ROOM 2", std::list<string>{"UPSTAIRS"});
-    
+    RoomClass roomUpC = RoomClass("You enter a room filled with a luxuorious carpet, fancy linen bedsheets, and elegant embroidery all about. In the center of the room on a stand, is a big tome open to the page of a story.", "STORYTELLER'S ROOM", std::list <string> {"UPSTAIRS"}); //have a non pick upable item with poem in it
+    RoomClass roomUpD = RoomClass("THE ROOM WITH PORTRAITS", "GALLERY", std::list <string> {"UPSTAIRS"}); //Room full of portraits for poem puzzle
+
+
     RoomClass roomUpE = RoomClass("You are now in Master Bedroom", "MASTER BEDROOM", std::list<string>{"UPSTAIRS"});
 
     //roomA.RemoveItem(noteA);
@@ -262,6 +265,12 @@ void GameControllerClass::gameLoop() {
                 }
                 else if (command == "MIRROR ROOM 2") {
                     userPlayer.setRoom(roomUpB); //Move to bottom left mirror room
+                }
+                else if (command == "STORYTELLER'S ROOM") {
+                    userPlayer.setRoom(roomUpC); //Move to storyteller's room
+                }
+                else if (command == "GALLERY") {
+                    userPlayer.setRoom(roomUpD); //Move to gallery
                 }
                 else if (command == "DOUBLE DOORS") {
                     if (currentRoom_temp.GetDoor().getIsLocked() == true)
