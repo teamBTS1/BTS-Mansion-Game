@@ -6,19 +6,22 @@ Puzzle::Puzzle()
 
 }
 
-Puzzle::Puzzle(std::string descrpition)
+Puzzle::Puzzle(std::string description)
 {
-
+	
+	
 }
 
 Puzzle::Puzzle(ItemClass reward)
 {
-	_reward = reward;
-	_isSolved = false;
+	
 }
 
 Puzzle::Puzzle(ItemClass reward, std::string description)
 {
+	_reward = reward;
+	_description = description;
+	_isSolved = false;
 }
 
 std::string Puzzle::getDescription()

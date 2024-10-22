@@ -20,7 +20,7 @@ protected:
 
 public:
 	Puzzle();//Base constructor
-	Puzzle(std::string descrpition);//Constructor that takes puzzle description as an argument
+	Puzzle(std::string description);//Constructor that takes puzzle description as an argument
 	Puzzle(ItemClass reward);//Constructor used when puzzle rewards an item and has no description
 	Puzzle(ItemClass reward, std::string description);//Constructor that takes puzzle description and item reward as arguments
 	std::string getDescription();//Returns description of the puzzle

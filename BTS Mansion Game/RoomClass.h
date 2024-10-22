@@ -9,6 +9,7 @@
 #include <iostream>
 #include "Door.h"
 #include "ItemClass.h"
+#include "Puzzle.h"
 
 using namespace std;
 
