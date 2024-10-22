@@ -152,14 +152,11 @@ bool PlayerClass::inInventory(std::string name) const
 
 std::string PlayerClass::searchForKey(std::string id)
 {
-	
 	for (auto item : Inventory) {
 		if (item.getKeyID() == id) {
 			return item.getKeyID();
 		}
 	}
-
-	return "N/A";
 }
 
 void PlayerClass::removeItem(std::string n)

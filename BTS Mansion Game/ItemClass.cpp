@@ -48,7 +48,7 @@ looks in their inventory.
 	{
 		name = n;
 		description = desc;
-		keyID = "N/A";
+		keyID = " ";
 		isConsumable = false;
 		value = 0;
 		canPickUp = pickUp;
