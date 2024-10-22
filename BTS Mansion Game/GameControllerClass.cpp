@@ -128,11 +128,24 @@ void GameControllerClass::gameLoop() {
     RoomClass roomD = RoomClass("You step into the portal, and feel a strange pull as reality warps around you. Moments later, you find yourself in a different part of the mansion.",
         "PORTAL", std::list<std::string>{}, doorC, std::vector<ItemClass>{});
 
-    RoomClass roomE = RoomClass("You are now upstairs. The area is dimly lit, and there are several doors leading to other parts of the mansion. The air feels heavy.",
-        "UPSTAIRS", std::list<std::string>{"PORTAL"}, std::vector<ItemClass>{});  // Add PORTAL as an option
+    //Upstairs definitions
+
+    Door doorMaster = Door(true, "idMaster", "You are now in the MASTER BEDROOM."); //Adding master bedroom door
+
+    ItemClass noteUpA = ItemClass("SCRIBBLED NOTE", "What looks like a child's drawing of two kids side by side, both looking almost exactly similair, but one of the children seems to have jagged teeth instead of normal teeth.", true); //Note for clue to mirror puzzle
+    //ItemClass masterKey = ItemClass("MASTER KEY", "Fully completed key to the master bedroom", "idMaster", true, true); //Adding master bedroom key
+    std::vector <ItemClass> upstairsItems = { noteUpA };
+
+    RoomClass roomE = RoomClass("You are now upstairs. The area is dimly lit, and there are several doors leading to other parts of the mansion. There is a set of double doors at the end of the hallway with a complex lock. The lock has two halves of a dais empty, that form an opening mechanism similair to a safe. There is also a three word combination lock on the wall in between two of the rooms.",
+        "UPSTAIRS", std::list<std::string>{"PORTAL", "MIRROR ROOM 1", "MIRROR ROOM 2", "DOUBLE DOORS"}, doorMaster, upstairsItems);  // Add PORTAL as an option
+  
 
 
-
+    //Defining upstairs rooms
+    RoomClass roomUpA = RoomClass("You enter a grand parlor bathed in soft, golden sunlight streaming through tall, arched windows. The room is elegantly furnished, with a velvet chaise lounge positioned in the center, its deep burgundy fabric complementing the warm tones of the oak-paneled walls. A large, ornate mirror hangs above a marble fireplace on the north wall. On a small table beside the chaise, a crystal vase holds a single white rose, perfectly fresh. The air smells faintly of lavender, adding a serene ambiance to the room. A plush rug, embroidered with intricate floral patterns, covers the floor, leading to a door on the opposite side of the room.", "MIRROR ROOM 1", std::list<string>{"UPSTAIRS"});
+    RoomClass roomUpB = RoomClass("Stepping into this parlor feels eerily familiar. Bathed in soft golden moonlight streaming through tall, arched windows. The room is elegantly furnished, with a velvet chaise lounge positioned in the center, its deep forest green fabric complementing the warm tones of the oak-paneled walls. A large, ornate mirror hangs above a marble fireplace on the north wall. On a small table beside the chaise, a crystal vase holds a single black rose, perfectly fresh. The air smells faintly of soot, adding a serene ambiance to the room. A plush rug, embroidered with intricate floral patterns, covers the floor, leading to a door on the opposite side of the room.", "MIRROR ROOM 2", std::list<string>{"UPSTAIRS"});
+    
+    RoomClass roomUpE = RoomClass("You are now in Master Bedroom", "MASTER BEDROOM", std::list<string>{"UPSTAIRS"});
 
     //roomA.RemoveItem(noteA);
 
@@ -241,7 +254,52 @@ void GameControllerClass::gameLoop() {
                         userPlayer.setRoom(roomE);  // Automatically move to the upstairs room
                     }
                 }
+                else if (command == "UPSTAIRS") {
+                    userPlayer.setRoom(roomE); //Move to upstairs
+                }
+                else if (command == "MIRROR ROOM 1") {
+                    userPlayer.setRoom(roomUpA); //Move to top let mirror room
+                }
+                else if (command == "MIRROR ROOM 2") {
+                    userPlayer.setRoom(roomUpB); //Move to bottom left mirror room
+                }
+                else if (command == "DOUBLE DOORS") {
+                    if (currentRoom_temp.GetDoor().getIsLocked() == true)
+                    {
+                        if (userPlayer.getInventorySize() != 0)
+                        {
+                            if (userPlayer.getRoom().GetDoor().getDoorKeyID() == userPlayer.searchForKey(userPlayer.getRoom().GetDoor().getDoorKeyID()))
+                            {
+                                userPlayer.useKey(userPlayer.searchForKey(userPlayer.getRoom().GetDoor().getDoorKeyID())); //Uses correct key from inventory
+                                UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the MASTER BEDROOM\n");
+                                currentRoom_temp.unlockDoor(); //unlocks door, sets description to different openDoor description through
+                                doorMaster.unlockDoor(); //Should either refactor door class or use currentRoom_temp?
+                                currentRoom_temp.setRoomOption(std::list<std::string>{"MIRROR ROOM 1", "MIRROR ROOM 2", "PORTAL", "MASTER BEDROOM"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
+                                userPlayer.setRoom(currentRoom_temp); //set room
 
+                                //currentRoom_temp = userPlayer.getRoom();
+                            }
+                            else
+                            {
+                                UI.displayPrompt("The door is locked");
+                            }
+                        }
+                        else
+                        {
+                            UI.displayPrompt("The door is locked");
+                        }
+
+                    }
+                    else
+                    {
+                        userPlayer.setRoom(roomC);
+                        //currentRoom_temp = userPlayer.getRoom();
+                    }
+                }
+
+                else if (command == "MASTER BEDROOM") {
+                    userPlayer.setRoom(roomUpE);
+                }
 
                 else if (command == "DOOR") {
                     if (currentRoom_temp.GetDoor().getIsLocked() == true)                     
