@@ -4,6 +4,7 @@
 
 #include "ItemClass.h"
 #include <string>
+#include <vector>
 
 class Puzzle
 {
@@ -14,18 +15,19 @@ class Puzzle
 
 protected:
 	bool _isSolved;//Stores whether the puzzle has been solved
-	ItemClass _reward;//Item reward for completing puzzle
+	ItemClass * _reward;//Pointer to item reward for completing puzzle
 	std::string _description;//String for storing puzzle description
 
 
 public:
 	Puzzle();//Base constructor
 	Puzzle(std::string description);//Constructor that takes puzzle description as an argument
-	Puzzle(ItemClass reward);//Constructor used when puzzle rewards an item and has no description
-	Puzzle(ItemClass reward, std::string description);//Constructor that takes puzzle description and item reward as arguments
+	Puzzle(ItemClass *reward);//Constructor used when puzzle rewards an item and has no description
+	Puzzle(ItemClass *reward, std::string description);//Constructor that takes puzzle description and item reward as arguments
 	std::string getDescription();//Returns description of the puzzle
 	bool isSolved();//Check whether the puzzle has been solved yet or not
 	void solve();//Solve the puzzle
+	void solve(std::vector<ItemClass> *inventory); //Overload of solve that passes in a pointer to the player's inventory
 
 };
 
