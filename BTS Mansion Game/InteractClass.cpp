@@ -21,7 +21,6 @@ void InteractClass::setOutputMessage(const std::string& message) {
 }
 
 
-
 // Function to interact with item or object
 void InteractClass::runInteraction() {
     UserInterfaceClass ui;

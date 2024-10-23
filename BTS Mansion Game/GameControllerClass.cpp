@@ -12,6 +12,7 @@
 #include <sstream>
 #include <list>
 #include <algorithm>
+#include<string>
 
 GameControllerClass::GameControllerClass() {
     // Initialize backstory in the constructor
@@ -137,20 +138,41 @@ void GameControllerClass::gameLoop() {
     //Hidden Section Items
     ItemClass Candle1("Candle 1", "A candle with pentagram etchings", true);
     std::vector <ItemClass> hiddensection_Items = { Candle1 }; 
+    
 
+    //Dining hall items
+    InteractClass* userInterectSafeDiningHall = new InteractClass("Would you like to look at the safe?", "");
+    InteractClass* userInteractBody1 = new InteractClass("Would you like to look at dead body 1?", "");
+    InteractClass* userInteractBody2 = new InteractClass("Would you like to look at dead body 2", "");
+    InteractClass* userInteractBody3 = new InteractClass("Would you like to look at dead body 3", "");
+    InteractClass* userInteractBody4 = new InteractClass("Would you like to look at dead body 4", "");
 
+    ItemClass metalSafe("METAL SAFE", "A safe that appears to accept a 4 digit code", false, userInterectSafeDiningHall);
+    ItemClass deadBody1("DEAD BODY 1", "A dead body with a red shirt with a number 8 on and has his mouth open", false, userInteractBody1);
+    ItemClass deadBody2("DEAD BODY 2", "A dead body with a blue shirt with a number 6 on and has his skull cracked open", false, userInteractBody2);
+    ItemClass deadBody3("DEAD BODY 3", "A dead body with a green shirt with a number 9 on and has his hands on the floor", false, userInteractBody3);
+    ItemClass deadBody4("DEAD BODY 4", "A dead body with a purple shirt with a number 1 on and has his right leg over his left leg", false, userInteractBody4);
+
+    std::vector<ItemClass>diningHallItems = { metalSafe, deadBody1,deadBody2,deadBody3,deadBody4 };
+
+    //Kitchen items
+    InteractClass* userInteractKitchenCounter = new InteractClass("Would you like to look at the kitchen counter?", "");
+    ItemClass kitchenCounter("KITCHEN COUNTER", "The kitchen counter has different colors as its design, it red as its first color, then blue, green, and purple", false, userInteractKitchenCounter);
+
+    std::vector<ItemClass>kitchenItems = { kitchenCounter };
 
     RoomClass roomA = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE","DOOR"}, FoyerDoors, roomA_Items);
-    RoomClass roomB = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER"}, roomB_Items);
+    RoomClass roomB = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER","DINING HALL"}, roomB_Items);
     RoomClass roomC = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous SAFE, it appears to accept a 4 digit code. You also see a BOOKSHELF with a missing book. There is a BOOK on the table  \n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF"}, Library_Doors, library_Items);
     RoomClass HiddenSection = RoomClass("You now enter the hidden section, nothing is safe here, you feel a presense linger, as if it was plucking your heartstrings, there is a table with a candle on top", "HIDDEN SECTION", std::list<std::string>{"LIBRARY"}, hiddensection_Items);
-
-
+    RoomClass diningHall = RoomClass("You are now in the Dining Hall. There is a large table and chairs. From here, you can go to the kitchen.\n", "DINING HALL", std::list<std::string>{"KITCHEN"}, diningHallItems);
+    RoomClass Kitchen = RoomClass("You are now in the Kitchen,You can return to the dining hall from here.\n", "KITCHEN", std::list<std::string>{"DINING HALL"}, kitchenItems);
 
     //roomA.RemoveItem(noteA);
 
     PlayerClass userPlayer = PlayerClass(roomA);
     std::string startingRoom = "A";
+    bool puzzleSolved = false;
 
 
     while (true) {
@@ -213,6 +235,19 @@ void GameControllerClass::gameLoop() {
                             }
                         }
                      }                                           
+                }
+                else if (command == "METAL SAFE")
+                {
+                    UI.displayPrompt("Enter the 4 digit code");
+                    string safeInput = UI.userInput();
+                    int safeInputNum = std:: stoi(safeInput);
+
+                    if (safeInputNum == 8691)
+                    {
+                        UI.displayPrompt("You entered the correct passcode! Safe is now open");
+                    }
+                    else
+                        UI.displayPrompt("You entered the wrong passcode. Try again");
                 }
          
                 else //Run interact sequence if not pick up able object
@@ -327,6 +362,14 @@ void GameControllerClass::gameLoop() {
                 }
                 else if (command == "HIDDENSECTION") {
                     userPlayer.setRoom(HiddenSection);
+                }
+                else if (command == "DINING HALL") {
+                    userPlayer.setRoom(diningHall);// can only access dining hall from lounge  
+
+
+                }
+                else if (command == "KITCHEN") {
+                    userPlayer.setRoom(Kitchen);//user can only access kitchen from dining hall
                 }
             }
             else
