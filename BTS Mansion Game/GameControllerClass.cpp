@@ -142,14 +142,14 @@ void GameControllerClass::gameLoop() {
     RoomClass roomA = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR"}, FoyerDoors, roomA_Items);
     RoomClass roomB = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER"}, roomB_Items);
     RoomClass roomC = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous SAFE, it appears to accept a 4 digit code. You also see a BOOKSHELF with a missing book. There is a BOOK on the table  \n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF"}, Library_Doors, library_Items);
-    RoomClass HiddenSection = RoomClass("You now enter the hidden section, nothing is safe here, you feel a presense linger, as if it was plucking your heartstrings, there is a table with a candle on top", "HIDDEN SECTION", std::list<std::string>{"LIBRARY"}, hiddensection_Items);
-    RoomClass RitualRoom = RoomClass("You enter a room that does not invite you back. A perfect, pentacle drawn on the floor invites you to place a candle at each of it's vertecies", "RITUAL ROOM", std::list<std::string>{}, true); //defenition for ritual room class
+    RoomClass HiddenSection = RoomClass("You now enter the hidden section, nothing is safe here, you feel a presense linger, as if it was plucking your heartstrings, there is a table with a candle on top", "HIDDEN SECTION", std::list<std::string>{"LIBRARY", "RITUAL ROOM"}, hiddensection_Items);
+    RoomClass RitualRoom = RoomClass("You enter a room that does not invite you back. A perfect, pentacle drawn on the floor invites you to place a candle at each of it's vertecies. [Hint: enter CANDLE as input if you posses a candle]", "RITUAL ROOM", std::list<std::string>{"HIDDEN SECTION"}, true); //defenition for ritual room class
 
 
     //roomA.RemoveItem(noteA);
 
-    PlayerClass userPlayer = PlayerClass(RitualRoom); // set to ritual room for testing
-    userPlayer.addItem(Candle1);
+    PlayerClass userPlayer = PlayerClass(roomC); // set to ritual room for testing
+    //userPlayer.addItem(Candle1);
     std::string startingRoom = "A";
 
 
@@ -322,7 +322,7 @@ void GameControllerClass::gameLoop() {
                                         UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the LIBRARY\n");
                                         currentRoom_temp.unlockDoor(i); //unlocks door, sets description to different openDoor description through
                                         doors[i].unlockDoor();
-                                        currentRoom_temp.setRoomOption(std::list<std::string>{"FOYER", "HIDDENSECTION"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
+                                        currentRoom_temp.setRoomOption(std::list<std::string>{"FOYER", "HIDDEN SECTION"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
                                         userPlayer.setRoom(currentRoom_temp); //set room
 
                                         //currentRoom_temp = userPlayer.getRoom();
@@ -346,7 +346,7 @@ void GameControllerClass::gameLoop() {
 
 
                     }
-                    else if (command == "HIDDENSECTION") {
+                    else if (command == "HIDDEN SECTION") {
                         userPlayer.setRoom(HiddenSection);
                     }
                     else if (command == "RITUAL ROOM") {
