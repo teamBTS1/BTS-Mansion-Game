@@ -139,13 +139,16 @@ void GameControllerClass::gameLoop() {
     std::vector <ItemClass> hiddensection_Items = { Candle1 }; 
 
     //Study Item
-    ItemClass studyCandle("Candle in the study", "A candle with a pentagram design", true);
+    //InteractClass* userInteractCandle = new InteractClass("Would you like to look at the candle?", "Pickup the candle");
+    ItemClass studyCandle("Candle in the study", "A candle with a pentagram design (This candle can be placed in the ritual room)", true);
+    std::vector<ItemClass>studyItem = { studyCandle };
+
 
     RoomClass roomA = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE","DOOR"}, FoyerDoors, roomA_Items);
     RoomClass roomB = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER"}, roomB_Items);
     RoomClass roomC = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous SAFE, it appears to accept a 4 digit code. You also see a BOOKSHELF with a missing book. There is a BOOK on the table  \n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF"}, Library_Doors, library_Items);
     RoomClass HiddenSection = RoomClass("You now enter the hidden section, nothing is safe here, you feel a presense linger, as if it was plucking your heartstrings, there is a table with a candle on top", "HIDDEN SECTION", std::list<std::string>{"LIBRARY"}, hiddensection_Items);
-    RoomClass Study = RoomClass("You enter the study, the walls are dark brown with shelfs full of books and paper scrolls. There is a desk that is rather neat and organize. Behind the desk is grand portrait of a man with a stern face, eyes so dark its you uncomfortable.The man's finger is pointing to what seems to be a cabinet and on behind a pile of books you see a candle.", "STUDY", std::list<std::string>{"", ""}, studyItem);
+    RoomClass Study = RoomClass("You enter the study, the walls are dark brown with shelfs full of books and paper scrolls. There is a desk that is rather neat and organize. Behind the desk is grand portrait of a man with a stern face, eyes so dark its you uncomfortable.The man's finger is pointing to what seems to be a cabinet and on behind a pile of books you see a candle.", "STUDY", std::list<std::string>{"Greater Library"}, studyItem);
 
 
     //roomA.RemoveItem(noteA);
@@ -328,6 +331,10 @@ void GameControllerClass::gameLoop() {
                 }
                 else if (command == "HIDDENSECTION") {
                     userPlayer.setRoom(HiddenSection);
+                }
+                else if (command == "STUDY")
+                {
+                    userPlayer.setRoom(Study);
                 }
             }
             else
