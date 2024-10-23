@@ -37,9 +37,10 @@ public:
 	RoomClass(std::string description, std::string name, std::list<std::string> options, Door& door);//Constructor that takes name and description as input.
 	RoomClass(std::string description, std::string name, std::list<std::string> options, Door& door, std::vector<ItemClass> itemList); //Constructor for door and itemlist
 	RoomClass(std::string description, std::string name, std::list<std::string> options); //Basic constructor
-
 	RoomClass(std::string description, Door &door);
 	RoomClass(std::string description, bool isLockedRoom);
+	//TODO: Implement constructors that include a puzzle as input. Right now the only way to interact with roomPuzzle is via the getter and setter
+
 	Door GetDoor(); //Returns the door associated with the room
 	std::string GetDescription(); //Returns a description of the room
 	void setRoomDescription(std::string newDescription); //sets room description
@@ -57,6 +58,8 @@ public:
 	void RemoveItem(ItemClass itm); //Removes item from inventory
 	const int getItemsLength(); //Returns length of items vector
 	void displayAdjacentRooms(); //Displays adjacent rooms
+	void setPuzzle(Puzzle puzzle);
+	Puzzle getPuzzle();
 };
 
 #endif
