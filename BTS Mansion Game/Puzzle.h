@@ -24,6 +24,7 @@ public:
 	Puzzle(ItemClass reward);//Constructor used when puzzle rewards an item and has no description
 	Puzzle(ItemClass reward, std::string description);//Constructor that takes puzzle description and item reward as arguments
 	std::string getDescription();//Returns description of the puzzle
+	ItemClass getReward(); //Returns item reward
 	bool isSolved();//Check whether the puzzle has been solved yet or not
 	void solve();//Solve the puzzle
 

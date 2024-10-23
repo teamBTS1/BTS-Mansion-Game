@@ -4,13 +4,13 @@
 
 GalleryPuzzle::GalleryPuzzle()
 {
-	_description = "";
+	_description = " ";
 	_isSolved = false;
 }
 
 GalleryPuzzle::GalleryPuzzle(std::vector <ItemClass> ports, std::vector <ItemClass> answer)
 {
-	_description = "";
+	_description = "Gallery Puzzle";
 	_isSolved = false;
 	portraits = ports;
 	answers = answer;

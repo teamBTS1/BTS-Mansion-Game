@@ -14,11 +14,19 @@ InteractClass::InteractClass(std::string inMssg, std::string interactMssg) {
     isPuzzle = false;
 }
 
-InteractClass::InteractClass(std::string inMssg, std::string interactMssg, GalleryPuzzle puzz) {
+InteractClass::InteractClass(std::string inMssg, std::string interactMssg, GalleryPuzzle puzz) { //Constructor for gallery puzzle
     inputMessage = inMssg;
     interactMessage = interactMssg;
     interacted = false;
     puzzle = puzz;
+    isPuzzle = true;
+}
+
+InteractClass::InteractClass(std::string inMssg, std::string interactMssg, MirrorPuzzle puzz) { //constructor for mirror puzzle
+    inputMessage = inMssg;
+    interactMessage = interactMssg;
+    interacted = false;
+    mPuzzle = puzz;
     isPuzzle = true;
 }
 
@@ -80,28 +88,68 @@ void InteractClass::runInteraction() {
     
 }
 
-void InteractClass::runInteraction(PlayerClass& player, ItemClass& itm) { //Function to run an interaction with items and picking up
+void InteractClass::runInteraction(PlayerClass& player, ItemClass& galleryItm, ItemClass& mirrorItm, ItemClass& masterItm) { //Function to run an interaction with items and picking up
     UserInterfaceClass ui;
     //input interaction message;
-
     //simulate user input demonstrate
-    if (isPuzzle == true)
+    if (isPuzzle == true) //Check if interaction is a puzzle
     {
-        if (puzzle.isSolved() == false)
+        if (puzzle.isSolved() == false) //Is the puzzle solved
         {
-            ui.displayPrompt(inputMessage);
-            if (ui.userInput() == "YES")
+            if (puzzle.getDescription() == "Gallery Puzzle") //if in gallery puzzle execute gallery puzzle
             {
-                puzzle.runPuzzle();
-                if (puzzle.isSolved() == true)
+                ui.displayPrompt(inputMessage);
+                if (ui.userInput() == "YES")
                 {
-                    PickUpItemClass pickup(itm);
-                    pickup.addToInventory(player);
+                    puzzle.runPuzzle();
+                    if (puzzle.isSolved() == true)
+                    {
+                        PickUpItemClass pickup(galleryItm);
+                        pickup.addToInventory(player);
+
+                        std::vector <ItemClass>& inv = player.getInventory();
+                        for (auto& item : inv)
+                        {
+                            if (item.getName() == "MIRROR HALF KEY")
+                            {
+                                player.removeItem(item.getName());
+                                ui.displayPrompt("You put both halves of your key together to form the MASTER BEDROOM KEY!");
+                                player.addItem(masterItm);
+                                return;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    ui.displayPrompt("You walk away.");
                 }
             }
-            else
+            else if (mPuzzle.getDescription() == "Mirror Puzzle") //if in mirror puzzle execute mirror puzzle
             {
-                ui.displayPrompt("You walk away.");
+                mPuzzle.runPuzzle();
+                if (mPuzzle.isSolved())
+                {
+                    ui.displayPrompt("You solved the Mirror Puzzle!");
+                    PickUpItemClass pickup(mirrorItm);
+                    pickup.addToInventory(player);
+                    
+                    std::vector <ItemClass>& inv = player.getInventory();
+                    for (auto &item : inv)
+                    {
+                        if (item.getName() == "GALLERY HALF KEY")
+                        {
+                            player.removeItem(item.getName());
+                            ui.displayPrompt("You put both halves of your key together to form the MASTER BEDROOM KEY!");
+                            player.addItem(masterItm);
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    ui.displayPrompt("You failed to solve the mirror puzzle");
+                }
             }
         }
         else

@@ -9,6 +9,7 @@
 #include "UserInterfaceClass.h" // Included header for UserInterFaceClass
 #include "Puzzle.h"
 #include "GalleryPuzzle.h"
+#include "MirrorPuzzle.h"
 
 class InteractClass
 {
@@ -17,7 +18,8 @@ private:
 	std::string interactMessage;
 	bool interacted;
 	bool isPuzzle;
-	GalleryPuzzle puzzle;
+	GalleryPuzzle puzzle = GalleryPuzzle();
+	MirrorPuzzle mPuzzle = MirrorPuzzle();
 	UserInterfaceClass ui; // UserInterfaceClass for input and output
 
 public:
@@ -25,6 +27,7 @@ public:
 	InteractClass();
 	InteractClass(std::string inMssg, std::string intMssg); //Constructor taking input and interact message
 	InteractClass(std::string inMssg, std::string intMssg, GalleryPuzzle puzz); //Constructor taking input and interact message and gallery puzzle
+	InteractClass(std::string inMssg, std::string intMssg, MirrorPuzzle puzz); //Constructor taking input and interact message and gallery puzzle
 	// Funtion to set input message 
 	void setInputMessage(const std::string& message);
 	// function to set output message 
@@ -33,7 +36,7 @@ public:
 	bool getIsPuzzle();
 	//function to interact with object or statue
 	void runInteraction();
-	void runInteraction(PlayerClass& player, ItemClass& itm);
+	void runInteraction(PlayerClass& player, ItemClass& galleryItm, ItemClass& mirrorItm, ItemClass& masterItm);
 	// function to display object description
 	void displayDescription();
 	// function to pick up an item
