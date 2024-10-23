@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BTS Mansion Game.cpp" />
+    <ClCompile Include="GalleryPuzzle.cpp" />
     <ClCompile Include="GameControllerClass.cpp" />
     <ClCompile Include="InteractClass.cpp" />
     <ClCompile Include="ItemClass.cpp" />
@@ -140,6 +141,7 @@
     <ClCompile Include="UserInterfaceClass.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GalleryPuzzle.h" />
     <ClInclude Include="GameControllerClass.h" />
     <ClInclude Include="InteractClass.h" />
     <ClInclude Include="ItemClass.h" />

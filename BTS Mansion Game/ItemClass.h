@@ -26,7 +26,7 @@ public:
 	ItemClass(std::string n, std::string desc, bool pickUp); //Constructor for a note
 	ItemClass(std::string n, std::string desc, std::string id, bool consumable, bool canPickUp); //Constructor for a key
 	ItemClass(std::string n, std::string desc, int val, bool consumable, bool canPickUp); //Constructor for a consumable
-	ItemClass(std::string n, std::string desc, bool pickUp, InteractClass* interact);
+	ItemClass(std::string n, std::string desc, bool pickUp, InteractClass* interact); //Constructor for an interactable item
 
 	std::string getName(); //Return item name
 	void setName(std::string newName); //Sets item to a new name
