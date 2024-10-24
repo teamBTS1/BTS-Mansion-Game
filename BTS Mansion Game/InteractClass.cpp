@@ -45,7 +45,6 @@ bool InteractClass::getIsPuzzle()
     return isPuzzle;
 }
 
-
 // Function to interact with item or object
 void InteractClass::runInteraction() {
     UserInterfaceClass ui;

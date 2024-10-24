@@ -15,6 +15,7 @@
 #include <sstream>
 #include <list>
 #include <algorithm>
+#include<string>
 
 GameControllerClass::GameControllerClass() {
     // Initialize backstory in the constructor
@@ -142,7 +143,23 @@ void GameControllerClass::gameLoop() {
 
     std::vector <Door> Library_Doors = { HiddenBookshelf, doorC };
 
-    //Hidden Section Items
+   
+    
+
+    //Dining hall items
+    InteractClass* userInterectSafeDiningHall = new InteractClass("Would you like to look at the safe?", "");
+    InteractClass* userInteractBody1 = new InteractClass("Would you like to look at dead body 1?", "");
+    InteractClass* userInteractBody2 = new InteractClass("Would you like to look at dead body 2", "");
+    InteractClass* userInteractBody3 = new InteractClass("Would you like to look at dead body 3", "");
+    InteractClass* userInteractBody4 = new InteractClass("Would you like to look at dead body 4", "");
+
+    ItemClass metalSafe("METAL SAFE", "A safe that appears to accept a 4 digit code", false, userInterectSafeDiningHall);
+    ItemClass deadBody1("DEAD BODY 1", "A dead body with a red shirt with a number 8 on and has his mouth open", false, userInteractBody1);
+    ItemClass deadBody2("DEAD BODY 2", "A dead body with a blue shirt with a number 6 on and has his skull cracked open", false, userInteractBody2);
+    ItemClass deadBody3("DEAD BODY 3", "A dead body with a green shirt with a number 9 on and has his hands on the floor", false, userInteractBody3);
+    ItemClass deadBody4("DEAD BODY 4", "A dead body with a purple shirt with a number 1 on and has his right leg over his left leg", false, userInteractBody4);
+
+    std::vector<ItemClass>diningHallItems = { metalSafe, deadBody1,deadBody2,deadBody3,deadBody4 };
     ItemClass Candle1("CANDLE", "A candle with pentagram etchings", "C1", true, true); //candle item instance, name must remain candle to be consumed in main algorithm
     std::vector <ItemClass> hiddensection_Items = { Candle1 };
 
@@ -152,11 +169,17 @@ void GameControllerClass::gameLoop() {
     std::vector<ItemClass>studyItem = { studyCandle };
 
 
+    //Kitchen items
+    InteractClass* userInteractKitchenCounter = new InteractClass("Would you like to look at the kitchen counter?", "");
+    ItemClass kitchenCounter("KITCHEN COUNTER", "The kitchen counter has different colors as its design, it red as its first color, then blue, green, and purple", false, userInteractKitchenCounter);
     RoomClass roomA = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE","DOOR", "PORTAL"}, FoyerDoors, roomA_Items);
     PlayerClass userPlayer = PlayerClass(roomA);
 
-    RoomClass roomB = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER"}, roomB_Items);
+    std::vector<ItemClass>kitchenItems = { kitchenCounter };
+  
     RoomClass roomC = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous SAFE, it appears to accept a 4 digit code. You also see a BOOKSHELF with a missing book. There is a BOOK on the table  \n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF","GREATER LIBRARY"}, Library_Doors, library_Items);
+    RoomClass roomB = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER","DINING HALL"}, roomB_Items);
+ 
     RoomClass HiddenSection = RoomClass("You now enter the hidden section, nothing is safe here, you feel a presense linger, as if it was plucking your heartstrings, there is a table with a candle on top", "HIDDEN SECTION", std::list<std::string>{"LIBRARY"}, hiddensection_Items);
    
     //Greater library and study rooms
@@ -214,6 +237,8 @@ void GameControllerClass::gameLoop() {
     RoomClass roomUpC = RoomClass("You enter a room filled with a luxuorious carpet, fancy linen bedsheets, and elegant embroidery all about. In the center of the room on a stand, is a big tome open to the page of a story.", "STORYTELLER'S ROOM", std::list <string> {"UPSTAIRS"}, storytellerItems); //have a non pick upable item with poem in it
     RoomClass roomUpD = RoomClass("You enter a room with many portraits, all of them depicting different people of different statuses. All of the portraits are almost calling you to touch them.", "GALLERY", std::list <string> {"UPSTAIRS"}, galleryItems); //Room full of portraits for poem puzzle
     RoomClass roomUpE = RoomClass("You are now in Master Bedroom", "MASTER BEDROOM", std::list<string>{"UPSTAIRS"}, masterBedroomItems); 
+    RoomClass diningHall = RoomClass("You are now in the Dining Hall. There is a large table and chairs. From here, you can go to the kitchen.\n", "DINING HALL", std::list<std::string>{"LOUNGE","KITCHEN"}, diningHallItems);
+    RoomClass Kitchen = RoomClass("You are now in the Kitchen,You can return to the dining hall from here.\n", "KITCHEN", std::list<std::string>{"DINING HALL"}, kitchenItems);
 
     //roomA.RemoveItem(noteA);
     //userPlayer.addItem(Candle1);
@@ -303,6 +328,27 @@ void GameControllerClass::gameLoop() {
                         }
                      }                                           
                 }
+                else if (command == "METAL SAFE")
+                {
+                    UI.displayPrompt("Enter the 4 digit code");
+                    string safeInput = UI.userInput();
+
+                    try {
+                        int safeInputNum = std::stoi(safeInput);
+
+                        if (safeInputNum == 8691)
+                        {
+                            UI.displayPrompt("You entered the correct passcode! Safe is now open");
+                        }
+                        else
+                            UI.displayPrompt("You entered the wrong passcode. Try again");
+                    }
+                    catch (const std::invalid_argument& e) {
+                        UI.displayPrompt("You entered the wrong passcode. Try again");
+                    }
+                }
+              
+         
                 else if (currentRoom_temp.getRoomItemByName(itemName).getInteraction()->getIsPuzzle() == true) //If interaction is a puzzle, call overloaded runInteraction
                 {
                     currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer, galleryKey, mirrorKey, masterKey); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
@@ -511,6 +557,14 @@ void GameControllerClass::gameLoop() {
                 }
                 else if (command == "HIDDENSECTION") {
                     userPlayer.setRoom(HiddenSection);
+                }
+                else if (command == "DINING HALL") {
+                    userPlayer.setRoom(diningHall);// can only access dining hall from lounge  
+
+
+                }
+                else if (command == "KITCHEN") {
+                    userPlayer.setRoom(Kitchen);//user can only access kitchen from dining hall
                 }
                 else if (command == "RITUAL ROOM") {
                     userPlayer.setRoom(RitualRoom);
