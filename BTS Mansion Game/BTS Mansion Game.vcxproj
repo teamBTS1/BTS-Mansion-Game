@@ -128,9 +128,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BTS Mansion Game.cpp" />
+    <ClCompile Include="GalleryPuzzle.cpp" />
     <ClCompile Include="GameControllerClass.cpp" />
     <ClCompile Include="InteractClass.cpp" />
     <ClCompile Include="ItemClass.cpp" />
+    <ClCompile Include="MirrorPuzzle.cpp" />
     <ClCompile Include="MovementClass.cpp" />
     <ClCompile Include="PickUpItemClass.cpp" />
     <ClCompile Include="PlayerClass.cpp" />
@@ -140,9 +142,11 @@
     <ClCompile Include="UserInterfaceClass.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GalleryPuzzle.h" />
     <ClInclude Include="GameControllerClass.h" />
     <ClInclude Include="InteractClass.h" />
     <ClInclude Include="ItemClass.h" />
+    <ClInclude Include="MirrorPuzzle.h" />
     <ClInclude Include="MovementClass.h" />
     <ClInclude Include="PickUpItemClass.h" />
     <ClInclude Include="PlayerClass.h" />

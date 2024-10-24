@@ -29,6 +29,7 @@ private:
 	std::list<std::string> RoomOptions; //list of room options in string
 	std::vector<ItemClass> items; //List of items that are contained in the room.
 	int itemsLength;
+	Puzzle puzzle;
 	
 
 
@@ -60,6 +61,7 @@ public:
 	void RemoveItem(ItemClass itm); //Removes item from inventory
 	const int getItemsLength(); //Returns length of items vector
 	void displayAdjacentRooms(); //Displays adjacent rooms
+	Puzzle getPuzzle(); //Returns puzzle in room
 
 	void addCandle(); // adds candle to candle count in ritual room
 	int getCandleValue(); // returns value of candles in ritual room, will be important for 

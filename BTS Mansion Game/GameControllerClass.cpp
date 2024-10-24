@@ -9,6 +9,8 @@
 #include "ItemClass.h"
 #include "Door.h"
 #include "Puzzle.h"
+#include "GalleryPuzzle.h"
+#include "MirrorPuzzle.h"
 #include <iostream>
 #include <sstream>
 #include <list>
@@ -82,16 +84,20 @@ void GameControllerClass::viewInventory(PlayerClass& myPlayer) {
         Myuserinterface.displayPrompt("Type the name of an item to get its description.");
         Myuserinterface.userInput(); //Allowing user to inspect from inventory getting input
 
+
+        bool itemFound = false;
         for (int i = 0; i < inventorySize; i++)
         {
             if (myInventory[i].getName() == Myuserinterface.getCurrentInput()) //Checking all the input and printing the description of entered item
             {
                 std::cout << myInventory[i].getName() << ": " << myInventory[i].getDescription() << std::endl;
+                itemFound = true; 
+                break;
             }
-            else
-            {
-                std::cout << "The item you entered is not in your inventory." << std::endl;
-            }
+        }
+        if(!itemFound)
+        {
+          std::cout << "The item you entered is not in your inventory." << std::endl;
         }
 }
 
@@ -108,6 +114,8 @@ void GameControllerClass::displayBackstory() {
 
 void GameControllerClass::gameLoop() {
     /*we initialize the rooms and player class in the beginning. In the future we will probably wrap this in a function or refactor this class to remove clutter from gameLoop*/
+    
+    
     Door doorC = Door(true, "BBBB", "You are now in the FOYER, In front of you is the LOUNGE and LIBRARY"); // create door
 
     InteractClass* userInteractStatueA = new InteractClass("Would you like to INTERACT with the statue?", "You feel a wave of knowledge wash over you, like you've learned something from someone previously here before you."); //Defining statue interaction
@@ -139,12 +147,64 @@ void GameControllerClass::gameLoop() {
     std::vector <ItemClass> hiddensection_Items = { Candle1 };
 
 
-    RoomClass roomA = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR"}, FoyerDoors, roomA_Items);
+
+    RoomClass roomA = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE","DOOR", "PORTAL"}, FoyerDoors, roomA_Items);
+    PlayerClass userPlayer = PlayerClass(roomA);
+
     RoomClass roomB = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER"}, roomB_Items);
     RoomClass roomC = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous SAFE, it appears to accept a 4 digit code. You also see a BOOKSHELF with a missing book. There is a BOOK on the table  \n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF"}, Library_Doors, library_Items);
-    RoomClass HiddenSection = RoomClass("You now enter the hidden section, nothing is safe here, you feel a presense linger, as if it was plucking your heartstrings, there is a table with a candle on top", "HIDDEN SECTION", std::list<std::string>{"LIBRARY", "RITUAL ROOM"}, hiddensection_Items);
-    RoomClass RitualRoom = RoomClass("You enter a room that does not invite you back. A perfect, pentacle drawn on the floor invites you to place a candle at each of it's vertecies. [Hint: enter CANDLE as input if you posses a candle]", "RITUAL ROOM", std::list<std::string>{"HIDDEN SECTION"}, true); //defenition for ritual room class
+    RoomClass HiddenSection = RoomClass("You now enter the hidden section, nothing is safe here, you feel a presense linger, as if it was plucking your heartstrings, there is a table with a candle on top", "HIDDEN SECTION", std::list<std::string>{"LIBRARY"}, hiddensection_Items);
+    RoomClass roomD = RoomClass("You step into the portal, and feel a strange pull as reality warps around you. Moments later, you find yourself in a different part of the mansion.",
+        "PORTAL", std::list<std::string>{}, FoyerDoors, std::vector<ItemClass>{});
 
+    //Upstairs definitions
+
+    Door doorMaster = Door(true, "idMaster", "You are now in the MASTER BEDROOM."); //Adding master bedroom door
+    std::vector <Door> Master_Doors = { doorMaster };
+
+    ItemClass noteUpA = ItemClass("SCRIBBLED NOTE", "What looks like a child's drawing of two kids side by side, both looking almost exactly similair, but one of the children seems to have jagged teeth instead of normal teeth.", true); //Note for clue to mirror puzzle
+    InteractClass* storyBookInteraction = new InteractClass("You read the title of a poem, 'The Cycle of a Servant'.", "The lord with crimson cloak, His eyes once sharp, but now they choke. A wineglass shattered at his feet, his lips were poisoned - death so sweet. The servant went into the night, The deed done, taking flight, Blocking the way a spear of the night, The lord’s son seeking justice, lunged forward claiming blood. The servant however did not fall, Gutting the son, no longer standing tall. The servant reached the lowly village, To the bar seeking refuge, Bleeding from his gut. The town drunk drank into the night, While the barkeep kept the light. However a mob did approach, The servant hid, but could not hide, Seized by the people he despised. So the end approached for the lowly servant, Vengeance acquired, accepted his end. Before he met his end, His son’s eyes he met, Looking at his father’s soon to be killer, The servant knew the look, for he had seen it before, The reason that he had killed his lord, The servant was killed purpose fulfilled, However the servant knew before he died, His son would now live his same life.");
+    ItemClass storyBook = ItemClass("STORYBOOK", "A giant storybook made of tough leather and weathered pages, indicating many stories have been told from this book. It is open to a page with a poem on it.", false, storyBookInteraction);
+    InteractClass* lordPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You reach to your mouth and see a speck of blood on your finger.");
+    InteractClass* barkeepPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You feel a sensation wash over you, dulling your senses briefly.");
+    
+    ItemClass lordPainting = ItemClass("CRIMSON LORD PORTRAIT", "Portrait of a regal man in a crimson cloak, with blood dripping from his lips as a glass is raised to his lips.", false, lordPaintingInteraction);
+    ItemClass barkeepPainting = ItemClass("BARKEEP PORTRAIT", "Portrait of a stocky man cleaning a glass behind the bar, wearing a fake smile.", false, barkeepPaintingInteraction);
+    std::vector <ItemClass> portraits = { lordPainting, barkeepPainting };
+
+    
+    //defining gallery puzzle
+    ItemClass galleryKey = ItemClass("GALLERY HALF KEY", "Half of the key needed to enter the master bedroom.");
+    GalleryPuzzle galleryPuzzle = GalleryPuzzle(portraits, { lordPainting });
+    InteractClass* altarInteraction = new InteractClass("Do you want to initiate puzzle? (YES or NO)", "Test", galleryPuzzle);
+    ItemClass galleryPuzzleStarter = ItemClass("ALTAR", "An altar stands before you with a knife...", false, altarInteraction);
+
+    std::vector <std::string> mirrorSolution = { "MOONLIGHT", "FOREST GREEN", "BLACK" };
+
+    //defining mirror puzzle
+    ItemClass mirrorKey = ItemClass("MIRROR HALF KEY", "Half of the key needed to enter the master bedroom.");
+    MirrorPuzzle mirrorPuzzle = MirrorPuzzle(mirrorSolution);
+    InteractClass* mirrorPuzzleStarterInteraction = new InteractClass("Do you want to solve the three word combination? (YES OR NO)", "Test", mirrorPuzzle);
+    ItemClass mirrorPuzzleStarter = ItemClass("COMBINATION LOCK", "A three word combination lock...", false, mirrorPuzzleStarterInteraction);
+
+    ItemClass masterKey = ItemClass("MASTER KEY", "Fully completed key to the master bedroom", "idMaster", true, true); //Adding master bedroom key
+    ItemClass candle3 = ItemClass("CANDLE 3", "THE THIRD CANDLE", true); //Third candle item
+
+    std::vector <ItemClass> upstairsItems = { noteUpA, mirrorPuzzleStarter }; //Upstairs items
+    std::vector <ItemClass> storytellerItems = { storyBook }; //Storyteller's items
+    std::vector <ItemClass> galleryItems = { galleryPuzzleStarter, lordPainting, barkeepPainting }; //Gallery items
+    std::vector <ItemClass> masterBedroomItems = { candle3 }; //Master bedroom items
+
+    RoomClass roomE = RoomClass("You are now upstairs. The area is dimly lit, and there are several doors leading to other parts of the mansion. There is a set of double doors at the end of the hallway with a complex lock. The lock has two halves of a dais empty, that form an opening mechanism similair to a safe. There is also a three word combination lock on the wall in between MIRROR ROOM 1 and MIRROR ROOM 2.",
+        "UPSTAIRS", std::list<std::string>{"PORTAL", "MIRROR ROOM 1", "MIRROR ROOM 2", "STORYTELLER'S ROOM", "GALLERY", "DOUBLE DOORS"}, Master_Doors, upstairsItems);  // Add PORTAL as an option
+
+    //Defining upstairs rooms
+    RoomClass roomUpA = RoomClass("You enter a grand parlor bathed in soft, golden sunlight streaming through tall, arched windows. The room is elegantly furnished, with a velvet chaise lounge positioned in the center, its deep burgundy fabric complementing the warm tones of the oak-paneled walls. A large, ornate mirror hangs above a marble fireplace on the north wall. On a small table beside the chaise, a crystal vase holds a single white rose, perfectly fresh. The air smells faintly of lavender, adding a serene ambiance to the room. A plush rug, embroidered with intricate floral patterns, covers the floor, leading to a door on the opposite side of the room.", "MIRROR ROOM 1", std::list<string>{"UPSTAIRS"});
+    RoomClass roomUpB = RoomClass("Stepping into this parlor feels eerily familiar. Bathed in soft golden moonlight streaming through tall, arched windows. The room is elegantly furnished, with a velvet chaise lounge positioned in the center, its deep forest green fabric complementing the warm tones of the oak-paneled walls. A large, ornate mirror hangs above a marble fireplace on the north wall. On a small table beside the chaise, a crystal vase holds a single black rose, perfectly fresh. The air smells faintly of soot, adding a serene ambiance to the room. A plush rug, embroidered with intricate floral patterns, covers the floor, leading to a door on the opposite side of the room.", "MIRROR ROOM 2", std::list<string>{"UPSTAIRS"});
+    RoomClass roomUpC = RoomClass("You enter a room filled with a luxuorious carpet, fancy linen bedsheets, and elegant embroidery all about. In the center of the room on a stand, is a big tome open to the page of a story.", "STORYTELLER'S ROOM", std::list <string> {"UPSTAIRS"}, storytellerItems); //have a non pick upable item with poem in it
+    RoomClass roomUpD = RoomClass("You enter a room with many portraits, all of them depicting different people of different statuses. All of the portraits are almost calling you to touch them.", "GALLERY", std::list <string> {"UPSTAIRS"}, galleryItems); //Room full of portraits for poem puzzle
+
+    RoomClass roomUpE = RoomClass("You are now in Master Bedroom", "MASTER BEDROOM", std::list<string>{"UPSTAIRS"}, masterBedroomItems); 
 
     //roomA.RemoveItem(noteA);
 
@@ -212,39 +272,42 @@ void GameControllerClass::gameLoop() {
                         UI.displayPrompt("Type PICKUP to pick up the item");
                         command = UI.userInput();
 
-                        if (command == "PICKUP")
+                    if (command == "PICKUP")
+                    {
+                        if (currentRoom_temp.getRoomItemByName(itemName).getCanPickUp() == true) //Run pick up sequence
                         {
-                            if (currentRoom_temp.getRoomItemByName(itemName).getCanPickUp() == true) //Run pick up sequence
+                            for (int i = 0; i < currentRoom_temp.getItemsLength(); i++)
                             {
-                                for (int i = 0; i < currentRoom_temp.getItemsLength(); i++)
+                                ItemClass &itm = currentRoom_temp.getItems().at(i); //Looping through each item in room to check if exists
+                                //std::cout << itm.getName();
+                                if (itm.getName() == itemName)
                                 {
-                                    ItemClass& itm = currentRoom_temp.getItems().at(i); //Looping through each item in room to check if exists
-                                    //std::cout << itm.getName();
-                                    if (itm.getName() == itemName)
-                                    {
-                                        PickUpItemClass pickUp(itm); //Picking up item the user requested to pick up
-                                        pickUp.addToInventory(userPlayer);
-                                        currentRoom_temp.RemoveItem(itm);
-                                        userPlayer.setRoom(currentRoom_temp);
-                                        std::cout << endl;
-                                        std::cout << "You picked up " << itemName << "." << std::endl << std::endl;
-                                        std::cout << "-----------" << endl;
-                                        break;
-                                    }
+                                    PickUpItemClass pickUp(itm); //Picking up item the user requested to pick up
+                                    pickUp.addToInventory(userPlayer);
+                                    currentRoom_temp.RemoveItem(itm);
+                                    userPlayer.setRoom(currentRoom_temp);
+                                    std::cout << endl;
+                                    std::cout << "You picked up " << itemName << "." << std::endl << std::endl;
+                                    std::cout << "-----------" << endl;
+                                    break; 
                                 }
                             }
                         }
-                    }
-
-                    else //Run interact sequence if not pick up able object
-                    {
-                        //userInteractStatueA.runInteraction(); //Runs interaction with item
-                        currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction();
-                    }
+                     }                                           
                 }
-
-
+                else if (currentRoom_temp.getRoomItemByName(itemName).getInteraction()->getIsPuzzle() == true) //If interaction is a puzzle, call overloaded runInteraction
+                {
+                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer, galleryKey, mirrorKey, masterKey); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
+                }
+                else //Run interact sequence if not pick up able object
+                {
+                    //userInteractStatueA.runInteraction(); //Runs interaction with item
+                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(); 
+                }
             }
+            
+            
+        }
 
             else {
                 //std::string current_room = userPlayer.getRoomName();
@@ -256,15 +319,88 @@ void GameControllerClass::gameLoop() {
                     /*before you read: THIS IS A TEMPORARY FUNCTIONALITY FOR ROOM DETECTION THIS WILL BE REFACTORED WHEN WE DECIDE HOW TO BUILD OUR MAP
                     TODO: setup hashmap for corresponding rooms, implement functionality to minimize conditional nesting*/
 
-                    if (command == "LOUNGE") { //if valid option was B
-                        userPlayer.setRoom(roomB);  //set this to current room
-                        //currentRoom_temp = userPlayer.getRoom(); //setting temp room to userPlayers room
+                if (command == "LOUNGE") { //if valid option was B
+                    userPlayer.setRoom(roomB);  //set this to current room
+                    //currentRoom_temp = userPlayer.getRoom(); //setting temp room to userPlayers room
+                }
+                else if (command == "FOYER") { //if valid option was A
+                    userPlayer.setRoom(roomA); 
+                    //currentRoom_temp = userPlayer.getRoom();
+                }
+                else if (command == "PORTAL") {
+                    if (userPlayer.getRoom().GetName() == "UPSTAIRS") {
+                        userPlayer.setRoom(roomA);  // If user is upstairs, return to Room A via the portal
+                        UI.displayPrompt("You step through the portal and find yourself back in the foyer (Room A).");
                     }
-                    else if (command == "FOYER") { //if valid option was A
-                        userPlayer.setRoom(roomA);
-                        //currentRoom_temp = userPlayer.getRoom();
+                    else {
+                        userPlayer.setRoom(roomD);  // Move to the portal room first
+                        UI.displayPrompt("You have entered the portal and now find yourself upstairs.");
+                        userPlayer.setRoom(roomE);  // Automatically move to the upstairs room
                     }
-                    else if (command == "DOOR") {
+                }
+                else if (command == "UPSTAIRS") {
+                    userPlayer.setRoom(roomE); //Move to upstairs
+                }
+                else if (command == "MIRROR ROOM 1") {
+                    userPlayer.setRoom(roomUpA); //Move to top let mirror room
+                }
+                else if (command == "MIRROR ROOM 2") {
+                    userPlayer.setRoom(roomUpB); //Move to bottom left mirror room
+                }
+                else if (command == "STORYTELLER'S ROOM") {
+                    userPlayer.setRoom(roomUpC); //Move to storyteller's room
+                }
+                else if (command == "GALLERY") {
+                    userPlayer.setRoom(roomUpD); //Move to gallery
+                    //GalleryPuzzle puzz; //Temp 
+                    //puzz.runPuzzle(portraits, portraits);
+                }
+
+                else if (command == "DOUBLE DOORS") { //Check if double doors are locked
+
+                    std::vector<Door>& doors = currentRoom_temp.GetDoors();
+                    for (int i = 0; i < doors.size(); i++) {
+                        if (doors[i].getIsLocked())
+                        {
+                            if (userPlayer.getInventorySize() != 0)
+                            {
+                                std::string playerKey = userPlayer.searchForKey(doors[i].getDoorKeyID());
+                                if (doors[i].getDoorKeyID() == playerKey)
+                                {
+
+                                    userPlayer.useKey(playerKey); //Uses correct key from inventory
+                                    UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the LIBRARY\n");
+                                    currentRoom_temp.unlockDoor(i); //unlocks door, sets description to different openDoor description through
+                                    doors[i].unlockDoor();
+                                    currentRoom_temp.setRoomOption(std::list<std::string>{"PORTAL", "MIRROR ROOM 1", "MIRROR ROOM 2", "STORYTELLER'S ROOM", "GALLERY", "MASTER BEDROOM"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
+                                    userPlayer.setRoom(currentRoom_temp); //set room
+
+                                    //currentRoom_temp = userPlayer.getRoom();
+                                }
+                                else
+                                {
+                                    UI.displayPrompt("The door is locked");
+                                }
+                            }
+                            else
+                            {
+                                UI.displayPrompt("The door is locked");
+                            }
+
+                        }
+                        else
+                        {
+                            userPlayer.setRoom(roomC);
+                            //currentRoom_temp = userPlayer.getRoom();
+                        }
+                    }
+                }
+
+                else if (command == "MASTER BEDROOM") {
+                    userPlayer.setRoom(roomUpE);
+                }
+
+                else if (command == "DOOR") {
 
                         std::vector<Door>& doors = currentRoom_temp.GetDoors();
                         for (int i = 0; i < doors.size(); i++) {
