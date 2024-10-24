@@ -165,7 +165,7 @@ void GameControllerClass::gameLoop() {
     RoomClass roomB = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER","DINING HALL"}, roomB_Items);
     RoomClass roomC = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous SAFE, it appears to accept a 4 digit code. You also see a BOOKSHELF with a missing book. There is a BOOK on the table  \n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF"}, Library_Doors, library_Items);
     RoomClass HiddenSection = RoomClass("You now enter the hidden section, nothing is safe here, you feel a presense linger, as if it was plucking your heartstrings, there is a table with a candle on top", "HIDDEN SECTION", std::list<std::string>{"LIBRARY"}, hiddensection_Items);
-    RoomClass diningHall = RoomClass("You are now in the Dining Hall. There is a large table and chairs. From here, you can go to the kitchen.\n", "DINING HALL", std::list<std::string>{"KITCHEN"}, diningHallItems);
+    RoomClass diningHall = RoomClass("You are now in the Dining Hall. There is a large table and chairs. From here, you can go to the kitchen.\n", "DINING HALL", std::list<std::string>{"LOUNGE","KITCHEN"}, diningHallItems);
     RoomClass Kitchen = RoomClass("You are now in the Kitchen,You can return to the dining hall from here.\n", "KITCHEN", std::list<std::string>{"DINING HALL"}, kitchenItems);
 
     //roomA.RemoveItem(noteA);
@@ -240,15 +240,22 @@ void GameControllerClass::gameLoop() {
                 {
                     UI.displayPrompt("Enter the 4 digit code");
                     string safeInput = UI.userInput();
-                    int safeInputNum = std:: stoi(safeInput);
 
-                    if (safeInputNum == 8691)
-                    {
-                        UI.displayPrompt("You entered the correct passcode! Safe is now open");
+                    try {
+                        int safeInputNum = std::stoi(safeInput);
+
+                        if (safeInputNum == 8691)
+                        {
+                            UI.displayPrompt("You entered the correct passcode! Safe is now open");
+                        }
+                        else
+                            UI.displayPrompt("You entered the wrong passcode. Try again");
                     }
-                    else
+                    catch (const std::invalid_argument& e) {
                         UI.displayPrompt("You entered the wrong passcode. Try again");
+                    }
                 }
+              
          
                 else //Run interact sequence if not pick up able object
                 {
