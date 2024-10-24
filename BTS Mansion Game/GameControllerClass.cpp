@@ -180,7 +180,7 @@ void GameControllerClass::gameLoop() {
     RoomClass roomC = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous SAFE, it appears to accept a 4 digit code. You also see a BOOKSHELF with a missing book. There is a BOOK on the table  \n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF","GREATER LIBRARY"}, Library_Doors, library_Items);
     RoomClass roomB = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER","DINING HALL"}, roomB_Items);
  
-    RoomClass HiddenSection = RoomClass("You now enter the hidden section, nothing is safe here, you feel a presense linger, as if it was plucking your heartstrings, there is a table with a candle on top", "HIDDEN SECTION", std::list<std::string>{"LIBRARY"}, hiddensection_Items);
+    RoomClass HiddenSection = RoomClass("You now enter the hidden section, nothing is safe here, you feel a presense linger, as if it was plucking your heartstrings, there is a table with a candle on top", "HIDDEN SECTION", std::list<std::string>{"LIBRARY", "RITUAL ROOM"}, hiddensection_Items);
    
     //Greater library and study rooms
     RoomClass GreaterLibrary = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE"});
@@ -485,7 +485,7 @@ void GameControllerClass::gameLoop() {
                                         UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the LIBRARY\n");
                                         currentRoom_temp.unlockDoor(i); //unlocks door, sets description to different openDoor description through
                                         doors[i].unlockDoor();
-                                        currentRoom_temp.setRoomOption(std::list<std::string>{"LOUNGE", "LIBRARY"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
+                                        currentRoom_temp.setRoomOption(std::list<std::string>{"LOUNGE", "LIBRARY", "PORTAL"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
                                         userPlayer.setRoom(currentRoom_temp); //set room
 
                                     //currentRoom_temp = userPlayer.getRoom();
@@ -573,15 +573,13 @@ void GameControllerClass::gameLoop() {
 
 
                 }
-                else if (command == "HIDDENSECTION") {
+                else if (command == "HIDDEN SECTION") {
                     system("cls");
                     userPlayer.setRoom(HiddenSection);
                 }
                 else if (command == "DINING HALL") {
                     system("cls");
                     userPlayer.setRoom(diningHall);// can only access dining hall from lounge  
-
-
                 }
                 else if (command == "KITCHEN") {
                     system("cls");
