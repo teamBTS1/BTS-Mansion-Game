@@ -146,14 +146,23 @@ void GameControllerClass::gameLoop() {
     ItemClass Candle1("CANDLE", "A candle with pentagram etchings", "C1", true, true); //candle item instance, name must remain candle to be consumed in main algorithm
     std::vector <ItemClass> hiddensection_Items = { Candle1 };
 
+    //Study Item
+    //InteractClass* userInteractCandle = new InteractClass("Would you like to look at the candle?", "Pickup the candle");
+    ItemClass studyCandle("CANDLE", "A candle with a pentagram design (This candle can be placed in the ritual room)", true);
+    std::vector<ItemClass>studyItem = { studyCandle };
 
 
     RoomClass roomA = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE","DOOR", "PORTAL"}, FoyerDoors, roomA_Items);
     PlayerClass userPlayer = PlayerClass(roomA);
 
     RoomClass roomB = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER"}, roomB_Items);
-    RoomClass roomC = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous SAFE, it appears to accept a 4 digit code. You also see a BOOKSHELF with a missing book. There is a BOOK on the table  \n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF"}, Library_Doors, library_Items);
+    RoomClass roomC = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous SAFE, it appears to accept a 4 digit code. You also see a BOOKSHELF with a missing book. There is a BOOK on the table  \n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF","GREATER LIBRARY"}, Library_Doors, library_Items);
     RoomClass HiddenSection = RoomClass("You now enter the hidden section, nothing is safe here, you feel a presense linger, as if it was plucking your heartstrings, there is a table with a candle on top", "HIDDEN SECTION", std::list<std::string>{"LIBRARY"}, hiddensection_Items);
+   
+    //Greater library and study rooms
+    RoomClass GreaterLibrary = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE"});
+    RoomClass Study = RoomClass("You enter the study, the walls are dark brown with shelfs full of books and paper scrolls. There is a desk that is rather neat and organize. Behind the desk is grand portrait of a man with a stern face, eyes so dark its you uncomfortable.The man's finger is pointing to what seems to be a cabinet and on behind a pile of books you see a candle.", "STUDY", std::list<std::string>{"GREATER LIBRARY"}, studyItem);
+
     RoomClass roomD = RoomClass("You step into the portal, and feel a strange pull as reality warps around you. Moments later, you find yourself in a different part of the mansion.",
         "PORTAL", std::list<std::string>{}, FoyerDoors, std::vector<ItemClass>{});
 
@@ -203,7 +212,6 @@ void GameControllerClass::gameLoop() {
     RoomClass roomUpB = RoomClass("Stepping into this parlor feels eerily familiar. Bathed in soft golden moonlight streaming through tall, arched windows. The room is elegantly furnished, with a velvet chaise lounge positioned in the center, its deep forest green fabric complementing the warm tones of the oak-paneled walls. A large, ornate mirror hangs above a marble fireplace on the north wall. On a small table beside the chaise, a crystal vase holds a single black rose, perfectly fresh. The air smells faintly of soot, adding a serene ambiance to the room. A plush rug, embroidered with intricate floral patterns, covers the floor, leading to a door on the opposite side of the room.", "MIRROR ROOM 2", std::list<string>{"UPSTAIRS"});
     RoomClass roomUpC = RoomClass("You enter a room filled with a luxuorious carpet, fancy linen bedsheets, and elegant embroidery all about. In the center of the room on a stand, is a big tome open to the page of a story.", "STORYTELLER'S ROOM", std::list <string> {"UPSTAIRS"}, storytellerItems); //have a non pick upable item with poem in it
     RoomClass roomUpD = RoomClass("You enter a room with many portraits, all of them depicting different people of different statuses. All of the portraits are almost calling you to touch them.", "GALLERY", std::list <string> {"UPSTAIRS"}, galleryItems); //Room full of portraits for poem puzzle
-
     RoomClass roomUpE = RoomClass("You are now in Master Bedroom", "MASTER BEDROOM", std::list<string>{"UPSTAIRS"}, masterBedroomItems); 
 
     //roomA.RemoveItem(noteA);
@@ -211,6 +219,7 @@ void GameControllerClass::gameLoop() {
     PlayerClass userPlayer = PlayerClass(roomC); // set to ritual room for testing
     //userPlayer.addItem(Candle1);
     std::string startingRoom = "A";
+    bool puzzleSolved = false;
 
 
     while (true) {
@@ -419,12 +428,7 @@ void GameControllerClass::gameLoop() {
                                         currentRoom_temp.setRoomOption(std::list<std::string>{"LOUNGE", "LIBRARY"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
                                         userPlayer.setRoom(currentRoom_temp); //set room
 
-                                        //currentRoom_temp = userPlayer.getRoom();
-                                    }
-                                    else
-                                    {
-                                        UI.displayPrompt("The door is locked");
-                                    }
+                                    //currentRoom_temp = userPlayer.getRoom();
                                 }
                                 else
                                 {
@@ -433,26 +437,50 @@ void GameControllerClass::gameLoop() {
                             }
                             else
                             {
-                                userPlayer.setRoom(roomC);
-                                //currentRoom_temp = userPlayer.getRoom();
+                                UI.displayPrompt("The door is locked");
                             }
                         }
+                        else
+                        {
+                            userPlayer.setRoom(roomC);
+                            //currentRoom_temp = userPlayer.getRoom();
+                        }
                     }
-                    else if (command == "LIBRARY") {
-                        userPlayer.setRoom(roomC);
-                        //currentRoom_temp = userPlayer.getRoom();
-                    }
-                    else if (command == "BOOKSHELF") {
+                }
+                else if (command == "PUZZLE")
+                {
+                    if (!puzzleSolved)
+                    {
+                        UI.displayPrompt("The door is locked there seems to be a puzzle before entering. Solve this puzzle.\n");
+                        UI.displayPrompt("The secret word is DIDDY\n");
+                        std::string puzzleAnswer = UI.userInput();
 
-                        std::vector<Door>& doors = currentRoom_temp.GetDoors();
-                        for (int i = 0; i < doors.size(); i++) {
-                            if (doors[i].getIsLocked())
+                        if (puzzleAnswer == "DIDDY") {
+                            UI.displayPrompt("You solved the puzzle you can now enter the study\n");
+                            puzzleSolved = true;
+                            currentRoom_temp.setRoomOption(std::list<std::string>{"LIBRARY", "STUDY"});
+                        }
+                        else {
+                            UI.displayPrompt("That is not the correct answer. The door remains locked.\n");
+                        }
+
+                    }
+                }
+                else if (command == "LIBRARY") {
+                    userPlayer.setRoom(roomC);
+                    //currentRoom_temp = userPlayer.getRoom();
+                }
+                else if (command == "BOOKSHELF"){
+                    
+                    std::vector<Door>& doors = currentRoom_temp.GetDoors();
+                    for (int i = 0; i < doors.size(); i++) {
+                        if (doors[i].getIsLocked()) 
+                        {
+                            if (userPlayer.getInventorySize() != 0)
                             {
-                                if (userPlayer.getInventorySize() != 0)
+                                std::string playerKey = userPlayer.searchForKey(doors[i].getDoorKeyID());
+                                if (doors[i].getDoorKeyID() == playerKey)
                                 {
-                                    std::string playerKey = userPlayer.searchForKey(doors[i].getDoorKeyID());
-                                    if (doors[i].getDoorKeyID() == playerKey)
-                                    {
 
                                         userPlayer.useKey(playerKey); //Uses correct key from inventory
                                         UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the LIBRARY\n");
@@ -481,21 +509,28 @@ void GameControllerClass::gameLoop() {
                         }
 
 
-                    }
-                    else if (command == "HIDDEN SECTION") {
-                        userPlayer.setRoom(HiddenSection);
-                    }
-                    else if (command == "RITUAL ROOM") {
-                        userPlayer.setRoom(RitualRoom);
-                    }
                 }
-                else
-                { //catch invalid input NOTE - in the future we will refactor to utilize UI class input validation
-                    UI.displayPrompt("\nYou tried to choose your option but you couldn't move your body. It seems like there is an unforseen force telling you can't perform that action..You look around again\n");
+                else if (command == "HIDDENSECTION") {
+                    userPlayer.setRoom(HiddenSection);
                 }
+                else if (command == "RITUAL ROOM") {
+                    userPlayer.setRoom(RitualRoom);
+                    }
+                else if (command == "GREATER LIBRARY") {
+                    userPlayer.setRoom(GreaterLibrary);
+                }
+                else if (command == "STUDY")
+                {
+                    userPlayer.setRoom(Study);
+                }
+            }
+            else
+            { //catch invalid input NOTE - in the future we will refactor to utilize UI class input validation
+                UI.displayPrompt("\nYou tried to choose your option but you couldn't move your body. It seems like there is an unforseen force telling you can't perform that action..You look around again\n");
             }
         }
     }
+}
 
 
 
