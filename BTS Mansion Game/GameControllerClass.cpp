@@ -216,8 +216,6 @@ void GameControllerClass::gameLoop() {
     RoomClass roomUpE = RoomClass("You are now in Master Bedroom", "MASTER BEDROOM", std::list<string>{"UPSTAIRS"}, masterBedroomItems); 
 
     //roomA.RemoveItem(noteA);
-
-    PlayerClass userPlayer = PlayerClass(roomC); // set to ritual room for testing
     //userPlayer.addItem(Candle1);
     std::string startingRoom = "A";
     bool puzzleSolved = false;
