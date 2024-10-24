@@ -185,7 +185,12 @@ void RoomClass::displayAdjacentRooms()
 	std::cout << endl;
 }
 
+void RoomClass::setPuzzle(Puzzle puzzle)
+{
+	roomPuzzle = puzzle;
+}
+
 Puzzle RoomClass::getPuzzle()
 {
-	return puzzle;
+	return roomPuzzle;
 }
