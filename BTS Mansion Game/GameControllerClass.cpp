@@ -165,6 +165,7 @@ void GameControllerClass::gameLoop() {
 
     RoomClass roomD = RoomClass("You step into the portal, and feel a strange pull as reality warps around you. Moments later, you find yourself in a different part of the mansion.",
         "PORTAL", std::list<std::string>{}, FoyerDoors, std::vector<ItemClass>{});
+    RoomClass RitualRoom = RoomClass("You enter a room that does not invite you back. A perfect, pentacle drawn on the floor invites you to place a candle at each of it's vertecies. [Hint: enter CANDLE as input if you posses a candle]", "RITUAL ROOM", std::list<std::string>{"HIDDEN SECTION"}, true); //defenition for ritual room class
 
     //Upstairs definitions
 
