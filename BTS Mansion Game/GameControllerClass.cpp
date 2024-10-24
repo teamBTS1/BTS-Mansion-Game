@@ -284,11 +284,13 @@ void GameControllerClass::gameLoop() {
 
             else if (command == "INVENTORY")
             {
+                system("cls");
                 viewInventory(userPlayer); //Call view inventory function
             }
 
             else if (command == "INSPECT") //If user wants to pick up item
             {
+                system("cls");
                 currentRoom_temp.displayRoomItems();
                 UI.displayPrompt("What item would you like to inspect?\n");
                 command = UI.userInput(); //Getting item to be picked up
@@ -307,6 +309,7 @@ void GameControllerClass::gameLoop() {
 
                     if (command == "PICKUP")
                     {
+                        system("cls");
                         if (currentRoom_temp.getRoomItemByName(itemName).getCanPickUp() == true) //Run pick up sequence
                         {
                             for (int i = 0; i < currentRoom_temp.getItemsLength(); i++)
@@ -374,14 +377,17 @@ void GameControllerClass::gameLoop() {
                     TODO: setup hashmap for corresponding rooms, implement functionality to minimize conditional nesting*/
 
                 if (command == "LOUNGE") { //if valid option was B
+                    system("cls");
                     userPlayer.setRoom(roomB);  //set this to current room
                     //currentRoom_temp = userPlayer.getRoom(); //setting temp room to userPlayers room
                 }
                 else if (command == "FOYER") { //if valid option was A
+                    system("cls");
                     userPlayer.setRoom(roomA); 
                     //currentRoom_temp = userPlayer.getRoom();
                 }
                 else if (command == "PORTAL") {
+                    system("cls");
                     if (userPlayer.getRoom().GetName() == "UPSTAIRS") {
                         userPlayer.setRoom(roomA);  // If user is upstairs, return to Room A via the portal
                         UI.displayPrompt("You step through the portal and find yourself back in the foyer (Room A).");
@@ -392,25 +398,32 @@ void GameControllerClass::gameLoop() {
                         userPlayer.setRoom(roomE);  // Automatically move to the upstairs room
                     }
                 }
-                else if (command == "UPSTAIRS") {
+                else if (command == "UPSTAIRS") 
+                {
+                    system("cls");
                     userPlayer.setRoom(roomE); //Move to upstairs
                 }
                 else if (command == "MIRROR ROOM 1") {
+                    system("cls");
                     userPlayer.setRoom(roomUpA); //Move to top let mirror room
                 }
                 else if (command == "MIRROR ROOM 2") {
+                    system("cls");
                     userPlayer.setRoom(roomUpB); //Move to bottom left mirror room
                 }
                 else if (command == "STORYTELLER'S ROOM") {
+                    system("cls");
                     userPlayer.setRoom(roomUpC); //Move to storyteller's room
                 }
                 else if (command == "GALLERY") {
+                    system("cls");
                     userPlayer.setRoom(roomUpD); //Move to gallery
                     //GalleryPuzzle puzz; //Temp 
                     //puzz.runPuzzle(portraits, portraits);
                 }
 
                 else if (command == "DOUBLE DOORS") { //Check if double doors are locked
+                    system("cls");
 
                     std::vector<Door>& doors = currentRoom_temp.GetDoors();
                     for (int i = 0; i < doors.size(); i++) {
@@ -451,10 +464,12 @@ void GameControllerClass::gameLoop() {
                 }
 
                 else if (command == "MASTER BEDROOM") {
+                    system("cls");
                     userPlayer.setRoom(roomUpE);
                 }
 
                 else if (command == "DOOR") {
+                    system("cls");
 
                         std::vector<Door>& doors = currentRoom_temp.GetDoors();
                         for (int i = 0; i < doors.size(); i++) {
@@ -494,6 +509,7 @@ void GameControllerClass::gameLoop() {
                 }
                 else if (command == "PUZZLE")
                 {
+                    system("cls");
                     if (!puzzleSolved)
                     {
                         UI.displayPrompt("The door is locked there seems to be a puzzle before entering. Solve this puzzle.\n");
@@ -512,10 +528,12 @@ void GameControllerClass::gameLoop() {
                     }
                 }
                 else if (command == "LIBRARY") {
+                    system("cls");
                     userPlayer.setRoom(roomC);
                     //currentRoom_temp = userPlayer.getRoom();
                 }
                 else if (command == "BOOKSHELF"){
+                    system("cls");
                     
                     std::vector<Door>& doors = currentRoom_temp.GetDoors();
                     for (int i = 0; i < doors.size(); i++) {
@@ -556,24 +574,30 @@ void GameControllerClass::gameLoop() {
 
                 }
                 else if (command == "HIDDENSECTION") {
+                    system("cls");
                     userPlayer.setRoom(HiddenSection);
                 }
                 else if (command == "DINING HALL") {
+                    system("cls");
                     userPlayer.setRoom(diningHall);// can only access dining hall from lounge  
 
 
                 }
                 else if (command == "KITCHEN") {
+                    system("cls");
                     userPlayer.setRoom(Kitchen);//user can only access kitchen from dining hall
                 }
                 else if (command == "RITUAL ROOM") {
+                    system("cls");
                     userPlayer.setRoom(RitualRoom);
                     }
                 else if (command == "GREATER LIBRARY") {
+                    system("cls");
                     userPlayer.setRoom(GreaterLibrary);
                 }
                 else if (command == "STUDY")
                 {
+                    system("cls");
                     userPlayer.setRoom(Study);
                 }
             }

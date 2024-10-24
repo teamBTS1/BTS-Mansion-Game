@@ -2,6 +2,7 @@
 
 
 
+
 RoomClass::RoomClass()
 {
 

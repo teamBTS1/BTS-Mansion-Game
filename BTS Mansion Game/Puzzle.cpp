@@ -36,7 +36,7 @@ std::string Puzzle::getDescription()
 
 ItemClass Puzzle::getReward()
 {
-	return _reward;
+	return *_reward;
 }
 
 bool Puzzle::isSolved()
