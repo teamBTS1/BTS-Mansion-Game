@@ -117,108 +117,89 @@ void GameControllerClass::displayBackstory() {
 void GameControllerClass::gameLoop() {
     /*we initialize the rooms and player class in the beginning. In the future we will probably wrap this in a function or refactor this class to remove clutter from gameLoop*/
 
-
     std::unordered_map<std::string, RoomClass> rooms; //hashmap for all rooms
     std::unordered_map<std::string, Door> doors; // hashmap for all doors
 
-    Door doorC = Door(true, "BBBB", "You are now in the FOYER, In front of you is the LOUNGE and LIBRARY"); // create door
-
-    InteractClass* userInteractStatueA = new InteractClass("Would you like to INTERACT with the statue?", "You feel a wave of knowledge wash over you, like you've learned something from someone previously here before you."); //Defining statue interaction
-    ItemClass statueA("STATUE", "This statue is a woman carrying book", false, userInteractStatueA); // Define the statue as an item
-
-    ItemClass keyB("KEY B", "Rusty key", "BBBB", true, true); //Initialzing items TEMP key B
-    //ItemClass Candle1("CANDLE 1", "STUDY CANDLE", "CCC", true, true ) //initialize candle item, ID value CCC is important for determining whether item is valid candle to place in ritual room
-    ItemClass noteA("NOTE A", "A note with dust and cobwebs all over", true); //Defining TEMP note A
-    std::vector <ItemClass> roomA_Items = { noteA, statueA }; //Creating items
-    std::vector <ItemClass> roomB_Items = { keyB };
-
-
-    //Room A Doors
-    std::vector<Door> FoyerDoors = { doorC };
-
-    //Library Items
-    InteractClass* userInteractSafe = new InteractClass("Would you like to look at the safe?", "Please enter a 4 digit code");
-    ItemClass Book("Old Book", "An old book which appears to belong to a bookshelf", "BookKey", true, true);
-    ItemClass Safe("Metal Safe", "A safe that appears to accept a 4 digit code", false, userInteractSafe);
-
+    //Declare all doors TODO: Joey add logic for door map 
+    Door doorC = Door(true, "BBBB", "You are now in the FOYER, In front of you is the LOUNGE and LIBRARY"); // create FOYER door
     Door HiddenBookshelf = Door(true, "BookKey", "****You place the book on the shelf. The Bookshelf begins to move, screaching across the woodenfloor, it reveals the staircase leading down to the HIDDENSECTION********");
+    Door doorMaster = Door(true, "idMaster", "You are now in the MASTER BEDROOM."); //Adding master bedroom door
 
-    std::vector <ItemClass> library_Items = { Book,Safe };
-
+    std::vector<Door> FoyerDoors = { doorC };
     std::vector <Door> Library_Doors = { HiddenBookshelf, doorC };
+    std::vector <Door> Master_Doors = { doorMaster };
 
-    //Dining hall items
+    //define all ineractions
+    InteractClass* userInteractStatueA = new InteractClass("Would you like to INTERACT with the statue?", "You feel a wave of knowledge wash over you, like you've learned something from someone previously here before you."); //Defining statue interaction
+    InteractClass* userInteractKitchenCounter = new InteractClass("Would you like to look at the kitchen counter?", "");
+    InteractClass* userInteractSafe = new InteractClass("Would you like to look at the safe?", "Please enter a 4 digit code");
     InteractClass* userInterectSafeDiningHall = new InteractClass("Would you like to look at the safe?", "");
     InteractClass* userInteractBody1 = new InteractClass("Would you like to look at dead body 1?", "");
     InteractClass* userInteractBody2 = new InteractClass("Would you like to look at dead body 2", "");
     InteractClass* userInteractBody3 = new InteractClass("Would you like to look at dead body 3", "");
     InteractClass* userInteractBody4 = new InteractClass("Would you like to look at dead body 4", "");
+    InteractClass* storyBookInteraction = new InteractClass("You read the title of a poem, 'The Cycle of a Servant'.", "The lord with crimson cloak, His eyes once sharp, but now they choke. A wineglass shattered at his feet, his lips were poisoned - death so sweet. The servant went into the night, The deed done, taking flight, Blocking the way a spear of the night, The lord’s son seeking justice, lunged forward claiming blood. The servant however did not fall, Gutting the son, no longer standing tall. The servant reached the lowly village, To the bar seeking refuge, Bleeding from his gut. The town drunk drank into the night, While the barkeep kept the light. However a mob did approach, The servant hid, but could not hide, Seized by the people he despised. So the end approached for the lowly servant, Vengeance acquired, accepted his end. Before he met his end, His son’s eyes he met, Looking at his father’s soon to be killer, The servant knew the look, for he had seen it before, The reason that he had killed his lord, The servant was killed purpose fulfilled, However the servant knew before he died, His son would now live his same life.");
+    InteractClass* lordPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You reach to your mouth and see a speck of blood on your finger.");
+    InteractClass* barkeepPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You feel a sensation wash over you, dulling your senses briefly.");
 
+    //define all items
+    ItemClass statueA("STATUE", "This statue is a woman carrying book", false, userInteractStatueA); // Define the statue as an item
+    ItemClass keyB("KEY B", "Rusty key", "BBBB", true, true); //Initialzing items TEMP key B
+    ItemClass noteA("NOTE A", "A note with dust and cobwebs all over", true); //Defining TEMP note A
     ItemClass metalSafe("METAL SAFE", "A safe that appears to accept a 4 digit code", false, userInterectSafeDiningHall);
     ItemClass deadBody1("DEAD BODY 1", "A dead body with a red shirt with a number 8 on and has his mouth open", false, userInteractBody1);
     ItemClass deadBody2("DEAD BODY 2", "A dead body with a blue shirt with a number 6 on and has his skull cracked open", false, userInteractBody2);
     ItemClass deadBody3("DEAD BODY 3", "A dead body with a green shirt with a number 9 on and has his hands on the floor", false, userInteractBody3);
     ItemClass deadBody4("DEAD BODY 4", "A dead body with a purple shirt with a number 1 on and has his right leg over his left leg", false, userInteractBody4);
+    ItemClass galleryKey = ItemClass("GALLERY HALF KEY", "Half of the key needed to enter the master bedroom.");
 
-    std::vector<ItemClass>diningHallItems = { metalSafe, deadBody1,deadBody2,deadBody3,deadBody4 };
-    ItemClass Candle1("CANDLE", "A candle with pentagram etchings", "C1", true, true); //candle item instance, name must remain candle to be consumed in main algorithm
-    std::vector <ItemClass> hiddensection_Items = { Candle1 };
-
-    //Study Item
-    //InteractClass* userInteractCandle = new InteractClass("Would you like to look at the candle?", "Pickup the candle");
-    ItemClass studyCandle("CANDLE", "A candle with a pentagram design", "C2", true, true);
-    std::vector<ItemClass>studyItem = { studyCandle };
-
-
-    //Kitchen items
-    InteractClass* userInteractKitchenCounter = new InteractClass("Would you like to look at the kitchen counter?", "");
+    ItemClass mirrorKey = ItemClass("MIRROR HALF KEY", "Half of the key needed to enter the master bedroom.");
     ItemClass kitchenCounter("KITCHEN COUNTER", "The kitchen counter has different colors as its design, it red as its first color, then blue, green, and purple", false, userInteractKitchenCounter);
-    
-    
 
-    std::vector<ItemClass>kitchenItems = { kitchenCounter };
+    //Library Items
+    ItemClass Book("Old Book", "An old book which appears to belong to a bookshelf", "BookKey", true, true);
+    ItemClass Safe("Metal Safe", "A safe that appears to accept a 4 digit code", false, userInteractSafe);
 
-    //Greater library and study rooms
-   
-    //Upstairs definitions
-
-    Door doorMaster = Door(true, "idMaster", "You are now in the MASTER BEDROOM."); //Adding master bedroom door
-    std::vector <Door> Master_Doors = { doorMaster };
-
-    ItemClass noteUpA = ItemClass("SCRIBBLED NOTE", "What looks like a child's drawing of two kids side by side, both looking almost exactly similair, but one of the children seems to have jagged teeth instead of normal teeth.", true); //Note for clue to mirror puzzle
-    InteractClass* storyBookInteraction = new InteractClass("You read the title of a poem, 'The Cycle of a Servant'.", "The lord with crimson cloak, His eyes once sharp, but now they choke. A wineglass shattered at his feet, his lips were poisoned - death so sweet. The servant went into the night, The deed done, taking flight, Blocking the way a spear of the night, The lord’s son seeking justice, lunged forward claiming blood. The servant however did not fall, Gutting the son, no longer standing tall. The servant reached the lowly village, To the bar seeking refuge, Bleeding from his gut. The town drunk drank into the night, While the barkeep kept the light. However a mob did approach, The servant hid, but could not hide, Seized by the people he despised. So the end approached for the lowly servant, Vengeance acquired, accepted his end. Before he met his end, His son’s eyes he met, Looking at his father’s soon to be killer, The servant knew the look, for he had seen it before, The reason that he had killed his lord, The servant was killed purpose fulfilled, However the servant knew before he died, His son would now live his same life.");
-    ItemClass storyBook = ItemClass("STORYBOOK", "A giant storybook made of tough leather and weathered pages, indicating many stories have been told from this book. It is open to a page with a poem on it.", false, storyBookInteraction);
-    InteractClass* lordPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You reach to your mouth and see a speck of blood on your finger.");
-    InteractClass* barkeepPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You feel a sensation wash over you, dulling your senses briefly.");
-
+    //Upstairs items
     ItemClass lordPainting = ItemClass("CRIMSON LORD PORTRAIT", "Portrait of a regal man in a crimson cloak, with blood dripping from his lips as a glass is raised to his lips.", false, lordPaintingInteraction);
     ItemClass barkeepPainting = ItemClass("BARKEEP PORTRAIT", "Portrait of a stocky man cleaning a glass behind the bar, wearing a fake smile.", false, barkeepPaintingInteraction);
+    ItemClass noteUpA = ItemClass("SCRIBBLED NOTE", "What looks like a child's drawing of two kids side by side, both looking almost exactly similair, but one of the children seems to have jagged teeth instead of normal teeth.", true); //Note for clue to mirror puzzle
+    ItemClass storyBook = ItemClass("STORYBOOK", "A giant storybook made of tough leather and weathered pages, indicating many stories have been told from this book. It is open to a page with a poem on it.", false, storyBookInteraction);
+    ItemClass masterKey = ItemClass("MASTER KEY", "Fully completed key to the master bedroom", "idMaster", true, true); //Adding master bedroom key
+
+    //define candles
+    ItemClass Candle1("CANDLE", "A candle with pentagram etchings", "C1", true, true); //candle item instance, name must remain candle to be consumed in main algorithm
+    ItemClass studyCandle("CANDLE", "A candle with a pentagram design", "C2", true, true);
+    ItemClass candle3 = ItemClass("CANDLE", "THE THIRD CANDLE is scribbled on the side... hm", "C3", true, true); //Third candle item
+
+    //define all itemclass vectors for rooms
+    std::vector <ItemClass> roomA_Items = { noteA, statueA }; //Creating items
+    std::vector <ItemClass> roomB_Items = { keyB };
+    std::vector <ItemClass> library_Items = { Book,Safe };
+    std::vector<ItemClass>diningHallItems = { metalSafe, deadBody1,deadBody2,deadBody3,deadBody4 };
+    std::vector <ItemClass> hiddensection_Items = { Candle1 };
+    std::vector <ItemClass> storytellerItems = { storyBook }; //Storyteller's items
+    std::vector <ItemClass> masterBedroomItems = { candle3 }; //Master bedroom items
+    //InteractClass* userInteractCandle = new InteractClass("Would you like to look at the candle?", "Pickup the candle");
+    std::vector<ItemClass>studyItem = { studyCandle };
+    std::vector<ItemClass>kitchenItems = { kitchenCounter };
     std::vector <ItemClass> portraits = { lordPainting, barkeepPainting };
 
 
-    //defining gallery puzzle
-    ItemClass galleryKey = ItemClass("GALLERY HALF KEY", "Half of the key needed to enter the master bedroom.");
-    GalleryPuzzle galleryPuzzle = GalleryPuzzle(portraits, { lordPainting });
-    InteractClass* altarInteraction = new InteractClass("Do you want to initiate puzzle? (YES or NO)", "Test", galleryPuzzle);
-    ItemClass galleryPuzzleStarter = ItemClass("ALTAR", "An altar stands before you with a knife...", false, altarInteraction);
-
+    //define puzzle solution/s
     std::vector <std::string> mirrorSolution = { "MOONLIGHT", "FOREST GREEN", "BLACK" };
-
+    //defining Gallery puzzle
+    GalleryPuzzle galleryPuzzle = GalleryPuzzle(portraits, { lordPainting });
     //defining mirror puzzle
-    ItemClass mirrorKey = ItemClass("MIRROR HALF KEY", "Half of the key needed to enter the master bedroom.");
     MirrorPuzzle mirrorPuzzle = MirrorPuzzle(mirrorSolution);
+
     InteractClass* mirrorPuzzleStarterInteraction = new InteractClass("Do you want to solve the three word combination? (YES OR NO)", "Test", mirrorPuzzle);
+    InteractClass* altarInteraction = new InteractClass("Do you want to initiate puzzle? (YES or NO)", "Test", galleryPuzzle);
     ItemClass mirrorPuzzleStarter = ItemClass("COMBINATION LOCK", "A three word combination lock...", false, mirrorPuzzleStarterInteraction);
-
-    ItemClass masterKey = ItemClass("MASTER KEY", "Fully completed key to the master bedroom", "idMaster", true, true); //Adding master bedroom key
-    ItemClass candle3 = ItemClass("CANDLE", "THE THIRD CANDLE is scribbled on the side... hm", true); //Third candle item
-
+    ItemClass galleryPuzzleStarter = ItemClass("ALTAR", "An altar stands before you with a knife...", false, altarInteraction);
     std::vector <ItemClass> upstairsItems = { noteUpA, mirrorPuzzleStarter }; //Upstairs items
-    std::vector <ItemClass> storytellerItems = { storyBook }; //Storyteller's items
     std::vector <ItemClass> galleryItems = { galleryPuzzleStarter, lordPainting, barkeepPainting }; //Gallery items
-    std::vector <ItemClass> masterBedroomItems = { candle3 }; //Master bedroom items
 
-   
     //Defining downstairs rooms
     rooms["FOYER"] = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR", "PORTAL"}, FoyerDoors, roomA_Items);
     rooms["LIBRARY"] = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous SAFE, it appears to accept a 4 digit code. You also see a BOOKSHELF with a missing book. There is a BOOK on the table  \n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF", "GREATER LIBRARY"}, Library_Doors, library_Items);
@@ -247,7 +228,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
+    PlayerClass userPlayer = PlayerClass(rooms["GALLERY"]);
 
     while (true) {
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
