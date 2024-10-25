@@ -11,6 +11,7 @@
 #include "Puzzle.h"
 #include "GalleryPuzzle.h"
 #include "MirrorPuzzle.h"
+#include "MonsterClass.h"
 #include <iostream>
 #include <sstream>
 #include <list>
@@ -101,6 +102,8 @@ void GameControllerClass::viewInventory(PlayerClass& myPlayer) {
           std::cout << "The item you entered is not in your inventory." << std::endl;
         }
 }
+
+
 
 
 void GameControllerClass::displayBackstory() {
@@ -245,8 +248,17 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
+    //Defining variables for timer
+    MonsterClass monsterTimer(10);
+    monsterTimer.start();
+
 
     while (true) {
+        if (monsterTimer.isTriggered())
+        {
+            monsterTimer.start(); //Resets monster timer to start again
+        }
+
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
         UI.displayPrompt(userPlayer.getRoomDescription());
         currentRoom_temp.displayRoomItems(); //Displaying room items, TEMP function until can implement into UI class
@@ -278,6 +290,8 @@ void GameControllerClass::gameLoop() {
 
 
             if (command == "QUIT") {
+                monsterTimer.stop();
+                monsterTimer.join();
                 endGame();  // Call endGame method
                 return;  // Exit the game loop
             }
