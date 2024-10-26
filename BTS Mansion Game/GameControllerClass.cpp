@@ -121,13 +121,14 @@ void GameControllerClass::gameLoop() {
     std::unordered_map<std::string, Door> doors; // hashmap for all doors
 
     //Declare all doors TODO: Joey add logic for door map 
-    Door doorC = Door(true, "BBBB", "You are now in the FOYER, In front of you is the LOUNGE and LIBRARY"); // create FOYER door
-    Door HiddenBookshelf = Door(true, "BookKey", "****You place the book on the shelf. The Bookshelf begins to move, screaching across the woodenfloor, it reveals the staircase leading down to the HIDDENSECTION********");
-    Door doorMaster = Door(true, "idMaster", "You are now in the MASTER BEDROOM."); //Adding master bedroom door
 
-    std::vector<Door> FoyerDoors = { doorC };
-    std::vector <Door> Library_Doors = { HiddenBookshelf, doorC };
-    std::vector <Door> Master_Doors = { doorMaster };
+    doors["DOOR"] = Door(true, "BBBB", "You are now in the FOYER, In front of you is the LOUNGE and LIBRARY"); // create FOYER door
+    doors["BOOKSHELF"] = Door(true, "BookKey", "****You place the book on the shelf. The Bookshelf begins to move, screaching across the woodenfloor, it reveals the staircase leading down to the HIDDENSECTION********");
+    doors["DOUBLE DOORS"] = Door(true, "idMaster", "You are now in the MASTER BEDROOM."); //Adding master bedroom door
+
+    std::vector<Door> FoyerDoors = { doors["DOOR"] };
+    std::vector <Door> Library_Doors = { doors["BOOKSHELF"], doors["DOOR"] };
+    std::vector <Door> Master_Doors = { doors["DOUBLE DOORS"] };
 
     //define all ineractions
     InteractClass* userInteractStatueA = new InteractClass("Would you like to INTERACT with the statue?", "You feel a wave of knowledge wash over you, like you've learned something from someone previously here before you."); //Defining statue interaction
@@ -225,10 +226,12 @@ void GameControllerClass::gameLoop() {
     rooms["DINING HALL"] = RoomClass("You are now in the Dining Hall. There is a large table and chairs. From here, you can go to the kitchen.\n", "DINING HALL", std::list<std::string>{"LOUNGE", "KITCHEN"}, diningHallItems);
     rooms["KITCHEN"] = RoomClass("You are now in the Kitchen,You can return to the dining hall from here.\n", "KITCHEN", std::list<std::string>{"DINING HALL"}, kitchenItems);
 
+
+    
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["GALLERY"]);
+    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
 
     while (true) {
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
@@ -360,8 +363,6 @@ void GameControllerClass::gameLoop() {
                     system("cls");
                     userPlayer.setRoom(rooms[command]);
                 }
-
-
                 else if (command == "PORTAL") {
                     system("cls");
                     if (userPlayer.getRoom().GetName() == "UPSTAIRS") {
@@ -374,84 +375,17 @@ void GameControllerClass::gameLoop() {
                         userPlayer.setRoom(rooms["UPSTAIRS"]);  // Automatically move to the upstairs room
                     }
                 }
-
-                else if (command == "DOUBLE DOORS") { //Check if double doors are locked
-                    system("cls");
-
-                    std::vector<Door>& doors = currentRoom_temp.GetDoors();
-                    for (int i = 0; i < doors.size(); i++) {
-                        if (doors[i].getIsLocked())
-                        {
-                            if (userPlayer.getInventorySize() != 0)
-                            {
-                                std::string playerKey = userPlayer.searchForKey(doors[i].getDoorKeyID());
-                                if (doors[i].getDoorKeyID() == playerKey)
-                                {
-
-                                    userPlayer.useKey(playerKey); //Uses correct key from inventory
-                                    UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the LIBRARY\n");
-                                    currentRoom_temp.unlockDoor(i); //unlocks door, sets description to different openDoor description through
-                                    doors[i].unlockDoor();
-                                    currentRoom_temp.setRoomOption(std::list<std::string>{"PORTAL", "MIRROR ROOM 1", "MIRROR ROOM 2", "STORYTELLER'S ROOM", "GALLERY", "MASTER BEDROOM"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
-                                    userPlayer.setRoom(currentRoom_temp); //set room
-
-                                    //currentRoom_temp = userPlayer.getRoom();
-                                }
-                                else
-                                {
-                                    UI.displayPrompt("The door is locked");
-                                }
-                            }
-                            else
-                            {
-                                UI.displayPrompt("The door is locked");
-                            }
-
-                        }
-                        else
-                        {
-                            userPlayer.setRoom(rooms["LIBRARY"]);
-                            //currentRoom_temp = userPlayer.getRoom();
-                        }
-                    }
+                else if (command == "DOUBLE DOORS") {
+                    std::list<std::string> options = { "PORTAL", "MIRROR ROOM 1", "MIRROR ROOM 2", "STORYTELLER'S ROOM", "GALLERY", "MASTER BEDROOM" };
+                    handleDoors(userPlayer, currentRoom_temp, "MASTER BEDROOM", options, rooms);
                 }
                 else if (command == "DOOR") {
-                    system("cls");
-
-                    std::vector<Door>& doors = currentRoom_temp.GetDoors();
-                    for (int i = 0; i < doors.size(); i++) {
-                        if (doors[i].getIsLocked())
-                        {
-                            if (userPlayer.getInventorySize() != 0)
-                            {
-                                std::string playerKey = userPlayer.searchForKey(doors[i].getDoorKeyID());
-                                if (doors[i].getDoorKeyID() == playerKey)
-                                {
-
-                                    userPlayer.useKey(playerKey); //Uses correct key from inventory
-                                    UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the LIBRARY\n");
-                                    currentRoom_temp.unlockDoor(i); //unlocks door, sets description to different openDoor description through
-                                    doors[i].unlockDoor();
-                                    currentRoom_temp.setRoomOption(std::list<std::string>{"LOUNGE", "LIBRARY", "PORTAL"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
-                                    rooms[currentRoom_temp.GetName()] = currentRoom_temp;
-                                    userPlayer.setRoom(currentRoom_temp); //set room
-                                }
-                                else
-                                {
-                                    UI.displayPrompt("The door is locked");
-                                }
-                            }
-                            else
-                            {
-                                UI.displayPrompt("The door is locked");
-                            }
-                        }
-                        else
-                        {
-                            userPlayer.setRoom(rooms["LIBRARY"]);
-                            //currentRoom_temp = userPlayer.getRoom();
-                        }
-                    }
+                    std::list<std::string> options = { "LOUNGE", "LIBRARY", "PORTAL" };
+                    handleDoors(userPlayer, currentRoom_temp, "LIBRARY", options, rooms);
+                }
+                else if (command == "BOOKSHELF") {
+                    std::list<std::string> options =  {"FOYER", "HIDDEN SECTION"};
+                    handleDoors(userPlayer, currentRoom_temp, "HIDDEN SECTION", options, rooms);
                 }
                 else if (command == "PUZZLE")
                 {
@@ -474,48 +408,6 @@ void GameControllerClass::gameLoop() {
 
                     }
                 }
-                else if (command == "BOOKSHELF") {
-                    system("cls");
-
-                    std::vector<Door>& doors = currentRoom_temp.GetDoors();
-                    for (int i = 0; i < doors.size(); i++) {
-                        if (doors[i].getIsLocked())
-                        {
-                            if (userPlayer.getInventorySize() != 0)
-                            {
-                                std::string playerKey = userPlayer.searchForKey(doors[i].getDoorKeyID());
-                                if (doors[i].getDoorKeyID() == playerKey)
-                                {
-
-                                    userPlayer.useKey(playerKey); //Uses correct key from inventory
-                                    UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the LIBRARY\n");
-                                    currentRoom_temp.unlockDoor(i); //unlocks door, sets description to different openDoor description through
-                                    doors[i].unlockDoor();
-                                    currentRoom_temp.setRoomOption(std::list<std::string>{"FOYER", "HIDDEN SECTION"}); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
-                                    rooms[currentRoom_temp.GetName()] = currentRoom_temp; //update room in map
-                                    userPlayer.setRoom(currentRoom_temp); //set room
-
-                                    //currentRoom_temp = userPlayer.getRoom();
-                                }
-                                else
-                                {
-                                    UI.displayPrompt("The door is locked");
-                                }
-                            }
-                            else
-                            {
-                                UI.displayPrompt("The door is locked");
-                            }
-                        }
-                        else
-                        {
-                            userPlayer.setRoom(rooms["HIDDEN ROOM"]);
-                            //currentRoom_temp = userPlayer.getRoom();
-                        }
-                    }
-
-                }
-
             }
             else
             { //catch invalid input NOTE - in the future we will refactor to utilize UI class input validation
@@ -550,75 +442,49 @@ void GameControllerClass::showMenu() {
     }
 }
 
-void GameControllerClass::interactWithStatueSequence() {
-
-    PlayerClass myPlayer; // Create an instance of the player
-    ItemClass statue("Statue\n", "This statue is a woman carrying book", false); // Define the statue as an item
-    InteractClass interactWithStatue; // Define the interaction class
-    UserInterfaceClass Myuserinterface; // Interface for handling input/output
-
-    std::cout << "You have found a statue." << std::endl;
-
-    Myuserinterface.displayPrompt("You can INTERACT with the statue, READ its description ,or EXIT. Enter INTERACT,READ or EXIT:");
-
-    // Loop until the user interacts with the statue or exits
-    while (true) {
-        Myuserinterface.userInput(); // Get the user's input
-
-        // Convert input to uppercase for case-insensitive comparison
-        std::string input = Myuserinterface.getCurrentInput();
-        std::transform(input.begin(), input.end(), input.begin(), ::toupper);
-
-        if (input == "READ") {
-            // Display the description of the statue
-            Myuserinterface.displayPrompt(statue.getDescription());
-
-            // After reading, give an option to interact or exit
-            Myuserinterface.displayPrompt("You can now INTERACT with the statue or EXIT. Enter INTERACT or EXIT:");
-
-            // Loop again to get valid input for interacting or exiting
-            while (true) {
-                Myuserinterface.userInput(); // Get user input again
-
-                input = Myuserinterface.getCurrentInput();
-                std::transform(input.begin(), input.end(), input.begin(), ::toupper);
-
-                if (input == "INTERACT") {
-                    interactWithStatue.setInputMessage("You've touched the statue");
-                    interactWithStatue.runInteraction();  // Run interaction logic for the statue
-                    break; // Exit the loop after interaction
-                }
-                else if (input == "EXIT") {
-                    std::cout << "You have chosen to exit the interaction." << std::endl;
-                    break; // Exit the loop if they choose to exit
-                }
-                else {
-                    // Invalid input, ask again
-                    std::cout << "Invalid input. Please type 'INTERACT' to interact with the statue or 'EXIT' to leave." << std::endl;
-                }
-            }
-
-            // Exit the outer loop after valid action (interact or exit)
-            break;
-        }
-        else if (input == "INTERACT") {
-            interactWithStatue.setInputMessage("You've touched the statue.");
-            interactWithStatue.runInteraction();  // Run interaction logic for the statue
-            break; // Exit the loop after interaction
-        }
-        else if (input == "EXIT") {
-            std::cout << "You have chosen to exit the interaction." << std::endl;
-            break; // Exit the loop
-        }
-        else {
-            // Invalid input, prompt user to enter a valid option
-            std::cout << "Invalid input. Please type 'READ' to read the description, 'INTERACT' to interact with the statue, or 'EXIT' to leave." << std::endl;
-        }
-    }
-    std::cout << "Interaction with the statue completed." << std::endl;
-}
-
 void GameControllerClass::endGame() {
     UI.displayPrompt("\nYour world disappears around you. You are still aware but there is nothing, like someone pulled the plug on your brain - Am I dead?\n...You wonder if this will end.\nThank you for playing");
     exit(0);  // Exit the game
 }
+
+
+void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoom, const std::string& targetRoom, const std::list<std::string>& newRoomOptions,std::unordered_map<std::string,RoomClass>& rooms)
+{
+    system("cls");
+    std::vector<Door>& doors = currentRoom.GetDoors();
+    for (int i = 0; i < doors.size(); i++) {
+        if (doors[i].getIsLocked()) {
+            if (player.getInventorySize() != 0) {
+                std::string playerKey = player.searchForKey(doors[i].getDoorKeyID());
+
+                if (doors[i].getDoorKeyID() == playerKey)
+                {
+                    player.useKey(playerKey); //Uses correct key from inventory
+                    UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the " + targetRoom + ".\n");
+                    currentRoom.unlockDoor(i); //unlocks door, sets description to different openDoor description through
+                    doors[i].unlockDoor();
+                    currentRoom.setRoomOption(newRoomOptions); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
+                    player.setRoom(currentRoom); //set room
+                }
+                else
+                {
+                    UI.displayPrompt("The door is locked");
+                }
+            }
+            else
+            {
+                UI.displayPrompt("The door is locked");
+            }
+        }
+        else
+        {
+            player.setRoom(rooms[targetRoom]);
+            //currentRoom_temp = userPlayer.getRoom();
+        }
+    }
+
+}
+
+
+
+
