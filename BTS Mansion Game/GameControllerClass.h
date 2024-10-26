@@ -7,7 +7,8 @@
 #include <string>
 #include "UserInterfaceClass.h"
 #include "PlayerClass.h"
-
+#include <unordered_map>
+#include <list>
 
 class GameControllerClass
 {
@@ -36,8 +37,8 @@ public:
 	// shows inventory
 	void viewInventory(PlayerClass& myPlayer);
 	//prompts to view inventory
-	void interactWithStatueSequence();
 	//Function that displays option to interact ,read or exit the statue.
+	void handleDoors(PlayerClass& player, RoomClass& currentRoom, const std::string& targetRoom, const std::list<std::string>& newRoomOptions, std::unordered_map<std::string, RoomClass>& rooms);
 };
 
 #endif
