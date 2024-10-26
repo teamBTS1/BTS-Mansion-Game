@@ -296,6 +296,11 @@ void GameControllerClass::gameLoop() {
                 return;  // Exit the game loop
             }
 
+            else if (command == "ESCAPE") //Handles when monster grabs player
+            {
+                UI.displayPrompt("You manage to escape the grasp of the monster and are back in the same room you just were in.");
+            }
+
             else if (command == "INVENTORY")
             {
                 system("cls");
@@ -615,7 +620,15 @@ void GameControllerClass::gameLoop() {
             }
             else
             { //catch invalid input NOTE - in the future we will refactor to utilize UI class input validation
-                UI.displayPrompt("\nYou tried to choose your option but you couldn't move your body. It seems like there is an unforseen force telling you can't perform that action..You look around again\n");
+                if (monsterTimer.isGrab() && command != "ESCAPE")
+                {
+                    UI.displayPrompt("The monster begins to siphon away any last vestiges of your being, as your mind quickly numbs and you feel nothing. Hear nothing. Are nothing.");
+                    endGame();
+                }
+                else
+                {
+                    UI.displayPrompt("\nYou tried to choose your option but you couldn't move your body. It seems like there is an unforseen force telling you can't perform that action..You look around again\n");
+                }   
             }
         }
     }

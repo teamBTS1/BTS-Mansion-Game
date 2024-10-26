@@ -16,6 +16,8 @@ private:
 	//std::function<void()> callBack; //Stores a function that runs when timer is triggered
 	std::atomic<bool> timerTriggered;
 	std::atomic<bool> stopFlag;
+	std::atomic<bool> gameOverFlag; //Checks if monster killed player and game over
+	std::atomic<bool> grabFlag; //Checks if in monster grab sequence
 	std::thread timerThread;
 
 public:
@@ -29,6 +31,11 @@ public:
 	void reset(); //Resets timer
 
 	bool isTriggered() const; //Checks if timer has been triggered (hits 0)
+	
+	bool isGameOver() const; //Checks if game over has been triggered
+	void setIsGameOver(bool state); //sets game over flag
+
+	bool isGrab() const; //Checks if player currently grabbed by monster
 
 	void join(); //Joins thread after timer done
 

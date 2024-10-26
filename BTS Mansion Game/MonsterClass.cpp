@@ -16,20 +16,13 @@ MonsterClass::MonsterClass(int dur)
 
 void MonsterClass::onTimerTriggered() //Runs when timer finishes
 {
+	grabFlag = true; //Setting grabFlag to true
+	
 	UserInterfaceClass ui;
 	ui.displayPrompt("A shadowy monster with elongated limbs grabs you, as the shadows encapsulating this monster consume you and all you can feel is its cold embrace.");
-	/*
 	ui.displayPrompt("You see a way out of its grasp for a brief moment, do you want to ESCAPE?");
-	ui.userInput();
-	if (ui.userInput() == "ESCAPE") 
-	{
-		ui.displayPrompt("You manage to follow the light out of the shadowy monster's grasp, returning to your previous room, knowing that if you're not quick it could easily happen again.");
-	}
-	else
-	{
-		ui.displayPrompt("DEAD");
-	}
-	*/
+
+	//can get input here and handle logic inside this function
 }
 
 void MonsterClass::start()
@@ -49,6 +42,10 @@ void MonsterClass::start()
 void MonsterClass::stop()
 {
 	stopFlag = true;
+	if (timerThread.joinable())
+	{
+		timerThread.join();
+	}
 }
 
 void MonsterClass::reset()
@@ -59,6 +56,21 @@ void MonsterClass::reset()
 bool MonsterClass::isTriggered() const
 {
 	return timerTriggered;
+}
+
+bool MonsterClass::isGameOver() const
+{
+	return gameOverFlag;
+}
+
+void MonsterClass::setIsGameOver(bool state)
+{
+	gameOverFlag = state;
+}
+
+bool MonsterClass::isGrab() const
+{
+	return grabFlag;
 }
 
 void MonsterClass::join()
