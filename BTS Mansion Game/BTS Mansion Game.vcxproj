@@ -133,6 +133,8 @@
     <ClCompile Include="InteractClass.cpp" />
     <ClCompile Include="ItemClass.cpp" />
     <ClCompile Include="MirrorPuzzle.cpp" />
+    <ClCompile Include="MonsterClass.cpp" />
+    <ClCompile Include="MonsterClass.h" />
     <ClCompile Include="MovementClass.cpp" />
     <ClCompile Include="PickUpItemClass.cpp" />
     <ClCompile Include="PlayerClass.cpp" />

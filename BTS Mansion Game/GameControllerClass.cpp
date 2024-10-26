@@ -11,6 +11,7 @@
 #include "Puzzle.h"
 #include "GalleryPuzzle.h"
 #include "MirrorPuzzle.h"
+#include "MonsterClass.h"
 #include <iostream>
 #include <sstream>
 #include <list>
@@ -104,6 +105,8 @@ void GameControllerClass::viewInventory(PlayerClass& myPlayer) {
 }
 
 
+
+
 void GameControllerClass::displayBackstory() {
     std::istringstream stream(GameControllerClass::backstory);
     std::string line;
@@ -139,7 +142,7 @@ void GameControllerClass::gameLoop() {
     InteractClass* userInteractBody2 = new InteractClass("Would you like to look at dead body 2", "");
     InteractClass* userInteractBody3 = new InteractClass("Would you like to look at dead body 3", "");
     InteractClass* userInteractBody4 = new InteractClass("Would you like to look at dead body 4", "");
-    InteractClass* storyBookInteraction = new InteractClass("You read the title of a poem, 'The Cycle of a Servant'.", "The lord with crimson cloak, His eyes once sharp, but now they choke. A wineglass shattered at his feet, his lips were poisoned - death so sweet. The servant went into the night, The deed done, taking flight, Blocking the way a spear of the night, The lord’s son seeking justice, lunged forward claiming blood. The servant however did not fall, Gutting the son, no longer standing tall. The servant reached the lowly village, To the bar seeking refuge, Bleeding from his gut. The town drunk drank into the night, While the barkeep kept the light. However a mob did approach, The servant hid, but could not hide, Seized by the people he despised. So the end approached for the lowly servant, Vengeance acquired, accepted his end. Before he met his end, His son’s eyes he met, Looking at his father’s soon to be killer, The servant knew the look, for he had seen it before, The reason that he had killed his lord, The servant was killed purpose fulfilled, However the servant knew before he died, His son would now live his same life.");
+    InteractClass* storyBookInteraction = new InteractClass("You read the title of a poem, 'The Cycle of a Servant'.", "The lord with crimson cloak, His eyes once sharp, but now they choke. A wineglass shattered at his feet, his lips were poisoned - death so sweet. The servant went into the night, The deed done, taking flight, Blocking the way a spear of the night, The lordÂ’s son seeking justice, lunged forward claiming blood. The servant however did not fall, Gutting the son, no longer standing tall. The servant reached the lowly village, To the bar seeking refuge, Bleeding from his gut. The town drunk drank into the night, While the barkeep kept the light. However a mob did approach, The servant hid, but could not hide, Seized by the people he despised. So the end approached for the lowly servant, Vengeance acquired, accepted his end. Before he met his end, His sonÂ’s eyes he met, Looking at his fatherÂ’s soon to be killer, The servant knew the look, for he had seen it before, The reason that he had killed his lord, The servant was killed purpose fulfilled, However the servant knew before he died, His son would now live his same life.");
     InteractClass* lordPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You reach to your mouth and see a speck of blood on your finger.");
     InteractClass* barkeepPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You feel a sensation wash over you, dulling your senses briefly.");
 
@@ -231,9 +234,21 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
+
     PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
 
+    //Defining variables for timer
+    MonsterClass monsterTimer(10);
+    monsterTimer.start();
+
+
+
     while (true) {
+        if (monsterTimer.isTriggered())
+        {
+            monsterTimer.start(); //Resets monster timer to start again
+        }
+
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
         UI.displayPrompt(userPlayer.getRoomDescription());
         currentRoom_temp.displayRoomItems(); //Displaying room items, TEMP function until can implement into UI class
@@ -262,17 +277,23 @@ void GameControllerClass::gameLoop() {
             }
         }
         if (command == "QUIT") {
+            monsterTimer.stop();
+            monsterTimer.join(); //Destory monster timer
             endGame();  // Call endGame method
             return;  // Exit the game loop
         }
-
+        
+        else if (command == "ESCAPE") //Handles when monster grabs player
+        {
+            UI.displayPrompt("You manage to escape the grasp of the monster and are back in the same room you just were in.");
+        }
+      
         else if (command == "INVENTORY")
         {
             system("cls");
             viewInventory(userPlayer); //Call view inventory function
             UI.displayPrompt("\n");
         }
-
         else if (command == "INSPECT") //If user wants to pick up item
         {
             system("cls");
@@ -410,9 +431,16 @@ void GameControllerClass::gameLoop() {
                 }
             }
             else
-            { //catch invalid input NOTE - in the future we will refactor to utilize UI class input validation
-                system("cls");
-                UI.displayPrompt("\nYou tried to choose your option but you couldn't move your body. It seems like there is an unforseen force telling you can't perform that action..You look around again\n");
+            { //catch invalid input NOTE - in the future we will refactor to utilize UI class input validation            
+                if (monsterTimer.isGrab() && command != "ESCAPE")
+                {
+                    UI.displayPrompt("The monster begins to siphon away any last vestiges of your being, as your mind quickly numbs and you feel nothing. Hear nothing. Are nothing.");
+                    endGame();
+                }
+                else
+                {
+                    UI.displayPrompt("\nYou tried to choose your option but you couldn't move your body. It seems like there is an unforseen force telling you can't perform that action..You look around again\n");
+                }   
             }
         }
     }
