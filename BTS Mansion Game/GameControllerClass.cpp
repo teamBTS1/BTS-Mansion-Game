@@ -129,6 +129,9 @@ void GameControllerClass::gameLoop() {
     std::vector<Door> FoyerDoors = { doors["DOOR"] };
     std::vector <Door> Library_Doors = { doors["BOOKSHELF"], doors["DOOR"] };
     std::vector <Door> Master_Doors = { doors["DOUBLE DOORS"] };
+    std::vector<Door> shedDoors;       // Doors for the Shed
+    std::vector<Door> mazeDoors;       // Doors for the Hedge Maze
+    std::vector<Door> fountainDoors;   // Doors for the Fountain
 
     //define all ineractions
     InteractClass* userInteractStatueA = new InteractClass("Would you like to INTERACT with the statue?", "You feel a wave of knowledge wash over you, like you've learned something from someone previously here before you."); //Defining statue interaction
@@ -222,11 +225,46 @@ void GameControllerClass::gameLoop() {
     rooms["MIRROR ROOM 2"] = RoomClass("Stepping into this parlor feels eerily familiar. Bathed in soft golden moonlight streaming through tall, arched windows. The room is elegantly furnished, with a velvet chaise lounge positioned in the center, its deep forest green fabric complementing the warm tones of the oak-paneled walls. A large, ornate mirror hangs above a marble fireplace on the north wall. On a small table beside the chaise, a crystal vase holds a single black rose, perfectly fresh. The air smells faintly of soot, adding a serene ambiance to the room. A plush rug, embroidered with intricate floral patterns, covers the floor, leading to a door on the opposite side of the room.", "MIRROR ROOM 2", std::list<string>{"UPSTAIRS"});
     rooms["STORYTELLER'S ROOM"] = RoomClass("You enter a room filled with a luxuorious carpet, fancy linen bedsheets, and elegant embroidery all about. In the center of the room on a stand, is a big tome open to the page of a story.", "STORYTELLER'S ROOM", std::list <string> {"UPSTAIRS"}, storytellerItems); //have a non pick upable item with poem in it
     rooms["GALLERY"] = RoomClass("You enter a room with many portraits, all of them depicting different people of different statuses. All of the portraits are almost calling you to touch them.", "GALLERY", std::list <string> {"UPSTAIRS"}, galleryItems); //Room full of portraits for poem puzzle
-    rooms["MASTER BEDROOM"] = RoomClass("You are now in Master Bedroom", "MASTER BEDROOM", std::list<string>{"UPSTAIRS"}, masterBedroomItems);
-    rooms["DINING HALL"] = RoomClass("You are now in the Dining Hall. There is a large table and chairs. From here, you can go to the kitchen.\n", "DINING HALL", std::list<std::string>{"LOUNGE", "KITCHEN"}, diningHallItems);
+    rooms["MASTER BEDROOM"] = RoomClass(
+        "You are now in the Master Bedroom. The room is elegantly decorated with fine linens and rich colors.",
+        "MASTER BEDROOM",
+        std::list<std::string>{"UPSTAIRS", "GARDEN"}, // Add GARDEN as an option
+        masterBedroomItems
+    );    rooms["DINING HALL"] = RoomClass("You are now in the Dining Hall. There is a large table and chairs. From here, you can go to the kitchen.\n", "DINING HALL", std::list<std::string>{"LOUNGE", "KITCHEN"}, diningHallItems);
     rooms["KITCHEN"] = RoomClass("You are now in the Kitchen,You can return to the dining hall from here.\n", "KITCHEN", std::list<std::string>{"DINING HALL"}, kitchenItems);
+    rooms["GARDEN"] = RoomClass(
+        "You step outside into a serene garden, filled with vibrant flowers and lush greenery. The moon shines brightly above, and you can hear the gentle rustling of leaves in the breeze. There's a feeling of tranquility here, but also an underlying sense of mystery, as if the garden holds secrets waiting to be uncovered.",
+        "GARDEN",
+        std::list<std::string>{}, // No adjacent rooms for one-way access
+        std::vector<ItemClass>{} // No items initially in the garden
+    );
 
+    // Shed Room
+    rooms["SHED"] = RoomClass(
+        "You enter a small, dusty shed filled with various gardening tools and supplies. The air is thick with the smell of soil and wood. A single window allows a sliver of moonlight to illuminate the cobwebs in the corners.",
+        "SHED",
+        std::list<std::string>{"GARDEN"}, // Only accessible back to the Garden
+        shedDoors, // Use the empty shed doors
+        std::vector<ItemClass>{} // No items in the shed
+    );
 
+    // Hedge Maze Room
+    rooms["HEDGE MAZE"] = RoomClass(
+        "You find yourself in a sprawling hedge maze. Tall hedges tower around you, creating a sense of disorientation. The paths are winding, and the sound of rustling leaves fills the air. You sense that there might be hidden corners to explore.",
+        "HEDGE MAZE",
+        std::list<std::string>{"GARDEN"}, // Only accessible back to the Garden
+        mazeDoors, // Use the empty maze doors
+        std::vector<ItemClass>{} // No items in the maze
+    );
+
+    // Fountain Room
+    rooms["FOUNTAIN"] = RoomClass(
+        "You arrive at a beautifully ornate fountain, its waters sparkling in the sunlight. The sound of water gently cascading down creates a soothing atmosphere. Surrounding the fountain are blooming flowers and lush greenery, adding to the serenity of the space.",
+        "FOUNTAIN",
+        std::list<std::string>{"GARDEN"}, // Only accessible back to the Garden
+        fountainDoors, // Use the empty fountain doors
+        std::vector<ItemClass>{} // No items at the fountain
+    );
     
     std::string startingRoom = "A";
     bool puzzleSolved = false;
