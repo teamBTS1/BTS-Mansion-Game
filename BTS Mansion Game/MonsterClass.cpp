@@ -1,4 +1,8 @@
 #include "MonsterClass.h"
+#include <cstdlib>
+#include <windows.h>
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib")
 
 MonsterClass::MonsterClass()
 {
@@ -20,6 +24,27 @@ void MonsterClass::onTimerTriggered() //Runs when timer finishes
 	
 	UserInterfaceClass ui;
 	ui.displayPrompt("A shadowy monster with elongated limbs grabs you, as the shadows encapsulating this monster consume you and all you can feel is its cold embrace.");
+	PlaySound(TEXT("jumpscare.wav"), NULL, SND_FILENAME | SND_ASYNC); 
+	ui.displayPrompt(R"(
+       ___,---.__          /'|`\          __,---,___
+    ,-'    \`    `-.____,-'  |  `-.____,-'    //    `-.
+  ,'        |           ~'\     /`~           |        `.
+ /      ___//              `. ,'          ,  , \___      \
+|    ,-'   `-.__   _         |        ,    __,-'   `-.    |
+|   /          /\_  `   .    |    ,      _/\          \   |
+\  |           \ \`-.___ \   |   / ___,-'/ /           |  /
+ \  \           | `._   `\\  |  //'   _,' |           /  /
+  `-.\         /'  _ `---'' , . ``---' _  `\         /,-'
+     ``       /     \    ,='/ \`=.    /     \       ''
+             |__   /|\_,--.,-.--,--._/|\   __|
+             /  `./  \\`\ |  |  | /,//' \,'  \
+           /   /     ||--+--|--+-/-|     \   \
+           |   |     /'\_\_\ | /_/_/`\     |   |
+            \   \__, \_     `~'     _/ .__/   /
+             `-._,-'   `-._______,-'   `-._,-'
+		)");
+
+
 	ui.displayPrompt("You see a way out of its grasp for a brief moment, do you want to ESCAPE?");
 
 	//can get input here and handle logic inside this function
