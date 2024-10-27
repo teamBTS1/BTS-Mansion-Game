@@ -3,7 +3,7 @@
 Puzzle::Puzzle()
 {
 	_reward = nullptr;
-	_description = "No description.";
+	_description = "";
 	_isSolved = false;
 }
 

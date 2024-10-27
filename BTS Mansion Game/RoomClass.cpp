@@ -10,6 +10,7 @@ RoomClass::RoomClass()
 
 RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options)
 {
+	this->hasPuzzle = false;
 	this->roomDescription = description;
 	this->roomName = name;
 	this->RoomOptions = options;
@@ -17,6 +18,7 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 
 RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<Door>& doors)
 {
+	this->hasPuzzle = false;
 	this->roomDescription = description;
 	this->roomName = name;
 	this->RoomOptions = options;
@@ -25,6 +27,7 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 
 RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<Door>& doors, std::vector<ItemClass> itemList)
 {
+	this->hasPuzzle = false;
 	this->roomDescription = description;
 	this->roomName = name;
 	this->RoomOptions = options;
@@ -36,6 +39,7 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 
 RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<ItemClass> itemList)
 {
+	this->hasPuzzle = false;
 	this->roomDescription = description;
 	this->roomName = name;
 	this->RoomOptions = options;
@@ -48,6 +52,7 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 {
 	/*this will default to true in the declaration, we just need another constructor so we can set this rooms status to ritual
 	*/
+	this->hasPuzzle = false;
 	this->roomDescription = description;
 	this->roomName = name;
 	this->RoomOptions = options;
@@ -119,8 +124,61 @@ void RoomClass::ReplaceDescription(std::string newDescription)
 {
 }
 
-void RoomClass::AmendDescription(std::string addition)
+std::string RoomClass::AmendDescription()
 {
+	std::string returnMeString = this->roomDescription; //string to be returned as "full" description
+
+	for (int i = 0; i < itemsLength; i++)
+	{
+		/* First for loop to iterate through all item descriptions to add to string
+		*/
+		if (itemsLength == 0) {
+			break;
+		}
+		if (i == 0){
+			returnMeString += " This room contains " + items[i].getDescription() ;
+		}
+		else if (i != itemsLength - 1) {
+			returnMeString += ", " + items[i].getDescription();
+		}
+		else {
+			returnMeString += " and " + items[i].getDescription() + ". ";
+		}
+	
+	}
+
+	auto i = 0;
+	for (const std::string& room : RoomOptions)
+	{
+		/* Second for loop to iterate through all item descriptions to add to string
+		*/
+		if (RoomOptions.size() == 0) {
+			break;
+		}
+		if (RoomOptions.size() == 1) {
+			returnMeString += "Adjacent to these rooms are " + room + ". ";
+			break;
+		}
+		if (i == 0) {
+			returnMeString += "Adjacent to these rooms are " + room + " ";
+		}
+		else if (i != RoomOptions.size()-1) {
+			returnMeString += ", " + room ;
+		}
+		else {
+			returnMeString += " and " + room + ". ";
+		}
+		i += 1;
+	}
+
+	/*
+	std::string puzzleDesc = roomPuzzle.getDescription();
+	if (puzzleDesc.size() != 0) {
+		returnMeString += "Curiously, a " + this->roomPuzzle.getDescription() + " seems to join you in the room";
+	}*/ //what to do foor puzzles? They get passed in as items as opposed to being a member variable of the room
+
+	return returnMeString;
+
 }
 
 std::vector<ItemClass>& RoomClass::getItems()
@@ -189,6 +247,7 @@ void RoomClass::displayAdjacentRooms()
 void RoomClass::setPuzzle(Puzzle puzzle)
 {
 	roomPuzzle = puzzle;
+	hasPuzzle = true;
 }
 
 Puzzle RoomClass::getPuzzle()

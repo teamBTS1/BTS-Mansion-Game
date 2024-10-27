@@ -30,6 +30,7 @@ private:
 	std::vector<ItemClass> items; //List of items that are contained in the room.
 	int itemsLength;
 	Puzzle roomPuzzle;
+	bool hasPuzzle;
 	
 
 
@@ -54,7 +55,7 @@ public:
 	std::string SetName(std::string name); // sets name of room
 	void unlockDoor(); //unlocks door
 	void ReplaceDescription(std::string newDescription); //Replaces the room description with a new one.
-	void AmendDescription(std::string addition); //Adds the inputted string to the end of the room description.
+	std::string AmendDescription(); //Adds the inputted string to the end of the room description.
 	ItemClass& getRoomItemByName(std::string name); //Returns item in room by name
 	std::vector<ItemClass>& getItems(); //Gets list of items in room
 	void displayRoomItems(); //Display room items

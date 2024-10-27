@@ -235,10 +235,12 @@ void GameControllerClass::gameLoop() {
 
     while (true) {
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
-        UI.displayPrompt(userPlayer.getRoomDescription());
-        currentRoom_temp.displayRoomItems(); //Displaying room items, TEMP function until can implement into UI class
-        std::cout << endl;
-        currentRoom_temp.displayAdjacentRooms(); //Displaying adjacent rooms, TEMP function until can implement into UI class
+        
+        UI.displayPrompt(currentRoom_temp.AmendDescription());
+        //UI.displayPrompt(userPlayer.getRoomDescription());
+        //currentRoom_temp.displayRoomItems(); //Displaying room items, TEMP function until can implement into UI class
+        //std::cout << endl;
+       // currentRoom_temp.displayAdjacentRooms(); //Displaying adjacent rooms, TEMP function until can implement into UI class
         UI.displayPrompt("\nYou cant contain your curiosity and have the urge to INSPECT the items in the room. (type 'INVENTORY' to open inventory. Type 'QUIT' to exit the game)\n"); //user input 
         std::string command = UI.userInput();
 
