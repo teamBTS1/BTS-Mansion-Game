@@ -37,6 +37,9 @@ public:
 
 	void waitForInput() const;
 	// waits for user press enter to progress certain multilined dialogue
+
+	void displayPentacle(int candleVal);
+	// prints pentagram with appropriate candle placements for RITUAL ROOM
 };
 
 #endif

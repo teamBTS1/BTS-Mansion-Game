@@ -208,7 +208,7 @@ void GameControllerClass::gameLoop() {
     rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE"});
     rooms["STUDY"] = RoomClass("You enter the study, the walls are dark brown with shelfs full of books and paper scrolls. There is a desk that is rather neat and organize. Behind the desk is grand portrait of a man with a stern face, eyes so dark its you uncomfortable.The man's finger is pointing to what seems to be a cabinet and on behind a pile of books you see a candle.", "STUDY", std::list<std::string>{"GREATER LIBRARY"}, studyItem);
     //defenition for ritual room class, specific constructor
-    rooms["RITUAL ROOM"] = RoomClass("You enter a room that does not invite you back. A perfect, pentacle drawn on the floor invites you to place a candle at each of it's vertecies. [Hint: enter CANDLE as input if you posses a candle]", "RITUAL ROOM", std::list<std::string>{"HIDDEN SECTION"}, true); 
+    rooms["RITUAL ROOM"] = RoomClass("You enter a room that does not invite you back. A perfect, pentacle drawn on the floor invites you to place a candle at each of it's vertecies [Hint: enter CANDLE as input if you posses a candle].", "RITUAL ROOM", std::list<std::string>{"HIDDEN SECTION"}, true); 
     //HIDDEN SECTION 
     rooms["HIDDEN SECTION"] = RoomClass("You now enter the hidden section, nothing is safe here, you feel a presense linger, as if it was plucking your heartstrings, there is a table with a candle on top", "HIDDEN SECTION", std::list<std::string>{"LIBRARY", "RITUAL ROOM"}, hiddensection_Items);
     //PORTAL
@@ -231,7 +231,10 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
+    PlayerClass userPlayer = PlayerClass(rooms["RITUAL ROOM"]);
+    userPlayer.addItem(Candle1);
+    userPlayer.addItem(studyCandle);
+    userPlayer.addItem(candle3);
 
     while (true) {
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
@@ -251,9 +254,12 @@ void GameControllerClass::gameLoop() {
                 if (userPlayer.inInventory("CANDLE"))
                 {
                     userPlayer.useItem("CANDLE"); //Uses Candle from inventory, is removed
-                    UI.displayPrompt("You have placed a candle\n");
                     currentRoom_temp.addCandle();
-                    UI.displayPrompt(std::to_string(currentRoom_temp.getCandleValue()));// for testing purposes to see if candle is added to room
+                    //UI.displayPrompt(std::to_string(currentRoom_temp.getCandleValue()));// for testing purposes to see if candle is added to room
+                    system("cls");
+                    UI.displayPrompt("You have placed a candle\n");
+                    UI.displayPentacle(currentRoom_temp.getCandleValue());
+                    rooms["RITUAL ROOM"] = currentRoom_temp;
                     continue;
                 }
                 else

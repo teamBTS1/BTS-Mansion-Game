@@ -156,11 +156,11 @@ std::string RoomClass::AmendDescription()
 			break;
 		}
 		if (RoomOptions.size() == 1) {
-			returnMeString += "Adjacent to these rooms are " + room + ". ";
+			returnMeString += " Adjacent to these rooms are " + room + ". ";
 			break;
 		}
 		if (i == 0) {
-			returnMeString += "Adjacent to these rooms are " + room + " ";
+			returnMeString += " Adjacent to these rooms are " + room + " ";
 		}
 		else if (i != RoomOptions.size()-1) {
 			returnMeString += ", " + room ;
