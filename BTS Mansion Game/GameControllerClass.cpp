@@ -202,7 +202,7 @@ void GameControllerClass::gameLoop() {
     std::vector <ItemClass> galleryItems = { galleryPuzzleStarter, lordPainting, barkeepPainting }; //Gallery items
 
     //Defining downstairs rooms
-    rooms["FOYER"] = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR", "PORTAL"}, FoyerDoors, roomA_Items);
+    rooms["FOYER"] = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR", "PORTAL","KITCHEN DOOR" }, FoyerDoors, roomA_Items);
     rooms["LIBRARY"] = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous SAFE, it appears to accept a 4 digit code. You also see a BOOKSHELF with a missing book. There is a BOOK on the table  \n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF", "GREATER LIBRARY"}, Library_Doors, library_Items);
     rooms["LOUNGE"] = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER", "DINING HALL"}, roomB_Items);
     rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE"});
@@ -241,6 +241,17 @@ void GameControllerClass::gameLoop() {
         currentRoom_temp.displayAdjacentRooms(); //Displaying adjacent rooms, TEMP function until can implement into UI class
         UI.displayPrompt("\nYou cant contain your curiosity and have the urge to INSPECT the items in the room. (type 'INVENTORY' to open inventory. Type 'QUIT' to exit the game)\n"); //user input 
         std::string command = UI.userInput();
+
+        if (command == "KITCHEN DOOR" && std::string(userPlayer.getRoomName()) == "KITCHEN" && rooms.find("FOYER") != rooms.end()) {
+            // Player is in the kitchen and wants to enter the foyer through the door
+            UI.displayPrompt("\nYou open the door and enter the foyer.\n");
+            userPlayer.setRoom(rooms["FOYER"]);  // Move player to the foyer
+        }
+        else if (command == "KITCHEN DOOR" && std::string(userPlayer.getRoomName()) == "FOYER") {
+            // Prevent access to the kitchen from the foyer
+            UI.displayPrompt("\nThe door to the kitchen is locked from this side.\n");
+        }
+
 
         if (command == "CANDLE" && userPlayer.getRoomName() == "RITUAL ROOM") //user will type candle in input section to place a candle, only a valid input if they are in the RITUAL ROOM
         {
