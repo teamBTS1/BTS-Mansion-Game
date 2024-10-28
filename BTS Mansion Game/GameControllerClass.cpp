@@ -126,6 +126,7 @@ void GameControllerClass::gameLoop() {
     doors["BOOKSHELF"] = Door(true, "BookKey", "****You place the book on the shelf. The Bookshelf begins to move, screaching across the woodenfloor, it reveals the staircase leading down to the HIDDENSECTION********");
     doors["DOUBLE DOORS"] = Door(true, "idMaster", "You are now in the MASTER BEDROOM."); //Adding master bedroom door
     doors["BLOCKED HEDGE MAZE"] = Door(true, "MAZEKEY", "You pour the holy water on the dark force blocking the entrance to the hedge maze, granting yourself access as the dark sludge burns away.");
+    doors["MAZE EXIT"] = Door(true, "MAZEEXITKEY", "Using the map, you are able to find your way out of the maze, reaching the exit.");
 
     std::vector<Door> FoyerDoors = { doors["DOOR"] };
     std::vector <Door> Library_Doors = { doors["BOOKSHELF"], doors["DOOR"] };
@@ -133,6 +134,7 @@ void GameControllerClass::gameLoop() {
     std::vector<Door> shedDoors;       // Doors for the Shed
     std::vector<Door> mazeDoors = { doors["BLOCKED HEDGE MAZE"] };       // Doors for the Hedge Maze
     std::vector<Door> fountainDoors;   // Doors for the Fountain
+    std::vector<Door> mazeExitDoors = { doors["MAZE EXIT"] }; //Exit of hedge maze
 
     //define all ineractions
     InteractClass* userInteractStatueA = new InteractClass("Would you like to INTERACT with the statue?", "You feel a wave of knowledge wash over you, like you've learned something from someone previously here before you."); //Defining statue interaction
@@ -175,11 +177,15 @@ void GameControllerClass::gameLoop() {
     //Fountain items
     ItemClass mazeKey = ItemClass("HOLY WATER", "Pristine bottle of blessed water", "MAZEKEY", true, true); //Key to unlock hedge maze
 
+    //Hedge maze items
+    ItemClass mazeExitKey = ItemClass("MAZE MAP", "Map outlining the layout of the maze, able to lead you to the exit.", "MAZEEXITKEY", true, true); //Key to unlock hedge maze exit
+
     //define candles
     ItemClass Candle1("CANDLE", "A candle with pentagram etchings", "C1", true, true); //candle item instance, name must remain candle to be consumed in main algorithm
     ItemClass studyCandle("CANDLE", "A candle with a pentagram design", "C2", true, true);
     ItemClass candle3 = ItemClass("CANDLE", "THE THIRD CANDLE is scribbled on the side... hm", "C3", true, true); //Third candle item
-
+    ItemClass candle4 = ItemClass("CANDLE", "The fourth candle, one more until you're finally out of this nightmare.", "C4", true, true); //Fourth candle
+    
     //define all itemclass vectors for rooms
     std::vector <ItemClass> roomA_Items = { noteA, statueA }; //Creating items
     std::vector <ItemClass> roomB_Items = { keyB };
@@ -212,6 +218,7 @@ void GameControllerClass::gameLoop() {
     std::vector <ItemClass> upstairsItems = { noteUpA, mirrorPuzzleStarter }; //Upstairs items
     std::vector <ItemClass> galleryItems = { galleryPuzzleStarter, lordPainting, barkeepPainting }; //Gallery items
     std::vector <ItemClass> fountainItems = { fountainPuzzleStarter }; //Fountain items
+    std::vector <ItemClass> mazeExitItems = { candle4 }; //Maze exit items
 
     //Defining downstairs rooms
     rooms["FOYER"] = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR", "PORTAL"}, FoyerDoors, roomA_Items);
@@ -262,10 +269,12 @@ void GameControllerClass::gameLoop() {
     rooms["HEDGE MAZE"] = RoomClass(
         "You find yourself in a sprawling hedge maze. Tall hedges tower around you, creating a sense of disorientation. The paths are winding, and the sound of rustling leaves fills the air. You sense that there might be hidden corners to explore.",
         "HEDGE MAZE",
-        std::list<std::string>{"GARDEN"}, // Only accessible back to the Garden
-        mazeDoors, // Use the empty maze doors
+        std::list<std::string>{"GARDEN", "MAZE EXIT"}, // Only accessible back to the Garden
+        mazeExitDoors, // Use the empty maze doors
         std::vector<ItemClass>{} // No items in the maze
     );
+
+    rooms["HEDGE MAZE EXIT"] = RoomClass("You exit the hedge maze into a small clearing with a bird fountain, this place seems very calm, almost safe.", "HEDGE MAZE EXIT", std::list<string> {"HEDGE MAZE"}, mazeExitDoors, mazeExitItems);
 
     // Fountain Room
     rooms["FOUNTAIN"] = RoomClass(
@@ -279,7 +288,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["GARDEN"]); //CHANGED FOR TESTING BTS-127
+    PlayerClass userPlayer = PlayerClass(rooms["HEDGE MAZE"]); //CHANGED FOR TESTING BTS-127
 
     while (true) {
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
@@ -439,6 +448,11 @@ void GameControllerClass::gameLoop() {
                 {
                     std::list<std::string> options = { "SHED", "FOUNTAIN", "HEDGE MAZE"};
                     handleDoors(userPlayer, currentRoom_temp, "HEDGE MAZE", options, rooms);
+                }
+                else if (command == "MAZE EXIT")
+                {
+                    std::list<std::string> options = { "GARDEN", "HEDGE MAZE EXIT"};
+                    handleDoors(userPlayer, currentRoom_temp, "HEDGE MAZE EXIT", options, rooms);
                 }
                 else if (command == "PUZZLE")
                 {
