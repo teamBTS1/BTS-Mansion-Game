@@ -125,12 +125,13 @@ void GameControllerClass::gameLoop() {
     doors["DOOR"] = Door(true, "BBBB", "You are now in the FOYER, In front of you is the LOUNGE and LIBRARY"); // create FOYER door
     doors["BOOKSHELF"] = Door(true, "BookKey", "****You place the book on the shelf. The Bookshelf begins to move, screaching across the woodenfloor, it reveals the staircase leading down to the HIDDENSECTION********");
     doors["DOUBLE DOORS"] = Door(true, "idMaster", "You are now in the MASTER BEDROOM."); //Adding master bedroom door
+    doors["BLOCKED HEDGE MAZE"] = Door(true, "MAZEKEY", "You pour the holy water on the dark force blocking the entrance to the hedge maze, granting yourself access as the dark sludge burns away.");
 
     std::vector<Door> FoyerDoors = { doors["DOOR"] };
     std::vector <Door> Library_Doors = { doors["BOOKSHELF"], doors["DOOR"] };
     std::vector <Door> Master_Doors = { doors["DOUBLE DOORS"] };
     std::vector<Door> shedDoors;       // Doors for the Shed
-    std::vector<Door> mazeDoors;       // Doors for the Hedge Maze
+    std::vector<Door> mazeDoors = { doors["BLOCKED HEDGE MAZE"] };       // Doors for the Hedge Maze
     std::vector<Door> fountainDoors;   // Doors for the Fountain
 
     //define all ineractions
@@ -171,6 +172,9 @@ void GameControllerClass::gameLoop() {
     ItemClass storyBook = ItemClass("STORYBOOK", "A giant storybook made of tough leather and weathered pages, indicating many stories have been told from this book. It is open to a page with a poem on it.", false, storyBookInteraction);
     ItemClass masterKey = ItemClass("MASTER KEY", "Fully completed key to the master bedroom", "idMaster", true, true); //Adding master bedroom key
 
+    //Fountain items
+    ItemClass mazeKey = ItemClass("HOLY WATER", "Pristine bottle of blessed water", "MAZEKEY", true, true); //Key to unlock hedge maze
+
     //define candles
     ItemClass Candle1("CANDLE", "A candle with pentagram etchings", "C1", true, true); //candle item instance, name must remain candle to be consumed in main algorithm
     ItemClass studyCandle("CANDLE", "A candle with a pentagram design", "C2", true, true);
@@ -196,13 +200,18 @@ void GameControllerClass::gameLoop() {
     GalleryPuzzle galleryPuzzle = GalleryPuzzle(portraits, { lordPainting });
     //defining mirror puzzle
     MirrorPuzzle mirrorPuzzle = MirrorPuzzle(mirrorSolution);
+    //defining fountain puzzle
+    FountainPuzzle fountainPuzzle = FountainPuzzle("FEAR", "MEMORY", "CLOCK", "GRAVE");
 
-    InteractClass* mirrorPuzzleStarterInteraction = new InteractClass("Do you want to solve the three word combination? (YES OR NO)", "Test", mirrorPuzzle);
+    InteractClass* mirrorPuzzleStarterInteraction = new InteractClass("Do you want to solve the three word combination? (YES or NO)", "Test", mirrorPuzzle);
     InteractClass* altarInteraction = new InteractClass("Do you want to initiate puzzle? (YES or NO)", "Test", galleryPuzzle);
+    InteractClass* fountainPuzzleStarterInteraction = new InteractClass("Do you want to begin the Fountain Puzzle? (YES or NO)", "Test", fountainPuzzle);
     ItemClass mirrorPuzzleStarter = ItemClass("COMBINATION LOCK", "A three word combination lock...", false, mirrorPuzzleStarterInteraction);
     ItemClass galleryPuzzleStarter = ItemClass("ALTAR", "An altar stands before you with a knife...", false, altarInteraction);
+    ItemClass fountainPuzzleStarter = ItemClass("FOUNTAIN PANEL", "A panel in the base of the fountain seems like you could push it like a button...", false, fountainPuzzleStarterInteraction);
     std::vector <ItemClass> upstairsItems = { noteUpA, mirrorPuzzleStarter }; //Upstairs items
     std::vector <ItemClass> galleryItems = { galleryPuzzleStarter, lordPainting, barkeepPainting }; //Gallery items
+    std::vector <ItemClass> fountainItems = { fountainPuzzleStarter }; //Fountain items
 
     //Defining downstairs rooms
     rooms["FOYER"] = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR", "PORTAL"}, FoyerDoors, roomA_Items);
@@ -235,7 +244,8 @@ void GameControllerClass::gameLoop() {
     rooms["GARDEN"] = RoomClass(
         "You step outside into a serene garden, filled with vibrant flowers and lush greenery. The moon shines brightly above, and you can hear the gentle rustling of leaves in the breeze. There's a feeling of tranquility here, but also an underlying sense of mystery, as if the garden holds secrets waiting to be uncovered.",
         "GARDEN",
-        std::list<std::string>{}, // No adjacent rooms for one-way access
+        std::list<std::string>{"SHED", "FOUNTAIN", "BLOCKED HEDGE MAZE"},
+        mazeDoors,
         std::vector<ItemClass>{} // No items initially in the garden
     );
 
@@ -263,13 +273,13 @@ void GameControllerClass::gameLoop() {
         "FOUNTAIN",
         std::list<std::string>{"GARDEN"}, // Only accessible back to the Garden
         fountainDoors, // Use the empty fountain doors
-        std::vector<ItemClass>{} // No items at the fountain
+        fountainItems // No items at the fountain
     );
     
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
+    PlayerClass userPlayer = PlayerClass(rooms["GARDEN"]); //CHANGED FOR TESTING BTS-127
 
     while (true) {
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
@@ -378,7 +388,7 @@ void GameControllerClass::gameLoop() {
 
                 else if (currentRoom_temp.getRoomItemByName(itemName).getInteraction()->getIsPuzzle() == true) //If interaction is a puzzle, call overloaded runInteraction
                 {
-                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer, galleryKey, mirrorKey, masterKey); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
+                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer, galleryKey, mirrorKey, masterKey, mazeKey); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
                 }
                 else //Run interact sequence if not pick up able object
                 {
@@ -424,6 +434,11 @@ void GameControllerClass::gameLoop() {
                 else if (command == "BOOKSHELF") {
                     std::list<std::string> options =  {"FOYER", "HIDDEN SECTION"};
                     handleDoors(userPlayer, currentRoom_temp, "HIDDEN SECTION", options, rooms);
+                }
+                else if (command == "BLOCKED HEDGE MAZE")
+                {
+                    std::list<std::string> options = { "SHED", "FOUNTAIN", "HEDGE MAZE"};
+                    handleDoors(userPlayer, currentRoom_temp, "HEDGE MAZE", options, rooms);
                 }
                 else if (command == "PUZZLE")
                 {
