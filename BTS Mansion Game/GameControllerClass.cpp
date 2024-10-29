@@ -444,7 +444,7 @@ void GameControllerClass::gameLoop() {
                 }
                 else if (command == "GREATER LIBRARY DOOR")
                 {
-                    std::list<std::string> options = { "LIBRARY","GREATER LIBRARY","STUDY" };
+                    std::list<std::string> options = { "LIBRARY","GREATER LIBRARY"};
                     handleDoors(userPlayer, currentRoom_temp, "GREATER LIBRARY", options, rooms);
                 }
                 else if (command == "BOOKSHELF") {
@@ -516,10 +516,15 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
 {
     system("cls");
     std::vector<Door>& doors = currentRoom.GetDoors();
+  
     for (int i = 0; i < doors.size(); i++) {
         if (doors[i].getIsLocked()) {
+            std::cout << "Door is locked. Checking inventory for key..." << std::endl;
             if (player.getInventorySize() != 0) {
+
                 std::string playerKey = player.searchForKey(doors[i].getDoorKeyID());
+                std::cout << "Player key found: " << playerKey << ", Door key required: " << doors[i].getDoorKeyID() << std::endl;
+
 
                 if (doors[i].getDoorKeyID() == playerKey)
                 {
@@ -542,9 +547,11 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
         }
         else
         {
-            player.setRoom(rooms[targetRoom]);
+            //player.setRoom(rooms[targetRoom]);
             //currentRoom_temp = userPlayer.getRoom();
         }
+
+    
     }
 
 }

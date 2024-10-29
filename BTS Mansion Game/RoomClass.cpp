@@ -110,8 +110,9 @@ std::string RoomClass::GetName()
 
 void RoomClass::unlockDoor(int doorIndex)
 {
-	if (doorIndex >= 0 && doorIndex < roomDoors.size()) {
-		setRoomDescription(roomDoors[doorIndex].returnOpenDoorDescription()); //change description state of room
+	if (doorIndex >= 0 && doorIndex < roomDoors.size() && roomDoors[doorIndex].getIsLocked()) {
+		roomDoors[doorIndex].unlockDoor(); 
+		setRoomDescription(roomDoors[doorIndex].returnOpenDoorDescription());
 	}
 }
 
