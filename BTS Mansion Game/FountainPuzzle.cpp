@@ -4,10 +4,10 @@ FountainPuzzle::FountainPuzzle()	//Default constructor
 {
 	_description = " ";
 	_isSolved = false;
-	answer1 = "";
-	answer2 = "";
-	answer3 = "";
-	answer4 = "";
+	answer1 = " ";
+	answer2 = " ";
+	answer3 = " ";
+	answer4 = " ";
 }
 
 FountainPuzzle::FountainPuzzle(std::string ans1, std::string ans2, std::string ans3, std::string ans4)

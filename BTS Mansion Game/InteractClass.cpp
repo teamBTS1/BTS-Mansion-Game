@@ -39,6 +39,15 @@ InteractClass::InteractClass(std::string inMssg, std::string interactMssg, Fount
     isPuzzle = true;
 }
 
+InteractClass::InteractClass(std::string inMssg, std::string interactMssg, MazePuzzle puzz) //constructor for fountain puzzle
+{
+    inputMessage = inMssg;
+    interactMessage = interactMssg;
+    interacted = false;
+    maPuzzle = puzz;
+    isPuzzle = true;
+}
+
 // Function to set input message
 void InteractClass::setInputMessage(const std::string& message) {
     inputMessage = message;
@@ -96,7 +105,7 @@ void InteractClass::runInteraction() {
     
 }
 
-void InteractClass::runInteraction(PlayerClass& player, ItemClass& galleryItm, ItemClass& mirrorItm, ItemClass& masterItm, ItemClass& fountainItem) { //Function to run an interaction with items and picking up
+void InteractClass::runInteraction(PlayerClass& player, ItemClass& galleryItm, ItemClass& mirrorItm, ItemClass& masterItm, ItemClass& fountainItem, ItemClass& mazeItem) { //Function to run an interaction with items and picking up
     UserInterfaceClass ui;
     //input interaction message;
     //simulate user input demonstrate
@@ -188,7 +197,28 @@ void InteractClass::runInteraction(PlayerClass& player, ItemClass& galleryItm, I
                 {
                     ui.displayPrompt("This item seems dormant.");
                 }
-            }    
+            }
+
+            else if (maPuzzle.getDescription() == "Maze Puzzle") {//if in maze puzzle
+                if (maPuzzle.isSolved() == false)
+                {
+                    maPuzzle.runPuzzle(); //Run maze puzzle
+                    if (maPuzzle.isSolved())
+                    {
+                        ui.displayPrompt("You solved the Maze Puzzle!");
+                        ui.displayPrompt("You find a map of the maze at the end of this sequence of symbols, picking it up to navigate the maze.");
+                        player.addItem(mazeItem);
+                    }
+                    else
+                    {
+                        ui.displayPrompt("You failed the Maze Puzzle.");                        
+                    }
+                }
+                else
+                {
+                    ui.displayPrompt("This item seems dormant.");
+                }
+            }
     }
         
     else {

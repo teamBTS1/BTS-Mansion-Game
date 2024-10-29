@@ -11,6 +11,8 @@
 #include "Puzzle.h"
 #include "GalleryPuzzle.h"
 #include "MirrorPuzzle.h"
+#include "FountainPuzzle.h"
+#include "MazePuzzle.h"
 #include <iostream>
 #include <sstream>
 #include <list>
@@ -208,17 +210,22 @@ void GameControllerClass::gameLoop() {
     MirrorPuzzle mirrorPuzzle = MirrorPuzzle(mirrorSolution);
     //defining fountain puzzle
     FountainPuzzle fountainPuzzle = FountainPuzzle("FEAR", "MEMORY", "CLOCK", "GRAVE");
+    //defining maze puzzle
+    MazePuzzle mazePuzzle = MazePuzzle({ "RABBIT", "CROW", "SNAKE", "SCARAB" });
 
     InteractClass* mirrorPuzzleStarterInteraction = new InteractClass("Do you want to solve the three word combination? (YES or NO)", "Test", mirrorPuzzle);
     InteractClass* altarInteraction = new InteractClass("Do you want to initiate puzzle? (YES or NO)", "Test", galleryPuzzle);
     InteractClass* fountainPuzzleStarterInteraction = new InteractClass("Do you want to begin the Fountain Puzzle? (YES or NO)", "Test", fountainPuzzle);
+    InteractClass* mazePuzzleStarterInteraction = new InteractClass("You should explore the maze, paying attention to your surrondings, do you want to explore? (YES or NO)", "Test", mazePuzzle);
     ItemClass mirrorPuzzleStarter = ItemClass("COMBINATION LOCK", "A three word combination lock...", false, mirrorPuzzleStarterInteraction);
     ItemClass galleryPuzzleStarter = ItemClass("ALTAR", "An altar stands before you with a knife...", false, altarInteraction);
     ItemClass fountainPuzzleStarter = ItemClass("FOUNTAIN PANEL", "A panel in the base of the fountain seems like you could push it like a button...", false, fountainPuzzleStarterInteraction);
+    ItemClass mazePuzzleStarter = ItemClass("LANTERN", "A lantern to help you see while exploring the maze...", false, mazePuzzleStarterInteraction);
     std::vector <ItemClass> upstairsItems = { noteUpA, mirrorPuzzleStarter }; //Upstairs items
     std::vector <ItemClass> galleryItems = { galleryPuzzleStarter, lordPainting, barkeepPainting }; //Gallery items
     std::vector <ItemClass> fountainItems = { fountainPuzzleStarter }; //Fountain items
     std::vector <ItemClass> mazeExitItems = { candle4 }; //Maze exit items
+    std::vector <ItemClass> hedgeMazeItems = { mazePuzzleStarter }; //Hedge Maze Items
 
     //Defining downstairs rooms
     rooms["FOYER"] = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR", "PORTAL"}, FoyerDoors, roomA_Items);
@@ -271,7 +278,7 @@ void GameControllerClass::gameLoop() {
         "HEDGE MAZE",
         std::list<std::string>{"GARDEN", "MAZE EXIT"}, // Only accessible back to the Garden
         mazeExitDoors, // Use the empty maze doors
-        std::vector<ItemClass>{} // No items in the maze
+        hedgeMazeItems // items in the maze
     );
 
     rooms["HEDGE MAZE EXIT"] = RoomClass("You exit the hedge maze into a small clearing with a bird fountain, this place seems very calm, almost safe.", "HEDGE MAZE EXIT", std::list<string> {"HEDGE MAZE"}, mazeExitDoors, mazeExitItems);
@@ -288,7 +295,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["HEDGE MAZE"]); //CHANGED FOR TESTING BTS-127
+    PlayerClass userPlayer = PlayerClass(rooms["GARDEN"]); //CHANGED FOR TESTING BTS-127
 
     while (true) {
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
@@ -397,7 +404,7 @@ void GameControllerClass::gameLoop() {
 
                 else if (currentRoom_temp.getRoomItemByName(itemName).getInteraction()->getIsPuzzle() == true) //If interaction is a puzzle, call overloaded runInteraction
                 {
-                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer, galleryKey, mirrorKey, masterKey, mazeKey); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
+                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer, galleryKey, mirrorKey, masterKey, mazeKey, mazeExitKey); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
                 }
                 else //Run interact sequence if not pick up able object
                 {
