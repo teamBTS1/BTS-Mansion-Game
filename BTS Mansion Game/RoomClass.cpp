@@ -170,6 +170,12 @@ void RoomClass::RemoveItem(ItemClass itm)
 	}
 }
 
+void RoomClass::AddItem(ItemClass itm)			//Add an item into the room
+{
+	items.push_back(itm);
+	itemsLength++;
+}
+
 const int RoomClass::getItemsLength()
 {
 	return itemsLength;

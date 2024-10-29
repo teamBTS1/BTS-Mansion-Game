@@ -67,6 +67,8 @@ public:
 	void addCandle(); // adds candle to candle count in ritual room
 	int getCandleValue(); // returns value of candles in ritual room, will be important for 
 	bool returnRitualStatus(); //returns whether room is tirual room or not
+
+	void AddItem(ItemClass itm); //Adds an item to the list
 };
 
 #endif
