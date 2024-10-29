@@ -136,13 +136,13 @@ std::string RoomClass::AmendDescription()
 			break;
 		}
 		if (i == 0){
-			returnMeString += " This room contains " + items[i].getName() ;
+			returnMeString += " This room contains " + items[i].getDescription() ;
 		}
 		else if (i != itemsLength - 1) {
-			returnMeString += ", " + items[i].getName();
+			returnMeString += ", " + items[i].getDescription();
 		}
 		else {
-			returnMeString += " and " + items[i].getName() + ". ";
+			returnMeString += " and " + items[i].getDescription() + ". ";
 		}
 	
 	}
@@ -156,11 +156,11 @@ std::string RoomClass::AmendDescription()
 			break;
 		}
 		if (RoomOptions.size() == 1) {
-			returnMeString += " Adjacent to this room is " + room + ". ";
+			returnMeString += " Adjacent to these rooms are " + room + ". ";
 			break;
 		}
 		if (i == 0) {
-			returnMeString += " Adjacent to this room are " + room + " ";
+			returnMeString += " Adjacent to these rooms are " + room + " ";
 		}
 		else if (i != RoomOptions.size()-1) {
 			returnMeString += ", " + room ;
