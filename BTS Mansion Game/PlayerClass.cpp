@@ -168,6 +168,36 @@ bool PlayerClass::searchForCandle()
 	}
 }
 
+bool PlayerClass::inInventory(std::string name, std::string id) const
+{
+	for (auto item : Inventory) {
+		if (item.getName() == name && item.getKeyID() == id) {
+			return true; // Item found in inventory
+		}
+	}
+	return false; // No match found
+}
+
+void PlayerClass::useItem(std::string itemName,std:: string id )//Method for using and removing (if applicable) an item from the player's inventory, taking the name of the item as input
+{
+	/*
+	* We step through the list of items in Inventory one item at a time and check to see if they match the name passed into the method.
+	*/
+	for (int i = 0; i < Inventory.size(); i++)
+	{
+		if (Inventory.at(i).getName() == itemName && Inventory.at(i).getKeyID() == id)
+		{
+			//If we want to include any item use logic within the ItemClass object itself, that should get called here.
+			if (Inventory.at(i).getIsConsumable())//If the item has the property isConsumable, we delete it from the inventory.
+			{
+				Inventory.erase(Inventory.begin() + i);
+			}
+			return; //If we've found an appropriate item, we exit the method. If the player has three consumable items called "MATCH" for instance, we only want to use one and not all three
+		}
+	}
+	return;
+}
+
 void PlayerClass::removeItem(std::string n)
 {
 //for joey: add functionality to remove the item

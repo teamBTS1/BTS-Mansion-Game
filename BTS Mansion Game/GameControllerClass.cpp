@@ -205,7 +205,7 @@ void GameControllerClass::gameLoop() {
     std::vector <ItemClass> galleryItems = { galleryPuzzleStarter, lordPainting, barkeepPainting }; //Gallery items
 
     //Defining downstairs rooms
-    rooms["FOYER"] = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR", "PORTAL","KITCHEN DOOR" }, FoyerDoors, roomA_Items);
+    rooms["FOYER"] = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR","KITCHEN DOOR" }, FoyerDoors, roomA_Items);
     rooms["LIBRARY"] = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous SAFE, it appears to accept a 4 digit code. You also see a BOOKSHELF with a missing book. There is a BOOK on the table  \n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF", "GREATER LIBRARY DOOR"}, Library_Doors, library_Items);
     rooms["LOUNGE"] = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER", "DINING HALL DOOR"}, roomB_Items);
     rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE"});
@@ -273,9 +273,10 @@ void GameControllerClass::gameLoop() {
         {
             if (userPlayer.getInventorySize() != 0)
             {
-                if (userPlayer.inInventory("CANDLE"))
+           
+                if (userPlayer.inInventory("CANDLE","C1"))
                 {
-                    userPlayer.useItem("CANDLE"); //Uses Candle from inventory, is removed
+                    userPlayer.useItem("CANDLE","C1"); //Uses Candle from inventory, is removed
                     UI.displayPrompt("You have placed a candle\n");
                     currentRoom_temp.addCandle();
                     UI.displayPrompt(std::to_string(currentRoom_temp.getCandleValue()));// for testing purposes to see if candle is added to room
@@ -289,6 +290,22 @@ void GameControllerClass::gameLoop() {
 
                     // Update the room in the map
                     rooms["RITUAL ROOM"] = currentRoom_temp;
+                    continue;
+                }
+                else if (userPlayer.inInventory("CANDLE", "C2"))
+                {
+                     userPlayer.useItem("CANDLE", "C2");     //Uses the specified candle with its id to be used
+                     UI.displayPrompt("You have placed a candle\n");
+                     currentRoom_temp.addCandle();
+                     UI.displayPrompt(std::to_string(currentRoom_temp.getCandleValue()));// for testing purposes to see if candle is added to room
+                     UI.displayPrompt("As you place the candle, a portal is revealed!\n");
+                        
+                     std::list<std::string>updatedOptions = currentRoom_temp.GetRoomOption();
+                     updatedOptions.push_back("PORTAL");
+                     currentRoom_temp.setRoomOption(updatedOptions);
+                        
+                     //Update the room in the map
+                     rooms["RITUAL ROOM"] = currentRoom_temp;
                     continue;
                 }
                 else
