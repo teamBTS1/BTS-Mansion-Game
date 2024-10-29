@@ -123,7 +123,7 @@ void GameControllerClass::gameLoop() {
     //Declare all doors TODO: Joey add logic for door map 
 
     doors["DOOR"] = Door(true, "BBBB", "You are now in the FOYER, In front of you is the LOUNGE and LIBRARY"); // create FOYER door
-    doors["BOOKSHELF"] = Door(true, "BookKey", "****You place the book on the shelf. The Bookshelf begins to move, screaching across the woodenfloor, it reveals the staircase leading down to the HIDDENSECTION********");
+    doors["BOOKSHELF"] = Door(true, "BookKey", "****You place the book on the shelf. The Bookshelf begins to move, screeching across the wooden floor. It reveals a staircase leading down to the HIDDENSECTION********");
     doors["DOUBLE DOORS"] = Door(true, "idMaster", "You are now in the MASTER BEDROOM."); //Adding master bedroom door
 
     std::vector<Door> FoyerDoors = { doors["DOOR"] };
@@ -144,33 +144,33 @@ void GameControllerClass::gameLoop() {
     InteractClass* barkeepPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You feel a sensation wash over you, dulling your senses briefly.");
 
     //define all items
-    ItemClass statueA("STATUE", "This statue is a woman carrying book", false, userInteractStatueA); // Define the statue as an item
-    ItemClass keyB("KEY B", "Rusty key", "BBBB", true, true); //Initialzing items TEMP key B
+    ItemClass statueA("STATUE", "a STATUE of a woman carrying a book", false, userInteractStatueA); // Define the statue as an item
+    ItemClass keyB("RUSTY KEY", "a RUSTY KEY", "BBBB", true, true); //Initialzing items TEMP key B
     ItemClass noteA("NOTE A", "A note with dust and cobwebs all over", true); //Defining TEMP note A
-    ItemClass metalSafe("METAL SAFE", "A safe that appears to accept a 4 digit code", false, userInterectSafeDiningHall);
-    ItemClass deadBody1("DEAD BODY 1", "A dead body with a red shirt with a number 8 on and has his mouth open", false, userInteractBody1);
-    ItemClass deadBody2("DEAD BODY 2", "A dead body with a blue shirt with a number 6 on and has his skull cracked open", false, userInteractBody2);
-    ItemClass deadBody3("DEAD BODY 3", "A dead body with a green shirt with a number 9 on and has his hands on the floor", false, userInteractBody3);
-    ItemClass deadBody4("DEAD BODY 4", "A dead body with a purple shirt with a number 1 on and has his right leg over his left leg", false, userInteractBody4);
-    ItemClass galleryKey = ItemClass("GALLERY HALF KEY", "Half of the key needed to enter the master bedroom.");
+    ItemClass metalSafe("METAL SAFE", "a METAL SAFE that appears to accept a 4 digit code", false, userInterectSafeDiningHall);
+    ItemClass deadBody1("DEAD BODY 1", "a DEAD BODY wearing a red shirt with a number 8 who has his mouth open", false, userInteractBody1);
+    ItemClass deadBody2("DEAD BODY 2", "a DEAD BODY wearing a blue shirt with a number 6 who has his skull cracked open", false, userInteractBody2);
+    ItemClass deadBody3("DEAD BODY 3", "a DEAD BODY wearing a green shirt with a number 9 who has his hands on the floor", false, userInteractBody3);
+    ItemClass deadBody4("DEAD BODY 4", "a DEAD BODY wearing a purple shirt with a number 1 who has his right leg over his left leg", false, userInteractBody4);
+    ItemClass galleryKey = ItemClass("GALLERY HALF KEY", "the GALLERY HALF KEY that is half of the key needed to enter the master bedroom");
 
-    ItemClass mirrorKey = ItemClass("MIRROR HALF KEY", "Half of the key needed to enter the master bedroom.");
-    ItemClass kitchenCounter("KITCHEN COUNTER", "The kitchen counter has different colors as its design, it red as its first color, then blue, green, and purple", false, userInteractKitchenCounter);
+    ItemClass mirrorKey = ItemClass("MIRROR HALF KEY", "the MIRROR HALF KEY that is half of the key needed to enter the master bedroom");
+    ItemClass kitchenCounter("KITCHEN COUNTER", "a KITCHEN COUNTER with different colors in its design -- it red as its first color, then blue, green, and purple", false, userInteractKitchenCounter);
 
     //Library Items
-    ItemClass Book("Old Book", "An old book which appears to belong to a bookshelf", "BookKey", true, true);
-    ItemClass Safe("Metal Safe", "A safe that appears to accept a 4 digit code", false, userInteractSafe);
+    ItemClass Book("Old Book", "an OLD BOOK which appears to belong to a bookshelf", "BookKey", true, true);
+    ItemClass Safe("Metal Safe", "a METAL SAFE that appears to accept a 4 digit code", false, userInteractSafe);
 
     //Upstairs items
-    ItemClass lordPainting = ItemClass("CRIMSON LORD PORTRAIT", "Portrait of a regal man in a crimson cloak, with blood dripping from his lips as a glass is raised to his lips.", false, lordPaintingInteraction);
-    ItemClass barkeepPainting = ItemClass("BARKEEP PORTRAIT", "Portrait of a stocky man cleaning a glass behind the bar, wearing a fake smile.", false, barkeepPaintingInteraction);
-    ItemClass noteUpA = ItemClass("SCRIBBLED NOTE", "What looks like a child's drawing of two kids side by side, both looking almost exactly similair, but one of the children seems to have jagged teeth instead of normal teeth.", true); //Note for clue to mirror puzzle
-    ItemClass storyBook = ItemClass("STORYBOOK", "A giant storybook made of tough leather and weathered pages, indicating many stories have been told from this book. It is open to a page with a poem on it.", false, storyBookInteraction);
-    ItemClass masterKey = ItemClass("MASTER KEY", "Fully completed key to the master bedroom", "idMaster", true, true); //Adding master bedroom key
+    ItemClass lordPainting = ItemClass("CRIMSON LORD PORTRAIT", "CRIMSON LORD PORTRAIT of a regal man in a crimson cloak, with blood dripping from his lips as a glass is raised to his lips.", false, lordPaintingInteraction);
+    ItemClass barkeepPainting = ItemClass("BARKEEP PORTRAIT", "CRIMSON LORD PORTRAIT of a stocky man cleaning a glass behind the bar, wearing a fake smile.", false, barkeepPaintingInteraction);
+    ItemClass noteUpA = ItemClass("SCRIBBLED NOTE", "SCRIBBLED NOTE that looks like a child's drawing of two kids side by side, both looking almost exactly similair, but one of the children seems to have jagged teeth instead of normal teeth.", true); //Note for clue to mirror puzzle
+    ItemClass storyBook = ItemClass("STORYBOOK", "A giant STORYBOOK made of tough leather and weathered pages, indicating many stories have been told from this book. It is open to a page with a poem on it.", false, storyBookInteraction);
+    ItemClass masterKey = ItemClass("MASTER KEY", "Fully completed MASTER KEY to the master bedroom", "idMaster", true, true); //Adding master bedroom key
 
     //define candles
-    ItemClass Candle1("CANDLE", "A candle with pentagram etchings", "C1", true, true); //candle item instance, name must remain candle to be consumed in main algorithm
-    ItemClass studyCandle("CANDLE", "A candle with a pentagram design", "C2", true, true);
+    ItemClass Candle1("CANDLE", "A CANDLE with pentagram etchings", "C1", true, true); //candle item instance, name must remain candle to be consumed in main algorithm
+    ItemClass studyCandle("CANDLE", "A CANDLE with a pentagram design", "C2", true, true);
     ItemClass candle3 = ItemClass("CANDLE", "THE THIRD CANDLE is scribbled on the side... hm", "C3", true, true); //Third candle item
 
     //define all itemclass vectors for rooms
