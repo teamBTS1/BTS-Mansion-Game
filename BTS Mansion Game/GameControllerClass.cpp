@@ -205,7 +205,7 @@ void GameControllerClass::gameLoop() {
     std::vector <ItemClass> galleryItems = { galleryPuzzleStarter, lordPainting, barkeepPainting }; //Gallery items
 
     //Defining downstairs rooms
-    rooms["FOYER"] = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR","KITCHEN DOOR" }, FoyerDoors, roomA_Items);
+    rooms["FOYER"] = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR","KITCHEN DOOR",}, FoyerDoors, roomA_Items);
     rooms["LIBRARY"] = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous SAFE, it appears to accept a 4 digit code. You also see a BOOKSHELF with a missing book. There is a BOOK on the table  \n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF", "GREATER LIBRARY DOOR"}, Library_Doors, library_Items);
     rooms["LOUNGE"] = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER", "DINING HALL DOOR"}, roomB_Items);
     rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE"});
@@ -229,7 +229,7 @@ void GameControllerClass::gameLoop() {
     rooms["GALLERY"] = RoomClass("You enter a room with many portraits, all of them depicting different people of different statuses. All of the portraits are almost calling you to touch them.", "GALLERY", std::list <string> {"UPSTAIRS"}, galleryItems); //Room full of portraits for poem puzzle
     rooms["MASTER BEDROOM"] = RoomClass("You are now in Master Bedroom", "MASTER BEDROOM", std::list<string>{"UPSTAIRS"}, masterBedroomItems);
     rooms["DINING HALL"] = RoomClass("You are now in the Dining Hall. There is a large table and chairs. From here, you can go to the kitchen.\n", "DINING HALL", std::list<std::string>{"DINING HALL DOOR", "KITCHEN"}, diningHallItems);
-    rooms["KITCHEN"] = RoomClass("You are now in the Kitchen,You can return to the dining hall from here.\n", "KITCHEN", std::list<std::string>{"DINING HALL"}, kitchenItems);
+    rooms["KITCHEN"] = RoomClass("You are now in the Kitchen,You can return to the dining hall from here.\n", "KITCHEN", std::list<std::string>{"DINING HALL","KITCHEN DOOR"}, kitchenItems);
 
 
     
@@ -247,26 +247,89 @@ void GameControllerClass::gameLoop() {
         UI.displayPrompt("\nYou cant contain your curiosity and have the urge to INSPECT the items in the room. (type 'INVENTORY' to open inventory. Type 'QUIT' to exit the game)\n"); //user input 
         std::string command = UI.userInput();
 
-        //kitchen door
-        if (command == "KITCHEN DOOR" && std::string(userPlayer.getRoomName()) == "KITCHEN" && rooms.find("FOYER") != rooms.end()) {
+        // Boolean to track whether the kitchen door is open
+        bool kitchenDoorOpen = false;
+
+        // Check the command for the kitchen door
+        if (command == "KITCHEN DOOR" && userPlayer.getRoomName() == "KITCHEN" && rooms.find("FOYER") != rooms.end()) {
             // Player is in the kitchen and wants to enter the foyer through the door
-            UI.displayPrompt("\nYou open the door and enter the foyer.\n");
+            if (!kitchenDoorOpen) {
+                UI.displayPrompt("\nYou open the door to the foyer.\n");
+                kitchenDoorOpen = true;  // Door remains open after first use
+            }
             userPlayer.setRoom(rooms["FOYER"]);  // Move player to the foyer
+
+            // Add "KITCHEN" as an option in the foyer room only if it’s not already there
+            auto currentRoom_temp = rooms["FOYER"];
+            std::list<std::string> updatedOptions = currentRoom_temp.GetRoomOption();
+
+            // Check if "KITCHEN" is already in the options
+            if (std::find(updatedOptions.begin(), updatedOptions.end(), "KITCHEN") == updatedOptions.end()) {
+                updatedOptions.push_back("KITCHEN");
+                currentRoom_temp.setRoomOption(updatedOptions);
+
+                // Update the foyer room in the map
+                rooms["FOYER"] = currentRoom_temp;
+            }
+
+            UI.displayPrompt("\nYou are now in the foyer. You can use the 'KITCHEN' command to return to the kitchen.\n");
         }
-        else if (command == "KITCHEN DOOR" && std::string(userPlayer.getRoomName()) == "FOYER") {
-            // Prevent access to the kitchen from the foyer
-            UI.displayPrompt("\nThe door to the kitchen is locked from this side.\n");
+        else if (command == "KITCHEN DOOR" && userPlayer.getRoomName() == "FOYER") {
+            // Allow access back to the kitchen if the door is open
+            if (kitchenDoorOpen) {
+                UI.displayPrompt("\nYou pass through the open door to the kitchen.\n");
+                userPlayer.setRoom(rooms["KITCHEN"]);  // Move player back to the kitchen
+            }
+            else {
+                UI.displayPrompt("\nThe door to the kitchen is locked from this side.\n");
+            }
         }
-        // Dining hall door 
+
+        // Boolean to track whether the dining hall door is open
+        bool diningHallDoorOpen = false;
+
+        // Check the command for the dining hall door
         if (command == "DINING HALL DOOR" && userPlayer.getRoomName() == "DINING HALL" && rooms.find("LOUNGE") != rooms.end()) {
             // Player is in the dining hall and wants to enter the lounge through the door
-            UI.displayPrompt("\nYou open the door and enter the lounge.\n");
+            if (!diningHallDoorOpen) {
+                UI.displayPrompt("\nYou open the door to the lounge.\n");
+                diningHallDoorOpen = true;  // Door remains open after first use
+            }
             userPlayer.setRoom(rooms["LOUNGE"]);  // Move player to the lounge
+
+            // Add "DINING HALL" as an option in the lounge room only if it’s not already there
+            auto currentRoom_temp = rooms["LOUNGE"];
+            std::list<std::string> updatedOptions = currentRoom_temp.GetRoomOption();
+
+            // Check if "DINING HALL" is already in the options
+            if (std::find(updatedOptions.begin(), updatedOptions.end(), "DINING HALL") == updatedOptions.end()) {
+                updatedOptions.push_back("DINING HALL");
+                updatedOptions.remove("DINING HALL DOOR"); // Remove the dining hall door as an option in the foyer 
+                currentRoom_temp.setRoomOption(updatedOptions);
+
+                // Update the lounge room in the map
+                rooms["LOUNGE"] = currentRoom_temp;
+            }
+
+            UI.displayPrompt("\nYou are now in the lounge. You can use the 'DINING HALL' command to return to the dining hall.\n");
         }
-        else if (command == "DINING HALL DOOR" && userPlayer.getRoomName() == "LOUNGE") {
-            // Prevent access to the dining hall from the lounge
-            UI.displayPrompt("\nThe door to the dining hall is locked from this side.\n");
+        else if (command == "DINING HALL" && userPlayer.getRoomName() == "LOUNGE") {
+            // Allow access back to the dining hall if the door is open
+            if (diningHallDoorOpen) {
+                UI.displayPrompt("\nYou pass through the open door to the dining hall.\n");
+                userPlayer.setRoom(rooms["DINING HALL"]);  // Move player back to the dining hall
+            }
+            else {
+                UI.displayPrompt("\nThe door to the dining hall is locked from this side.\n");
+            }
         }
+
+
+
+
+    
+
+
 
 
         if (command == "CANDLE" && userPlayer.getRoomName() == "RITUAL ROOM") //user will type candle in input section to place a candle, only a valid input if they are in the RITUAL ROOM
