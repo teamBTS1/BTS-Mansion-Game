@@ -2,7 +2,7 @@
 
 MirrorPuzzle::MirrorPuzzle()
 {
-	_description = "Mirror Puzzle";
+	_description = " ";
 	_isSolved = false;
 }
 
