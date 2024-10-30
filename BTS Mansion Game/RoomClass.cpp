@@ -1,5 +1,5 @@
 #include "RoomClass.h"
-
+#include <sstream>
 
 
 
@@ -125,6 +125,25 @@ void RoomClass::ReplaceDescription(std::string newDescription)
 {
 }
 
+std::string preventCutoff(const std::string& text)
+{
+	std::istringstream words(text);
+	std::string word;
+	std::string wrappedText;
+	
+	int currentWidth = 0; 
+
+	while (words >> word) {
+		if (currentWidth + word.length() > 100) {
+			wrappedText += "\n"; 
+			currentWidth = 0;
+		}
+		wrappedText += word + " ";
+		currentWidth += word.length() + 1;
+	}
+	return wrappedText; 
+}
+
 std::string RoomClass::AmendDescription()
 {
 	std::string returnMeString = this->roomDescription; //string to be returned as "full" description
@@ -137,13 +156,13 @@ std::string RoomClass::AmendDescription()
 			break;
 		}
 		if (i == 0){
-			returnMeString += " This room contains " + items[i].getDescription() ;
+			returnMeString += " This room contains " + items[i].getDescription();
 		}
 		else if (i != itemsLength - 1) {
 			returnMeString += ", " + items[i].getDescription();
 		}
 		else {
-			returnMeString += " and " + items[i].getDescription() + ". ";
+			returnMeString += " and " + items[i].getDescription() + ".";
 		}
 	
 	}
@@ -170,6 +189,8 @@ std::string RoomClass::AmendDescription()
 			returnMeString += " and " + room + ". ";
 		}
 		i += 1;
+
+		return preventCutoff(returnMeString);
 	}
 
 	/*
@@ -178,7 +199,7 @@ std::string RoomClass::AmendDescription()
 		returnMeString += "Curiously, a " + this->roomPuzzle.getDescription() + " seems to join you in the room";
 	}*/ //what to do foor puzzles? They get passed in as items as opposed to being a member variable of the room
 
-	return returnMeString;
+	
 
 }
 
