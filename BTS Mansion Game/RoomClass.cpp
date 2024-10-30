@@ -161,6 +161,10 @@ std::string RoomClass::AmendDescription()
 		else if (i != itemsLength - 1) {
 			returnMeString += ", " + items[i].getDescription();
 		}
+		else if (itemsLength == 1)
+		{
+			returnMeString + ". ";
+		}
 		else {
 			returnMeString += " and " + items[i].getDescription() + ".";
 		}

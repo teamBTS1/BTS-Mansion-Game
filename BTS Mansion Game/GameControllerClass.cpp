@@ -126,7 +126,7 @@ void GameControllerClass::gameLoop() {
 
     doors["DOOR"] = Door(true, "BBBB", "You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move.A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you.There also appears to be a ornate wooden DOOR that is locked"); // create FOYER door
     doors["BOOKSHELF"] = Door(true, "BookKey", "You enter the library, filled to the brim with bookshelves.");
-    doors["DOUBLE DOORS"] = Door(true, "idMaster", "You are now in the MASTER BEDROOM."); //Adding master bedroom door
+    doors["DOUBLE DOORS"] = Door(true, "idMaster", "You are now in the Master Bedroom. The room is elegantly decorated with fine linens and rich colors."); //Adding master bedroom door
     doors["BLOCKED HEDGE MAZE"] = Door(true, "MAZEKEY", "You pour the holy water on the dark force blocking the entrance to the hedge maze, granting yourself access as the dark sludge burns away.");
     doors["MAZE EXIT"] = Door(true, "MAZEEXITKEY", "Using the map, you are able to find your way out of the maze, reaching the exit.");
 
@@ -300,9 +300,6 @@ void GameControllerClass::gameLoop() {
     bool puzzleSolved = false;
 
     PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
-    userPlayer.addItem(Candle1);
-    userPlayer.addItem(studyCandle);
-    userPlayer.addItem(candle3);
 
     while (true) {
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
@@ -585,6 +582,7 @@ void GameControllerClass::gameLoop() {
                 {
                     std::list<std::string> options = { "SHED", "FOUNTAIN", "HEDGE MAZE"};
                     handleDoors(userPlayer, currentRoom_temp, "HEDGE MAZE", options, rooms);
+                    std::cout << "You pour the holy water on the dark force blocking the entrance to the hedge maze, granting yourself access as the dark sludge burns away.\n\n";
                 }
                 else if (command == "MAZE EXIT")
                 {
