@@ -231,7 +231,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["RITUAL ROOM"]);
+    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
     userPlayer.addItem(Candle1);
     userPlayer.addItem(studyCandle);
     userPlayer.addItem(candle3);
