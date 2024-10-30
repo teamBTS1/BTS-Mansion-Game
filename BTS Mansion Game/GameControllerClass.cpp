@@ -164,7 +164,7 @@ void GameControllerClass::gameLoop() {
     ItemClass deadBody3("DEAD BODY 3", "A dead body with a green shirt with a number 9 on and has his hands on the floor", false, userInteractBody3);
     ItemClass deadBody4("DEAD BODY 4", "A dead body with a purple shirt with a number 1 on and has his right leg over his left leg", false, userInteractBody4);
     ItemClass galleryKey = ItemClass("GALLERY HALF KEY", "Half of the key needed to enter the master bedroom.");
-    ItemClass diningHallKey = ItemClass("DINING HALL KEY", "Key can be used to enter the greater library","DHKey",true, true);    //Initializing key from safe in dining hall
+    ItemClass diningHallKey = ItemClass("DINING HALL KEY", "A Shiny DINING HALL KEY with grapes on the handle,it appears to open the greater library","DHKey",true, true);    //Initializing key from safe in dining hall
     ItemClass mirrorKey = ItemClass("MIRROR HALF KEY", "Half of the key needed to enter the master bedroom.");
     ItemClass kitchenCounter("KITCHEN COUNTER", "The kitchen counter has different colors as its design, it red as its first color, then blue, green, and purple", false, userInteractKitchenCounter);
 
