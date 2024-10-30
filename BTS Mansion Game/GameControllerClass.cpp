@@ -502,16 +502,16 @@ void GameControllerClass::gameLoop() {
                     handleDoors(userPlayer, currentRoom_temp, "MASTER BEDROOM", options, rooms);
                 }
                 else if (command == "DOOR") {
-                    std::list<std::string> options = { "LOUNGE", "LIBRARY", };
+                    std::list<std::string> options = { "LOUNGE", "LIBRARY", "KITCHEN DOOR" };
                     handleDoors(userPlayer, currentRoom_temp, "LIBRARY", options, rooms);
                 }
                 else if (command == "GREATER LIBRARY DOOR")
                 {
-                    std::list<std::string> options = { "LIBRARY","GREATER LIBRARY"};
+                    std::list<std::string> options = {"FOYER", "HIDDEN SECTION", "LIBRARY","GREATER LIBRARY"};
                     handleDoors(userPlayer, currentRoom_temp, "GREATER LIBRARY", options, rooms);
                 }
                 else if (command == "BOOKSHELF") {
-                    std::list<std::string> options =  {"FOYER", "HIDDEN SECTION", "GREATER LIBRARY DOOR"};
+                    std::list<std::string> options =  {"FOYER", "GREATER LIBRARY DOOR"};
                     handleDoors(userPlayer, currentRoom_temp, "HIDDEN SECTION", options, rooms);
                 }
                 else if (command == "PUZZLE")
