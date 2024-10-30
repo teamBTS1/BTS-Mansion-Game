@@ -126,8 +126,11 @@ void GameControllerClass::gameLoop() {
     doors["BOOKSHELF"] = Door(true, "BookKey", "****You place the book on the shelf. The Bookshelf begins to move, screeching across the wooden floor. It reveals a staircase leading down to the HIDDENSECTION********");
     doors["DOUBLE DOORS"] = Door(true, "idMaster", "You are now in the MASTER BEDROOM."); //Adding master bedroom door
 
+    //Greater Library Door
+    doors["GREATER LIBRARY DOOR"] = Door(true, "DHKey", "You have now opened the door, you are now in the GREATER LIBRARY");
+
     std::vector<Door> FoyerDoors = { doors["DOOR"] };
-    std::vector <Door> Library_Doors = { doors["BOOKSHELF"], doors["DOOR"] };
+    std::vector <Door> Library_Doors = { doors["BOOKSHELF"], doors["DOOR"], doors["GREATER LIBRARY DOOR"]};
     std::vector <Door> Master_Doors = { doors["DOUBLE DOORS"] };
 
     //define all ineractions
@@ -147,15 +150,15 @@ void GameControllerClass::gameLoop() {
     ItemClass statueA("STATUE", "a STATUE of a woman carrying a book", false, userInteractStatueA); // Define the statue as an item
     ItemClass keyB("RUSTY KEY", "a RUSTY KEY", "BBBB", true, true); //Initialzing items TEMP key B
     ItemClass noteA("NOTE A", "A note with dust and cobwebs all over", true); //Defining TEMP note A
-    ItemClass metalSafe("METAL SAFE", "a METAL SAFE that appears to accept a 4 digit code", false, userInterectSafeDiningHall);
-    ItemClass deadBody1("DEAD BODY 1", "a DEAD BODY wearing a red shirt with a number 8 who has his mouth open", false, userInteractBody1);
-    ItemClass deadBody2("DEAD BODY 2", "a DEAD BODY wearing a blue shirt with a number 6 who has his skull cracked open", false, userInteractBody2);
-    ItemClass deadBody3("DEAD BODY 3", "a DEAD BODY wearing a green shirt with a number 9 who has his hands on the floor", false, userInteractBody3);
-    ItemClass deadBody4("DEAD BODY 4", "a DEAD BODY wearing a purple shirt with a number 1 who has his right leg over his left leg", false, userInteractBody4);
-    ItemClass galleryKey = ItemClass("GALLERY HALF KEY", "the GALLERY HALF KEY that is half of the key needed to enter the master bedroom");
-
-    ItemClass mirrorKey = ItemClass("MIRROR HALF KEY", "the MIRROR HALF KEY that is half of the key needed to enter the master bedroom");
-    ItemClass kitchenCounter("KITCHEN COUNTER", "a KITCHEN COUNTER with different colors in its design -- it red as its first color, then blue, green, and purple", false, userInteractKitchenCounter);
+    ItemClass metalSafe("METAL SAFE", "A safe that appears to accept a 4 digit code", false, userInterectSafeDiningHall);
+    ItemClass deadBody1("DEAD BODY 1", "A dead body with a red shirt with a number 8 on and has his mouth open", false, userInteractBody1);
+    ItemClass deadBody2("DEAD BODY 2", "A dead body with a blue shirt with a number 6 on and has his skull cracked open", false, userInteractBody2);
+    ItemClass deadBody3("DEAD BODY 3", "A dead body with a green shirt with a number 9 on and has his hands on the floor", false, userInteractBody3);
+    ItemClass deadBody4("DEAD BODY 4", "A dead body with a purple shirt with a number 1 on and has his right leg over his left leg", false, userInteractBody4);
+    ItemClass galleryKey = ItemClass("GALLERY HALF KEY", "Half of the key needed to enter the master bedroom.");
+    ItemClass diningHallKey = ItemClass("DINING HALL KEY", "Key can be used to enter the greater library","DHKey",true, true);    //Initializing key from safe in dining hall
+    ItemClass mirrorKey = ItemClass("MIRROR HALF KEY", "Half of the key needed to enter the master bedroom.");
+    ItemClass kitchenCounter("KITCHEN COUNTER", "The kitchen counter has different colors as its design, it red as its first color, then blue, green, and purple", false, userInteractKitchenCounter);
 
     //Library Items
     ItemClass Book("Old Book", "an OLD BOOK which appears to belong to a bookshelf", "BookKey", true, true);
@@ -202,18 +205,20 @@ void GameControllerClass::gameLoop() {
     std::vector <ItemClass> galleryItems = { galleryPuzzleStarter, lordPainting, barkeepPainting }; //Gallery items
 
     //Defining downstairs rooms
-    rooms["FOYER"] = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR", "PORTAL"}, FoyerDoors, roomA_Items);
-    rooms["LIBRARY"] = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous SAFE, it appears to accept a 4 digit code. You also see a BOOKSHELF with a missing book. There is a BOOK on the table  \n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF", "GREATER LIBRARY"}, Library_Doors, library_Items);
-    rooms["LOUNGE"] = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER", "DINING HALL"}, roomB_Items);
+    rooms["FOYER"] = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR","KITCHEN DOOR",}, FoyerDoors, roomA_Items);
+    rooms["LIBRARY"] = RoomClass("You enter the library, filled to the brim with bookshelves along an ominous SAFE, it appears to accept a 4 digit code. You also see a BOOKSHELF with a missing book. There is a BOOK on the table  \n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF", "GREATER LIBRARY DOOR"}, Library_Doors, library_Items);
+    rooms["LOUNGE"] = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER", "DINING HALL DOOR"}, roomB_Items);
     rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE"});
     rooms["STUDY"] = RoomClass("You enter the study, the walls are dark brown with shelfs full of books and paper scrolls. There is a desk that is rather neat and organize. Behind the desk is grand portrait of a man with a stern face, eyes so dark its you uncomfortable.The man's finger is pointing to what seems to be a cabinet and on behind a pile of books you see a candle.", "STUDY", std::list<std::string>{"GREATER LIBRARY"}, studyItem);
     //defenition for ritual room class, specific constructor
-    rooms["RITUAL ROOM"] = RoomClass("You enter a room that does not invite you back. A perfect, pentacle drawn on the floor invites you to place a candle at each of it's vertecies [Hint: enter CANDLE as input if you posses a candle].", "RITUAL ROOM", std::list<std::string>{"HIDDEN SECTION"}, true); 
+    rooms["RITUAL ROOM"] = RoomClass("You enter a room that does not invite you back. A perfect, pentacle drawn on the floor invites you to place a candle at each of it's vertecies. [Hint: enter CANDLE as input if you posses a candle]", "RITUAL ROOM", std::list<std::string>{"HIDDEN SECTION",}, true);
     //HIDDEN SECTION 
     rooms["HIDDEN SECTION"] = RoomClass("You now enter the hidden section, nothing is safe here, you feel a presense linger, as if it was plucking your heartstrings, there is a table with a candle on top", "HIDDEN SECTION", std::list<std::string>{"LIBRARY", "RITUAL ROOM"}, hiddensection_Items);
+    
     //PORTAL
     RoomClass PORTAL = RoomClass("You step into the portal, and feel a strange pull as reality warps around you. Moments later, you find yourself in a different part of the mansion.",
         "PORTAL", std::list<std::string>{}, FoyerDoors, std::vector<ItemClass>{});
+   
     //Defining upstairs rooms
     rooms["UPSTAIRS"] = RoomClass("You are now upstairs. The area is dimly lit, and there are several doors leading to other parts of the mansion. There is a set of double doors at the end of the hallway with a complex lock. The lock has two halves of a dais empty, that form an opening mechanism similair to a safe. There is also a three word combination lock on the wall in between MIRROR ROOM 1 and MIRROR ROOM 2.",
         "UPSTAIRS", std::list<std::string>{"PORTAL", "MIRROR ROOM 1", "MIRROR ROOM 2", "STORYTELLER'S ROOM", "GALLERY", "DOUBLE DOORS"}, Master_Doors, upstairsItems);  // Add PORTAL as an option
@@ -223,8 +228,8 @@ void GameControllerClass::gameLoop() {
     rooms["STORYTELLER'S ROOM"] = RoomClass("You enter a room filled with a luxuorious carpet, fancy linen bedsheets, and elegant embroidery all about. In the center of the room on a stand, is a big tome open to the page of a story.", "STORYTELLER'S ROOM", std::list <string> {"UPSTAIRS"}, storytellerItems); //have a non pick upable item with poem in it
     rooms["GALLERY"] = RoomClass("You enter a room with many portraits, all of them depicting different people of different statuses. All of the portraits are almost calling you to touch them.", "GALLERY", std::list <string> {"UPSTAIRS"}, galleryItems); //Room full of portraits for poem puzzle
     rooms["MASTER BEDROOM"] = RoomClass("You are now in Master Bedroom", "MASTER BEDROOM", std::list<string>{"UPSTAIRS"}, masterBedroomItems);
-    rooms["DINING HALL"] = RoomClass("You are now in the Dining Hall. There is a large table and chairs. From here, you can go to the kitchen.\n", "DINING HALL", std::list<std::string>{"LOUNGE", "KITCHEN"}, diningHallItems);
-    rooms["KITCHEN"] = RoomClass("You are now in the Kitchen,You can return to the dining hall from here.\n", "KITCHEN", std::list<std::string>{"DINING HALL"}, kitchenItems);
+    rooms["DINING HALL"] = RoomClass("You are now in the Dining Hall. There is a large table and chairs. From here, you can go to the kitchen.\n", "DINING HALL", std::list<std::string>{"DINING HALL DOOR", "KITCHEN"}, diningHallItems);
+    rooms["KITCHEN"] = RoomClass("You are now in the Kitchen,You can return to the dining hall from here.\n", "KITCHEN", std::list<std::string>{"DINING HALL","KITCHEN DOOR"}, kitchenItems);
 
 
     
@@ -247,19 +252,128 @@ void GameControllerClass::gameLoop() {
         UI.displayPrompt("\nYou cant contain your curiosity and have the urge to INSPECT the items in the room. (type 'INVENTORY' to open inventory. Type 'QUIT' to exit the game)\n"); //user input 
         std::string command = UI.userInput();
 
+        // Boolean to track whether the kitchen door is open
+        bool kitchenDoorOpen = false;
+
+        // Check the command for the kitchen door
+        if (command == "KITCHEN DOOR" && userPlayer.getRoomName() == "KITCHEN" && rooms.find("FOYER") != rooms.end()) {
+            // Player is in the kitchen and wants to enter the foyer through the door
+            if (!kitchenDoorOpen) {
+                UI.displayPrompt("\nYou open the door to the foyer.\n");
+                kitchenDoorOpen = true;  // Door remains open after first use
+            }
+            userPlayer.setRoom(rooms["FOYER"]);  // Move player to the foyer
+
+            // Add "KITCHEN" as an option in the foyer room only if it’s not already there
+            auto currentRoom_temp = rooms["FOYER"];
+            std::list<std::string> updatedOptions = currentRoom_temp.GetRoomOption();
+
+            // Check if "KITCHEN" is already in the options
+            if (std::find(updatedOptions.begin(), updatedOptions.end(), "KITCHEN") == updatedOptions.end()) {
+                updatedOptions.push_back("KITCHEN");
+                currentRoom_temp.setRoomOption(updatedOptions);
+
+                // Update the foyer room in the map
+                rooms["FOYER"] = currentRoom_temp;
+            }
+
+            UI.displayPrompt("\nYou are now in the foyer. You can use the 'KITCHEN' command to return to the kitchen.\n");
+        }
+        else if (command == "KITCHEN DOOR" && userPlayer.getRoomName() == "FOYER") {
+            // Allow access back to the kitchen if the door is open
+            if (kitchenDoorOpen) {
+                UI.displayPrompt("\nYou pass through the open door to the kitchen.\n");
+                userPlayer.setRoom(rooms["KITCHEN"]);  // Move player back to the kitchen
+            }
+            else {
+                UI.displayPrompt("\nThe door to the kitchen is locked from this side.\n");
+            }
+        }
+
+        // Boolean to track whether the dining hall door is open
+        bool diningHallDoorOpen = false;
+
+        // Check the command for the dining hall door
+        if (command == "DINING HALL DOOR" && userPlayer.getRoomName() == "DINING HALL" && rooms.find("LOUNGE") != rooms.end()) {
+            // Player is in the dining hall and wants to enter the lounge through the door
+            if (!diningHallDoorOpen) {
+                UI.displayPrompt("\nYou open the door to the lounge.\n");
+                diningHallDoorOpen = true;  // Door remains open after first use
+            }
+            userPlayer.setRoom(rooms["LOUNGE"]);  // Move player to the lounge
+
+            // Add "DINING HALL" as an option in the lounge room only if it’s not already there
+            auto currentRoom_temp = rooms["LOUNGE"];
+            std::list<std::string> updatedOptions = currentRoom_temp.GetRoomOption();
+
+            // Check if "DINING HALL" is already in the options
+            if (std::find(updatedOptions.begin(), updatedOptions.end(), "DINING HALL") == updatedOptions.end()) {
+                updatedOptions.push_back("DINING HALL");
+                updatedOptions.remove("DINING HALL DOOR"); // Remove the dining hall door as an option in the foyer 
+                currentRoom_temp.setRoomOption(updatedOptions);
+
+                // Update the lounge room in the map
+                rooms["LOUNGE"] = currentRoom_temp;
+            }
+
+            UI.displayPrompt("\nYou are now in the lounge. You can use the 'DINING HALL' command to return to the dining hall.\n");
+        }
+        else if (command == "DINING HALL" && userPlayer.getRoomName() == "LOUNGE") {
+            // Allow access back to the dining hall if the door is open
+            if (diningHallDoorOpen) {
+                UI.displayPrompt("\nYou pass through the open door to the dining hall.\n");
+                userPlayer.setRoom(rooms["DINING HALL"]);  // Move player back to the dining hall
+            }
+            else {
+                UI.displayPrompt("\nThe door to the dining hall is locked from this side.\n");
+            }
+        }
+
+
+
+
+    
+
+
+
+
         if (command == "CANDLE" && userPlayer.getRoomName() == "RITUAL ROOM") //user will type candle in input section to place a candle, only a valid input if they are in the RITUAL ROOM
         {
             if (userPlayer.getInventorySize() != 0)
             {
-                if (userPlayer.inInventory("CANDLE"))
+           
+                if (userPlayer.inInventory("CANDLE","C1"))
                 {
-                    userPlayer.useItem("CANDLE"); //Uses Candle from inventory, is removed
-                    currentRoom_temp.addCandle();
-                    //UI.displayPrompt(std::to_string(currentRoom_temp.getCandleValue()));// for testing purposes to see if candle is added to room
-                    system("cls");
+                    userPlayer.useItem("CANDLE","C1"); //Uses Candle from inventory, is removed
                     UI.displayPrompt("You have placed a candle\n");
-                    UI.displayPentacle(currentRoom_temp.getCandleValue());
+                    currentRoom_temp.addCandle();
+                    UI.displayPrompt(std::to_string(currentRoom_temp.getCandleValue()));// for testing purposes to see if candle is added to room
+                    // Open the tunnel to the kitchen
+                    UI.displayPrompt("As you place the candle, a hidden tunnel opens, leading to the kitchen!\n");
+
+                    // Add "KITCHEN" to the list of accessible rooms from the ritual room
+                    std::list<std::string> updatedOptions = currentRoom_temp.GetRoomOption();
+                    updatedOptions.push_back("KITCHEN");
+                    currentRoom_temp.setRoomOption(updatedOptions);
+
+                    // Update the room in the map
                     rooms["RITUAL ROOM"] = currentRoom_temp;
+                    continue;
+                }
+                else if (userPlayer.inInventory("CANDLE", "C2"))
+                {
+                     userPlayer.useItem("CANDLE", "C2");     //Uses the specified candle with its id to be used
+                     UI.displayPrompt("You have placed a candle\n");
+                     currentRoom_temp.addCandle();
+                     UI.displayPrompt(std::to_string(currentRoom_temp.getCandleValue()));// for testing purposes to see if candle is added to room
+                     UI.displayPrompt("As you place the candle, a portal is revealed!\n");
+                        
+                     std::list<std::string>updatedOptions = currentRoom_temp.GetRoomOption();
+                     updatedOptions.push_back("PORTAL");
+                     currentRoom_temp.setRoomOption(updatedOptions);
+                     UI.displayPentacle(currentRoom_temp.getCandleValue());
+                     //Update the room in the map
+                     rooms["RITUAL ROOM"] = currentRoom_temp;
                     continue;
                 }
                 else
@@ -335,7 +449,12 @@ void GameControllerClass::gameLoop() {
 
                         if (safeInputNum == 8691)
                         {
-                            UI.displayPrompt("You entered the correct passcode! Safe is now open");
+                            UI.displayPrompt("You entered the correct passcode! Safe is now open and there's a key");
+
+                            rooms["DINING HALL"].RemoveItem(metalSafe);
+                            rooms["DINING HALL"].AddItem(diningHallKey);
+                            rooms["DINING HALL"].displayRoomItems();
+                            
                         }
                         else
                             UI.displayPrompt("You entered the wrong passcode. Try again");
@@ -388,11 +507,16 @@ void GameControllerClass::gameLoop() {
                     handleDoors(userPlayer, currentRoom_temp, "MASTER BEDROOM", options, rooms);
                 }
                 else if (command == "DOOR") {
-                    std::list<std::string> options = { "LOUNGE", "LIBRARY", "PORTAL" };
+                    std::list<std::string> options = { "LOUNGE", "LIBRARY", "KITCHEN DOOR" };
                     handleDoors(userPlayer, currentRoom_temp, "LIBRARY", options, rooms);
                 }
+                else if (command == "GREATER LIBRARY DOOR")
+                {
+                    std::list<std::string> options = {"FOYER", "HIDDEN SECTION", "LIBRARY","GREATER LIBRARY"};
+                    handleDoors(userPlayer, currentRoom_temp, "GREATER LIBRARY", options, rooms);
+                }
                 else if (command == "BOOKSHELF") {
-                    std::list<std::string> options =  {"FOYER", "HIDDEN SECTION"};
+                    std::list<std::string> options =  {"FOYER","HIDDEN SECTION", "GREATER LIBRARY DOOR"};
                     handleDoors(userPlayer, currentRoom_temp, "HIDDEN SECTION", options, rooms);
                 }
                 else if (command == "PUZZLE")
@@ -460,10 +584,15 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
 {
     system("cls");
     std::vector<Door>& doors = currentRoom.GetDoors();
+  
     for (int i = 0; i < doors.size(); i++) {
         if (doors[i].getIsLocked()) {
+            std::cout << "Door is locked. Checking inventory for key..." << std::endl;
             if (player.getInventorySize() != 0) {
+
                 std::string playerKey = player.searchForKey(doors[i].getDoorKeyID());
+                std::cout << "Player key found: " << playerKey << ", Door key required: " << doors[i].getDoorKeyID() << std::endl;
+
 
                 if (doors[i].getDoorKeyID() == playerKey)
                 {
@@ -486,9 +615,11 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
         }
         else
         {
-            player.setRoom(rooms[targetRoom]);
+            //player.setRoom(rooms[targetRoom]);
             //currentRoom_temp = userPlayer.getRoom();
         }
+
+    
     }
 
 }

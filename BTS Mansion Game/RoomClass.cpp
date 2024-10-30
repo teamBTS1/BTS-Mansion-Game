@@ -115,8 +115,9 @@ std::string RoomClass::GetName()
 
 void RoomClass::unlockDoor(int doorIndex)
 {
-	if (doorIndex >= 0 && doorIndex < roomDoors.size()) {
-		setRoomDescription(roomDoors[doorIndex].returnOpenDoorDescription()); //change description state of room
+	if (doorIndex >= 0 && doorIndex < roomDoors.size() && roomDoors[doorIndex].getIsLocked()) {
+		roomDoors[doorIndex].unlockDoor(); 
+		setRoomDescription(roomDoors[doorIndex].returnOpenDoorDescription());
 	}
 }
 
@@ -226,6 +227,12 @@ void RoomClass::RemoveItem(ItemClass itm)
 			return;
 		}
 	}
+}
+
+void RoomClass::AddItem(ItemClass itm)			//Add an item into the room
+{
+	items.push_back(itm);
+	itemsLength++;
 }
 
 const int RoomClass::getItemsLength()
