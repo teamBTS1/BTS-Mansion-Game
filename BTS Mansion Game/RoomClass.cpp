@@ -190,8 +190,8 @@ std::string RoomClass::AmendDescription()
 		}
 		i += 1;
 
-		return preventCutoff(returnMeString);
 	}
+	return preventCutoff(returnMeString);
 
 	/*
 	std::string puzzleDesc = roomPuzzle.getDescription();
