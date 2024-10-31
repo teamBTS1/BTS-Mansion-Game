@@ -38,7 +38,7 @@ public:
 	void viewInventory(PlayerClass& myPlayer);
 	//prompts to view inventory
 	//Function that displays option to interact ,read or exit the statue.
-	void handleDoors(PlayerClass& player, RoomClass& currentRoom, const std::string& targetRoom, const std::list<std::string>& newRoomOptions, std::unordered_map<std::string, RoomClass>& rooms);
+	void handleDoors(PlayerClass& player, RoomClass& currentRoom, const std::string& targetRoom, const std::list<std::string>& newRoomOptions, std::unordered_map<std::string, RoomClass>& rooms, const std::string& openMessage);
 };
 
 #endif

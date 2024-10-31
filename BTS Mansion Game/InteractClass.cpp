@@ -230,6 +230,7 @@ void InteractClass::runInteraction(PlayerClass& player, ItemClass& galleryItm, I
         {
             //output interaction message
             ui.displayPrompt(interactMessage);
+            
         }
         else {
             ui.displayPrompt("You walk away.");
