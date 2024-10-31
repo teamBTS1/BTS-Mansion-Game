@@ -219,7 +219,7 @@ void GameControllerClass::gameLoop() {
     InteractClass* altarInteraction = new InteractClass("Do you want to initiate puzzle? (YES or NO)", "Test", galleryPuzzle);
     InteractClass* fountainPuzzleStarterInteraction = new InteractClass("Do you want to begin the Fountain Puzzle? (YES or NO)", "Test", fountainPuzzle);
     InteractClass* mazePuzzleStarterInteraction = new InteractClass("You should explore the maze, paying attention to your surrondings, do you want to explore? (YES or NO)", "Test", mazePuzzle);
-    ItemClass mirrorPuzzleStarter = ItemClass("COMBINATION LOCK", "A three word combination lock...", false, mirrorPuzzleStarterInteraction);
+    ItemClass mirrorPuzzleStarter = ItemClass("COMBINATION LOCK", "A three word COMBINATION LOCK...", false, mirrorPuzzleStarterInteraction);
     ItemClass galleryPuzzleStarter = ItemClass("ALTAR", "An altar stands before you with a knife...", false, altarInteraction);
     ItemClass fountainPuzzleStarter = ItemClass("FOUNTAIN PANEL", "A panel in the base of the fountain seems like you could push it like a button...", false, fountainPuzzleStarterInteraction);
     ItemClass mazePuzzleStarter = ItemClass("LANTERN", "A lantern to help you see while exploring the maze...", false, mazePuzzleStarterInteraction);
@@ -299,7 +299,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
+    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
 
     while (true) {
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
