@@ -187,8 +187,8 @@ void GameControllerClass::gameLoop() {
     //define candles
     ItemClass Candle1("CANDLE", "A CANDLE with pentagram etchings", "C1", true, true); //candle item instance, name must remain candle to be consumed in main algorithm
     ItemClass studyCandle("CANDLE", "A CANDLE with a pentagram design", "C2", true, true);
-    ItemClass candle3 = ItemClass("CANDLE", "THE THIRD CANDLE is scribbled on the side... hm", "C3", true, true); //Third candle item
-    ItemClass candle4 = ItemClass("CANDLE", "The fourth candle, one more until you're finally out of this nightmare.", "C4", true, true); //Fourth candle
+    ItemClass candle3 = ItemClass("CANDLE", "THE third CANDLE is scribbled on the side... hm", "C3", true, true); //Third candle item
+    ItemClass candle4 = ItemClass("CANDLE", "The fourth CANDLE, one more until you're finally out of this nightmare.", "C4", true, true); //Fourth candle
     
     //define all itemclass vectors for rooms
     std::vector <ItemClass> roomA_Items = { noteA, statueA }; //Creating items
