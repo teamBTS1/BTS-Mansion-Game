@@ -220,9 +220,9 @@ void GameControllerClass::gameLoop() {
     InteractClass* fountainPuzzleStarterInteraction = new InteractClass("Do you want to begin the Fountain Puzzle? (YES or NO)", "Test", fountainPuzzle);
     InteractClass* mazePuzzleStarterInteraction = new InteractClass("You should explore the maze, paying attention to your surrondings, do you want to explore? (YES or NO)", "Test", mazePuzzle);
     ItemClass mirrorPuzzleStarter = ItemClass("COMBINATION LOCK", "A three word COMBINATION LOCK...", false, mirrorPuzzleStarterInteraction);
-    ItemClass galleryPuzzleStarter = ItemClass("ALTAR", "An altar stands before you with a knife...", false, altarInteraction);
-    ItemClass fountainPuzzleStarter = ItemClass("FOUNTAIN PANEL", "A panel in the base of the fountain seems like you could push it like a button...", false, fountainPuzzleStarterInteraction);
-    ItemClass mazePuzzleStarter = ItemClass("LANTERN", "A lantern to help you see while exploring the maze...", false, mazePuzzleStarterInteraction);
+    ItemClass galleryPuzzleStarter = ItemClass("ALTAR", "An ALTAR stands before you with a knife...", false, altarInteraction);
+    ItemClass fountainPuzzleStarter = ItemClass("FOUNTAIN PANEL", "A FOUNTAIN PANEL in the base of the fountain seems like you could push it like a button...", false, fountainPuzzleStarterInteraction);
+    ItemClass mazePuzzleStarter = ItemClass("LANTERN", "A LANTERN to help you see while exploring the maze...", false, mazePuzzleStarterInteraction);
     std::vector <ItemClass> upstairsItems = { noteUpA, mirrorPuzzleStarter }; //Upstairs items
     std::vector <ItemClass> galleryItems = { galleryPuzzleStarter, lordPainting, barkeepPainting }; //Gallery items
     std::vector <ItemClass> fountainItems = { fountainPuzzleStarter }; //Fountain items
@@ -651,7 +651,6 @@ void GameControllerClass::endGame() {
 void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoom, const std::string& targetRoom, const std::list<std::string>& newRoomOptions,std::unordered_map<std::string,RoomClass>& rooms, const std::string& openMessage)
 {
     system("cls");
-    std::cout << openMessage;
     std::vector<Door>& doors = currentRoom.GetDoors();
   
     for (int i = 0; i < doors.size(); i++) {
@@ -663,6 +662,7 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
 
                 if (doors[i].getDoorKeyID() == playerKey)
                 {
+                    std::cout << openMessage;
                     player.useKey(playerKey); //Uses correct key from inventory
                     UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the " + targetRoom + ".\n");
                     currentRoom.unlockDoor(i); //unlocks door, sets description to different openDoor description through
