@@ -302,6 +302,8 @@ void GameControllerClass::gameLoop() {
     PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
 
     while (true) {
+        UI.displayPrompt("\n"); //Giving space for text
+        
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
         
         UI.displayPrompt(currentRoom_temp.AmendDescription());
