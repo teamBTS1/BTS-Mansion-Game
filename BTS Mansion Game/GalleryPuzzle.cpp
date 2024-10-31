@@ -57,7 +57,7 @@ void GalleryPuzzle::runPuzzle()
 
 	if (correctAnswerCount == 1) //Puzzle solved
 	{
-		ui.displayPrompt("You successfully solved the Storyteller's Poem!");
+		ui.displayPrompt("You successfully solved the Storyteller's Poem! You recieved the gallery half key");
 		_isSolved = true;
 	}
 	else {

@@ -173,7 +173,7 @@ void GameControllerClass::gameLoop() {
 
     //Upstairs items
     ItemClass lordPainting = ItemClass("CRIMSON LORD PORTRAIT", "CRIMSON LORD PORTRAIT of a regal man in a crimson cloak, with blood dripping from his lips as a glass is raised to his lips.", false, lordPaintingInteraction);
-    ItemClass barkeepPainting = ItemClass("BARKEEP PORTRAIT", "CRIMSON LORD PORTRAIT of a stocky man cleaning a glass behind the bar, wearing a fake smile.", false, barkeepPaintingInteraction);
+    ItemClass barkeepPainting = ItemClass("BARKEEP PORTRAIT", "BARKEEP PORTRAIT of a stocky man cleaning a glass behind the bar, wearing a fake smile.", false, barkeepPaintingInteraction);
     ItemClass noteUpA = ItemClass("SCRIBBLED NOTE", "SCRIBBLED NOTE that looks like a child's drawing of two kids side by side, both looking almost exactly similair, but one of the children seems to have jagged teeth instead of normal teeth.", true); //Note for clue to mirror puzzle
     ItemClass storyBook = ItemClass("STORYBOOK", "A giant STORYBOOK made of tough leather and weathered pages, indicating many stories have been told from this book. It is open to a page with a poem on it.", false, storyBookInteraction);
     ItemClass masterKey = ItemClass("MASTER KEY", "Fully completed MASTER KEY to the master bedroom", "idMaster", true, true); //Adding master bedroom key
@@ -564,43 +564,41 @@ void GameControllerClass::gameLoop() {
                 }
                 else if (command == "DOUBLE DOORS") {
                     std::list<std::string> options = { "PORTAL", "MIRROR ROOM 1", "MIRROR ROOM 2", "STORYTELLER'S ROOM", "GALLERY", "MASTER BEDROOM" };
-                    handleDoors(userPlayer, currentRoom_temp, "MASTER BEDROOM", options, rooms);
+                    handleDoors(userPlayer, currentRoom_temp, "MASTER BEDROOM", options, rooms,"");
                 }
                 else if (command == "DOOR") {
                     std::list<std::string> options = { "LOUNGE", "LIBRARY", "KITCHEN DOOR" };
-                    handleDoors(userPlayer, currentRoom_temp, "LIBRARY", options, rooms);
+                    handleDoors(userPlayer, currentRoom_temp, "LIBRARY", options, rooms,"");
                 }
                 else if (command == "GREATER LIBRARY DOOR")
                 {
                     std::list<std::string> options = {"FOYER", "HIDDEN SECTION", "LIBRARY","GREATER LIBRARY"};
-                    handleDoors(userPlayer, currentRoom_temp, "GREATER LIBRARY", options, rooms);
+                    handleDoors(userPlayer, currentRoom_temp, "GREATER LIBRARY", options, rooms, "");
                 }
                 else if (command == "BOOKSHELF") {
-                    std::list<std::string> options =  {"FOYER","HIDDEN SECTION", "GREATER LIBRARY DOOR"};
-                    handleDoors(userPlayer, currentRoom_temp, "HIDDEN SECTION", options, rooms);
-                    std::cout << "You place the book on the shelf. The Bookshelf begins to move, screeching across the wooden floor. It reveals a staircase leading down to the HIDDEN SECTION. \n\n";
+                    std::list<std::string> options = { "FOYER","HIDDEN SECTION", "GREATER LIBRARY DOOR" };
+                    handleDoors(userPlayer, currentRoom_temp, "HIDDEN SECTION", options, rooms, "You place the book on the shelf. The Bookshelf begins to move, screeching across the wooden floor. It reveals a staircase leading down to the HIDDEN SECTION. \n\n");
                 }
                 else if (command == "BLOCKED HEDGE MAZE")
                 {
                     std::list<std::string> options = { "SHED", "FOUNTAIN", "HEDGE MAZE"};
-                    handleDoors(userPlayer, currentRoom_temp, "HEDGE MAZE", options, rooms);
-                    std::cout << "You pour the holy water on the dark force blocking the entrance to the hedge maze, granting yourself access as the dark sludge burns away.\n\n";
+                    handleDoors(userPlayer, currentRoom_temp, "HEDGE MAZE", options, rooms, "You pour the holy water on the dark force blocking the entrance to the hedge maze, granting yourself access as the dark sludge burns away.\n\n");
                 }
                 else if (command == "MAZE EXIT")
                 {
                     std::list<std::string> options = { "GARDEN", "HEDGE MAZE EXIT"};
-                    handleDoors(userPlayer, currentRoom_temp, "HEDGE MAZE EXIT", options, rooms);
+                    handleDoors(userPlayer, currentRoom_temp, "HEDGE MAZE EXIT", options, rooms, "");
                 }
                 else if (command == "PUZZLE")
                 {
                     system("cls");
                     if (!puzzleSolved)
                     {
-                        UI.displayPrompt("The door is locked there seems to be a puzzle before entering. Solve this puzzle.\n");
-                        UI.displayPrompt("The secret word is DIDDY\n");
+                        UI.displayPrompt("WORK IN PROGRESS: The door is locked there seems to be a puzzle before entering. Solve this puzzle.\n");
+                        UI.displayPrompt("The secret word is YDDID\n");
                         std::string puzzleAnswer = UI.userInput();
 
-                        if (puzzleAnswer == "DIDDY") {
+                        if (puzzleAnswer == "YDDID") {
                             UI.displayPrompt("You solved the puzzle you can now enter the study\n");
                             puzzleSolved = true;
                             currentRoom_temp.setRoomOption(std::list<std::string>{"LIBRARY", "STUDY"});
@@ -652,9 +650,10 @@ void GameControllerClass::endGame() {
 }
 
 
-void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoom, const std::string& targetRoom, const std::list<std::string>& newRoomOptions,std::unordered_map<std::string,RoomClass>& rooms)
+void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoom, const std::string& targetRoom, const std::list<std::string>& newRoomOptions,std::unordered_map<std::string,RoomClass>& rooms, const std::string& openMessage)
 {
     system("cls");
+    std::cout << openMessage;
     std::vector<Door>& doors = currentRoom.GetDoors();
   
     for (int i = 0; i < doors.size(); i++) {
