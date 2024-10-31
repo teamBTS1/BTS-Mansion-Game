@@ -666,9 +666,9 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
                 {
                     std::cout << openMessage;
                     player.useKey(playerKey); //Uses correct key from inventory
-                    UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the " + targetRoom + ".\n");
+                    //UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the " + targetRoom + ".\n");
                     currentRoom.unlockDoor(i); //unlocks door, sets description to different openDoor description through
-                    doors[i].unlockDoor();
+                    doors[i].unlockDoor(); 
                     currentRoom.setRoomOption(newRoomOptions); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
                     player.setRoom(currentRoom); //set room
                     break;
