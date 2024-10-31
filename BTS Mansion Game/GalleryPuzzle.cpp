@@ -50,7 +50,7 @@ void GalleryPuzzle::runPuzzle()
 				}
 			}
 			else {
-				ui.displayPrompt("That is not one of the portraits!");
+				//ui.displayPrompt("That is not one of the portraits!");
 			}
 		}		
 	}
