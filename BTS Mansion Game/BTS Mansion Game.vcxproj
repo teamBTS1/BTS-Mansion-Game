@@ -134,6 +134,7 @@
     <ClCompile Include="InteractClass.cpp" />
     <ClCompile Include="ItemClass.cpp" />
     <ClCompile Include="MazePuzzle.cpp" />
+    <ClCompile Include="MemoryPuzzle.cpp" />
     <ClCompile Include="MirrorPuzzle.cpp" />
     <ClCompile Include="MovementClass.cpp" />
     <ClCompile Include="PickUpItemClass.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="InteractClass.h" />
     <ClInclude Include="ItemClass.h" />
     <ClInclude Include="MazePuzzle.h" />
+    <ClInclude Include="MemoryPuzzle.h" />
     <ClInclude Include="MirrorPuzzle.h" />
     <ClInclude Include="MovementClass.h" />
     <ClInclude Include="PickUpItemClass.h" />

@@ -48,6 +48,15 @@ InteractClass::InteractClass(std::string inMssg, std::string interactMssg, MazeP
     isPuzzle = true;
 }
 
+InteractClass::InteractClass(std::string inMssg, std::string interactMssg, MemoryPuzzle puzz) //constructor for fountain puzzle
+{
+    inputMessage = inMssg;
+    interactMessage = interactMssg;
+    interacted = false;
+    memPuzzle = puzz;
+    isPuzzle = true;
+}
+
 // Function to set input message
 void InteractClass::setInputMessage(const std::string& message) {
     inputMessage = message;
@@ -105,7 +114,7 @@ void InteractClass::runInteraction() {
     
 }
 
-void InteractClass::runInteraction(PlayerClass& player, ItemClass& galleryItm, ItemClass& mirrorItm, ItemClass& masterItm, ItemClass& fountainItem, ItemClass& mazeItem) { //Function to run an interaction with items and picking up
+void InteractClass::runInteraction(PlayerClass& player, ItemClass& galleryItm, ItemClass& mirrorItm, ItemClass& masterItm, ItemClass& fountainItem, ItemClass& mazeItem, ItemClass& memoryItem) { //Function to run an interaction with items and picking up
     UserInterfaceClass ui;
     //input interaction message;
     //simulate user input demonstrate
@@ -212,6 +221,25 @@ void InteractClass::runInteraction(PlayerClass& player, ItemClass& galleryItm, I
                     else
                     {
                         ui.displayPrompt("You failed the Maze Puzzle.");                        
+                    }
+                }
+                else
+                {
+                    ui.displayPrompt("This item seems dormant.");
+                }
+            }
+            else if (memPuzzle.getDescription() == "Memory Puzzle") {
+
+                if (memPuzzle.isSolved() == false)
+                {
+                    memPuzzle.runPuzzle();
+
+                    if (memPuzzle.isSolved()) {
+                        ui.displayPrompt("The memories react positively to your answers, they break free from the crystal tank and attack your body, ripping out a memory of your own, they place it in your hand and go back into the tank");
+                        player.addItem(memoryItem); 
+                    }
+                    else {
+                        ui.displayPrompt("");
                     }
                 }
                 else

@@ -13,6 +13,7 @@
 #include "MirrorPuzzle.h"
 #include "FountainPuzzle.h"
 #include "MazePuzzle.h"
+#include "MemoryPuzzle.h"
 #include <iostream>
 #include <sstream>
 #include <list>
@@ -295,11 +296,106 @@ void GameControllerClass::gameLoop() {
         fountainDoors, // Use the empty fountain doors
         fountainItems // No items at the fountain
     );
+
+    //-----------------------------------//
+    //Candle Sequence 5
+    MemoryPuzzle memoryPuzzle = MemoryPuzzle("Memory Puzzle");
+    InteractClass* memoryPuzzleStarterInteraction = new InteractClass("A memory tank", "Test", memoryPuzzle);
+    ItemClass memoryPuzzleStarter = ItemClass("MEMORY TANK", "A crystal tank, that is labeled as MEMORY TANK. There is a hand inprint on the tank", false, memoryPuzzleStarterInteraction);
+    
+
+    ItemClass playerMemory = ItemClass("YOUR MEMORY", "a glowing orb, reminiscent of your past", "YOURMEMORY", true, true); 
+
+
+    std::vector<Door> memoryOfTheMansionDoors = {};
+    std::vector<ItemClass> memoryOfTheMansionItems = {};
+
+    std::vector<Door> memoryOfTheFoyerDoors = {};
+    std::vector<ItemClass> memoryOfTheFoyerItems = {};
+
+    std::vector<Door> memoryOfTheLibraryDoors = {};
+    std::vector<ItemClass> memoryOfTheLibraryItems = {};
+
+    std::vector<Door> memoryOfTheGardenDoors = {};
+    std::vector<ItemClass> memoryOfTheGardenItems = {};
+
+    std::vector<Door> memoryOfTheStudyDoors = {};
+    std::vector<ItemClass> memoryOfTheStudyItems = {};
+
+    std::vector<Door> memoryOfTheAtticDoors = {};
+    std::vector<ItemClass> memoryOfTheAtticItems = { memoryPuzzleStarter };
+
+
+
+    rooms["MEMORY OF THE MANSION"] = RoomClass("You arrive in a broken mansion, it looks familiar but different. Its the mansion from the memories of the monster. You are no longer in your reality, but a twisted one where the mansion has been destroyed, and its debris are lingering in the air. There are portraits and pieces of staircase floating in the air with a pink nebula in the background",
+        "MEMORY OF THE MANSION",
+        std::list<std::string>{"MEMORY OF THE FOYER", "MEMORY OF THE LIBRARY", "MEMORY OF THE GARDEN", "MEMORY OF THE STUDY", "THE LIFT"},
+        memoryOfTheMansionDoors,
+        memoryOfTheMansionItems
+    );
+
+    rooms["MEMORY OF THE FOYER"] = RoomClass("You arrive to a broken foyer, you an see a floating statue and doors that are floating away from their hinges",
+        "MEMORY OF THE FOYER",
+        std::list<std::string>{"MEMORY OF THE MANSION"},
+        memoryOfTheFoyerDoors,
+        memoryOfTheFoyerItems
+        );
+
+    rooms["MEMORY OF THE LIBRARY"] = RoomClass("You arrive to a broken library, books and bookshelfs are floating around",
+        "MEMORY OF THE LIBRARY",
+        std::list<std::string>{"MEMORY OF THE MANSION"},
+        memoryOfTheLibraryDoors,
+        memoryOfTheLibraryItems
+    );
+
+    rooms["MEMORY OF THE GARDEN"] = RoomClass("You arrive to a broken garden, the grass is no longer green, and the hedgmaze has been burnt away",
+        "MEMORY OF THE GARDEN",
+        std::list<std::string>{"MEMORY OF THE MANSION"},
+        memoryOfTheGardenDoors,
+        memoryOfTheGardenItems
+    );
+
+    rooms["MEMORY OF THE STUDY"] = RoomClass("You arrive to a broken study",
+        "MEMORY OF THE STUDY",
+        std::list<std::string>{"MEMORY OF THE MANSION"},
+        memoryOfTheStudyDoors,
+        memoryOfTheStudyItems
+    );
+
+    rooms["THE LIFT"] = RoomClass("The beam of energy carries your body up to place that is unrecognizable, it appears to be an attic",
+        "THE LIFT",
+        std::list<std::string>{"MEMORY OF THE MANSION"},
+        memoryOfTheAtticDoors,
+        memoryOfTheAtticItems
+    );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
+    PlayerClass userPlayer = PlayerClass(rooms["MEMORY OF THE MANSION"]);
 
     while (true) {
         UI.displayPrompt("\n"); //Giving space for text
@@ -529,7 +625,7 @@ void GameControllerClass::gameLoop() {
 
                 else if (currentRoom_temp.getRoomItemByName(itemName).getInteraction()->getIsPuzzle() == true) //If interaction is a puzzle, call overloaded runInteraction
                 {
-                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer, galleryKey, mirrorKey, masterKey, mazeKey, mazeExitKey); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
+                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer, galleryKey, mirrorKey, masterKey, mazeKey, mazeExitKey, playerMemory); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
                 }
                 else //Run interact sequence if not pick up able object
                 {
