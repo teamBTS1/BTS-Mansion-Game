@@ -302,10 +302,13 @@ void GameControllerClass::gameLoop() {
     MemoryPuzzle memoryPuzzle = MemoryPuzzle("Memory Puzzle");
     InteractClass* memoryPuzzleStarterInteraction = new InteractClass("A memory tank", "Test", memoryPuzzle);
     ItemClass memoryPuzzleStarter = ItemClass("MEMORY TANK", "A crystal tank, that is labeled as MEMORY TANK. There is a hand inprint on the tank", false, memoryPuzzleStarterInteraction);
-    
-
     ItemClass playerMemory = ItemClass("YOUR MEMORY", "a glowing orb, reminiscent of your past", "YOURMEMORY", true, true); 
+    bool memoryGobletIsActive = false;
 
+    InteractClass* gobletInteraction = new InteractClass("Approch the goblet", "You interact with the goblet");
+    ItemClass memoryGoblet = ItemClass("MEMORY GOBLET", "A transparent challice called the MEMORY GOBLET, a place where memories can be added", false, gobletInteraction);
+
+    ItemClass Sight = ItemClass("SIGHT", "Allows you to see the unseen", true, true);
 
     std::vector<Door> memoryOfTheMansionDoors = {};
     std::vector<ItemClass> memoryOfTheMansionItems = {};
@@ -325,11 +328,16 @@ void GameControllerClass::gameLoop() {
     std::vector<Door> memoryOfTheAtticDoors = {};
     std::vector<ItemClass> memoryOfTheAtticItems = { memoryPuzzleStarter };
 
+    std::vector<Door> theConsciousDoors = {};
+    std::vector<ItemClass> theConsciousItems = { memoryGoblet };
+
+    
+
 
 
     rooms["MEMORY OF THE MANSION"] = RoomClass("You arrive in a broken mansion, it looks familiar but different. Its the mansion from the memories of the monster. You are no longer in your reality, but a twisted one where the mansion has been destroyed, and its debris are lingering in the air. There are portraits and pieces of staircase floating in the air with a pink nebula in the background",
         "MEMORY OF THE MANSION",
-        std::list<std::string>{"MEMORY OF THE FOYER", "MEMORY OF THE LIBRARY", "MEMORY OF THE GARDEN", "MEMORY OF THE STUDY", "THE LIFT"},
+        std::list<std::string>{"MEMORY OF THE FOYER", "MEMORY OF THE LIBRARY", "MEMORY OF THE GARDEN", "MEMORY OF THE STUDY", "THE LIFT", "THE CONSCIOUS"},
         memoryOfTheMansionDoors,
         memoryOfTheMansionItems
     );
@@ -367,6 +375,13 @@ void GameControllerClass::gameLoop() {
         std::list<std::string>{"MEMORY OF THE MANSION"},
         memoryOfTheAtticDoors,
         memoryOfTheAtticItems
+    );
+
+    rooms["THE CONSCIOUS"] = RoomClass("You enter a new room, which looks nothing like the mansion, it has an evil influence, as if you were inside the concious of the monster itself",
+        "THE CONSCIOUS",
+        std::list<std::string>{"MEMORY OF THE MANSION"},
+        theConsciousDoors,
+        theConsciousItems
     );
 
 
@@ -412,6 +427,10 @@ void GameControllerClass::gameLoop() {
 
         // Boolean to track whether the kitchen door is open
         bool kitchenDoorOpen = false;
+        
+
+        //bool to track if player put memory in memory goblet
+
 
         // Check the command for the kitchen door
         if (command == "KITCHEN DOOR" && userPlayer.getRoomName() == "KITCHEN" && rooms.find("FOYER") != rooms.end()) {
@@ -558,7 +577,7 @@ void GameControllerClass::gameLoop() {
             system("cls");
             currentRoom_temp.displayRoomItems();
             UI.displayPrompt("What item would you like to inspect?\n");
-            command = UI.userInput(); //Getting item to be picked up
+            command = UI.userInput(); //Getting item to be picked up 
 
             if (currentRoom_temp.getRoomItemByName(command).getName() == command) //Checks if there is an item in the room same as item user wants to inspect
             {
@@ -596,6 +615,32 @@ void GameControllerClass::gameLoop() {
                             }
                         }
                     }
+                }
+                else if (command == "MEMORY GOBLET") {
+
+                    if (memoryGobletIsActive) {
+                        UI.displayPrompt("You dunk your head into the goblet you are granted SIGHT");
+                        userPlayer.addItem(Sight);
+                        UI.userInput();
+
+                    }
+                    else if (userPlayer.inInventory("YOUR MEMORY")) {
+                        UI.displayPrompt("You place YOUR MEMORY into the MEMORY GOBLET and it unleashes a blue flame as it roars to life");
+                        userPlayer.useItem(playerMemory);
+                        memoryGobletIsActive = true;
+                        UI.userInput();
+                    }
+                    else {
+                        UI.displayPrompt("You approch the tank of memories, however you lack the item that must go here... you walk away.");
+                        UI.userInput();
+                        std::cout << memoryGobletIsActive;
+                       
+                    }
+ 
+                     
+
+
+
                 }
                 else if (command == "METAL SAFE")
                 {

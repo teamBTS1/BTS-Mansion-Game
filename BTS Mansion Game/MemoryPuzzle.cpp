@@ -18,8 +18,8 @@ void MemoryPuzzle::runPuzzle() {
 	UserInterfaceClass ui; //Creating ui for i/o
 	std::string input; //Input from user
 
-	int startingLength = 3; 
-	int finalLength = 4;
+	int startingLength = 2; 
+	int finalLength = 3;
 	bool toContinue = true;
 
 	ui.displayPrompt("You place your hand on the tank, they are testing your memory, you must recite the memories that they tell you");

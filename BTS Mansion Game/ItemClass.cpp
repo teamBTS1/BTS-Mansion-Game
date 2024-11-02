@@ -76,7 +76,16 @@ looks in their inventory.
 		canPickUp = pickUp;
 		interaction = nullptr;
 	}
-
+	ItemClass::ItemClass(string n, string desc, bool pickUp, bool expire) {
+		name = n;
+		description = desc;
+		value = 0;
+		isConsumable = false;
+		keyID = " ";
+		canPickUp = pickUp;
+		interaction = nullptr;
+		canExpire = expire; 
+	}
 	string ItemClass::getName()
 	{
 		return name; //Returns item name

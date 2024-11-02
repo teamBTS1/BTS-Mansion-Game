@@ -3,6 +3,7 @@
 #define ITEMCLASS_H
 
 #include <string>
+#include <chrono>
 //#include "InteractClass.h"
 
 
@@ -20,6 +21,9 @@ private:
 	bool canPickUp; //Tracks whether item can be picked up or not
 	InteractClass* interaction = nullptr;
 
+	bool canExpire; //if the item dissapears after a certain amount of time
+	std::chrono::steady_clock::time_point timeTillExpiration; // expiration timer
+
 public:
 	ItemClass(); //Constructors
 	ItemClass(std::string n, std::string desc); //Constructor for an unknownItem (dev use)
@@ -27,6 +31,7 @@ public:
 	ItemClass(std::string n, std::string desc, std::string id, bool consumable, bool canPickUp); //Constructor for a key
 	ItemClass(std::string n, std::string desc, int val, bool consumable, bool canPickUp); //Constructor for a consumable
 	ItemClass(std::string n, std::string desc, bool pickUp, InteractClass* interact); //Constructor for an interactable item
+	ItemClass(std::string n, std::string desc, bool pickUp, bool expire); //for expiring item
 
 	std::string getName(); //Return item name
 	void setName(std::string newName); //Sets item to a new name
