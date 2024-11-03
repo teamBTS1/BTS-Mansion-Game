@@ -10,6 +10,7 @@
 #include "Door.h"
 #include "ItemClass.h"
 #include "Puzzle.h"
+#include "SafeSpot.h"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ class RoomClass
 {
 	//Class to represent an in-game location.
 private:
-	std::vector<Door> roomDoors; 
+	std::vector<Door> roomDoors;
 	bool isRitual; //bool value that determines whether room is ritual room, default value is false
 	int candles; // Candle count, will only be used for the ritual room
 	std::string roomDescription; //Variable that stores a description of the room
@@ -31,7 +32,8 @@ private:
 	int itemsLength;
 	Puzzle roomPuzzle;
 	bool hasPuzzle;
-	
+	std::vector<SafeSpot> safeSpots;
+	std::list<std::string> options;
 
 
 public:
@@ -45,7 +47,7 @@ public:
 	RoomClass(std::string description, std::vector<Door>& doors);
 	RoomClass(std::string description, bool isLockedRoom);
 	std::vector <Door>& GetDoors(); //Returns the door associated with the room
-	void unlockDoor(int doorIndex); 
+	void unlockDoor(int doorIndex);
 	std::string GetDescription(); //Returns a description of the room
 	void setRoomDescription(std::string newDescription); //sets room description
 	std::string GetFullDescription(); //Returns the full description of the room as a concatenated string, including all items and connecting rooms.
@@ -64,12 +66,20 @@ public:
 	void displayAdjacentRooms(); //Displays adjacent rooms
 	void setPuzzle(Puzzle puzzle);
 	Puzzle getPuzzle();
-
 	void addCandle(); // adds candle to candle count in ritual room
 	int getCandleValue(); // returns value of candles in ritual room, will be important for 
 	bool returnRitualStatus(); //returns whether room is tirual room or not
-
 	void AddItem(ItemClass itm); //Adds an item to the list
-};
+
+	void addSafeSpot(const SafeSpot& spot); // add safe spot to room
+	bool hasSafeSpot() const; // check if room has any safe spots
+
+	std::string getSafeSpotName()const; // get the name of the safe spot of room 
+
+
+
+
+
+}
 
 #endif
