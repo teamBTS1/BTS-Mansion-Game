@@ -193,7 +193,7 @@ void GameControllerClass::gameLoop() {
     //define all itemclass vectors for rooms
     std::vector <ItemClass> roomA_Items = { noteA, statueA }; //Creating items
     std::vector <ItemClass> roomB_Items = { keyB };
-    std::vector <ItemClass> library_Items = {Book};
+    std::vector <ItemClass> library_Items = {Book, diningHallKey};
     std::vector<ItemClass>diningHallItems = { metalSafe, deadBody1,deadBody2,deadBody3,deadBody4 };
     std::vector <ItemClass> hiddensection_Items = { Candle1 };
     std::vector <ItemClass> storytellerItems = { storyBook }; //Storyteller's items
@@ -697,7 +697,11 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
 
     if (!wasKeyFound)
     {
-        UI.displayPrompt("The door is locked");
+        UI.displayPrompt("The door is locked.");
+    }
+    else
+    {
+        UI.displayPrompt("You unlocked the door!");
     }
 
 }
