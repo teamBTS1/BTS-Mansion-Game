@@ -39,6 +39,8 @@ public:
 	//prompts to view inventory
 	//Function that displays option to interact ,read or exit the statue.
 	void handleDoors(PlayerClass& player, RoomClass& currentRoom, const std::string& targetRoom, const std::list<std::string>& newRoomOptions, std::unordered_map<std::string, RoomClass>& rooms, const std::string& openMessage);
+
+	void sanitySequence(PlayerClass& userPlayer, std::atomic<bool>& running); // function that handles sanity output
 };
 
 #endif

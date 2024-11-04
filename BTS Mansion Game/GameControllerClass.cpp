@@ -19,6 +19,8 @@
 #include <algorithm>
 #include<string>
 #include <unordered_map>
+#include <chrono>
+#include <thread>
 
 GameControllerClass::GameControllerClass() {
     // Initialize backstory in the constructor
@@ -301,11 +303,15 @@ void GameControllerClass::gameLoop() {
 
     PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
 
+    std::atomic<bool> running(true);
+    std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));
+
     while (true) {
         UI.displayPrompt("\n"); //Giving space for text
         
+        UI.displayPrompt("Sanity Level: " + std::to_string(userPlayer.getSanity()) + "\n");
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
-        
+
         UI.displayPrompt(currentRoom_temp.AmendDescription());
         //UI.displayPrompt(userPlayer.getRoomDescription());
         //currentRoom_temp.displayRoomItems(); //Displaying room items, TEMP function until can implement into UI class
@@ -313,6 +319,7 @@ void GameControllerClass::gameLoop() {
        // currentRoom_temp.displayAdjacentRooms(); //Displaying adjacent rooms, TEMP function until can implement into UI class
         UI.displayPrompt("\nYou cant contain your curiosity and have the urge to INSPECT the items in the room. (type 'INVENTORY' to open inventory. Type 'QUIT' to exit the game)\n"); //user input 
         std::string command = UI.userInput();
+
 
         // Boolean to track whether the kitchen door is open
         bool kitchenDoorOpen = false;
@@ -645,6 +652,7 @@ void GameControllerClass::showMenu() {
 }
 
 void GameControllerClass::endGame() {
+    system("cls");
     UI.displayPrompt("\nYour world disappears around you. You are still aware but there is nothing, like someone pulled the plug on your brain - Am I dead?\n...You wonder if this will end.\nThank you for playing");
     exit(0);  // Exit the game
 }
@@ -694,6 +702,18 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
 
 }
 
+void GameControllerClass::sanitySequence(PlayerClass& userPlayer, std::atomic<bool>& running) {
+    while (running) {
+        int sanity = userPlayer.getSanity();
+        userPlayer.setSanity(sanity - static_cast<int>(sanity * 0.02));
+
+        std::this_thread::sleep_for(std::chrono::seconds(5));
+
+        if (userPlayer.getSanity() < 2) {
+            endGame();
+        }
+    }
+}
 
 
 
