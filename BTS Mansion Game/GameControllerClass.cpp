@@ -306,6 +306,8 @@ void GameControllerClass::gameLoop() {
     std::atomic<bool> running(true);
     std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));
 
+    UI.displayPrompt("It's always important to stay sane in such a stressful situation. The lower your sanity gets, the less you'll understand what is going on...\nUnfortunately, it is only a matter of time before you completely lose it. Consume SANITY PILLS to increase your sanity.");
+
     while (true) {
         UI.displayPrompt("\n"); //Giving space for text
         
