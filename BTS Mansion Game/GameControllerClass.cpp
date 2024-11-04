@@ -193,7 +193,7 @@ void GameControllerClass::gameLoop() {
     //define all itemclass vectors for rooms
     std::vector <ItemClass> roomA_Items = { noteA, statueA }; //Creating items
     std::vector <ItemClass> roomB_Items = { keyB };
-    std::vector <ItemClass> library_Items = {Book, diningHallKey};
+    std::vector <ItemClass> library_Items = {Book};
     std::vector<ItemClass>diningHallItems = { metalSafe, deadBody1,deadBody2,deadBody3,deadBody4 };
     std::vector <ItemClass> hiddensection_Items = { Candle1 };
     std::vector <ItemClass> storytellerItems = { storyBook }; //Storyteller's items
@@ -299,7 +299,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["LIBRARY"]);
+    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
 
     while (true) {
         UI.displayPrompt("\n"); //Giving space for text
