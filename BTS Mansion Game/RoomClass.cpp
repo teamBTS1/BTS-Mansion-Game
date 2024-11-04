@@ -14,6 +14,7 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 	this->roomDescription = description;
 	this->roomName = name;
 	this->RoomOptions = options;
+	this->defaultItem.setName("NULL");
 }
 
 RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<Door>& doors)
@@ -23,6 +24,7 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 	this->roomName = name;
 	this->RoomOptions = options;
 	roomDoors = doors;
+	this->defaultItem.setName("NULL");
 }
 
 RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<Door>& doors, std::vector<ItemClass> itemList)
@@ -34,6 +36,7 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 	roomDoors = doors;
 	items = itemList;
 	this->itemsLength = items.size();
+	this->defaultItem.setName("NULL");
 }
 
 
@@ -45,6 +48,7 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 	this->RoomOptions = options;
 	items = itemList;
 	this->itemsLength = items.size();
+	this->defaultItem.setName("NULL");
 }
 
 
@@ -59,6 +63,7 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 	this->isRitual = ritual;
 	this->isRitual = false; //default value of room, will be modified in ritual room constuctor
 	this->candles = 0; // default value for candles is 0
+	this->defaultItem.setName("NULL");
 
 }
 
@@ -223,8 +228,9 @@ ItemClass& RoomClass::getRoomItemByName(std::string name)
 		}
 
 	}
-	ItemClass unknownItem;
-	return unknownItem;
+	//ItemClass unknownItem("NULL","NULL");
+	//return unknownItem;
+	return defaultItem;
 }
 
 void RoomClass::displayRoomItems()
