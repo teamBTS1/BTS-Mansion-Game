@@ -19,6 +19,9 @@
 #include <algorithm>
 #include<string>
 #include <unordered_map>
+#include <algorithm> 
+#include <cctype>
+#include <locale>
 
 GameControllerClass::GameControllerClass() {
     // Initialize backstory in the constructor
@@ -40,6 +43,30 @@ void GameControllerClass::startGame() {
     //displayBackstory();
     gameLoop();
 }
+
+
+// Function to trim whitespace from the start of a string
+static inline std::string ltrim(std::string s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
+        return !std::isspace(ch);
+        }));
+    return s;
+}
+
+// Function to trim whitespace from the end of a string
+static inline std::string rtrim(std::string s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+        return !std::isspace(ch);
+        }).base(), s.end());
+    return s;
+}
+
+// Function to trim whitespace from both ends of a string
+static inline std::string trim(std::string s) {
+    return ltrim(rtrim(s));
+}
+
+
 
 void GameControllerClass::pickUpNoteSequence(PlayerClass& myPlayer) {
 
@@ -312,13 +339,17 @@ void GameControllerClass::gameLoop() {
         //std::cout << endl;
        // currentRoom_temp.displayAdjacentRooms(); //Displaying adjacent rooms, TEMP function until can implement into UI class
         UI.displayPrompt("\nYou cant contain your curiosity and have the urge to INSPECT the items in the room. (type 'INVENTORY' to open inventory. Type 'QUIT' to exit the game)\n"); //user input 
+        
+
         std::string command = UI.userInput();
+        command = trim(command);  // Trim any leading or trailing whitespace
 
         // Boolean to track whether the kitchen door is open
         bool kitchenDoorOpen = false;
 
         // Check the command for the kitchen door
         if (command == "KITCHEN DOOR" && userPlayer.getRoomName() == "KITCHEN" && rooms.find("FOYER") != rooms.end()) {
+            system("cls");
             // Player is in the kitchen and wants to enter the foyer through the door
             if (!kitchenDoorOpen) {
                 UI.displayPrompt("\nYou open the door to the foyer.\n");
@@ -333,6 +364,11 @@ void GameControllerClass::gameLoop() {
             // Check if "KITCHEN" is already in the options
             if (std::find(updatedOptions.begin(), updatedOptions.end(), "KITCHEN") == updatedOptions.end()) {
                 updatedOptions.push_back("KITCHEN");
+
+                // Remove "KITCHEN DOOR" if it’s already in the options
+                updatedOptions.remove("KITCHEN DOOR");
+
+                // Update the options in the foyer
                 currentRoom_temp.setRoomOption(updatedOptions);
 
                 // Update the foyer room in the map
@@ -341,7 +377,9 @@ void GameControllerClass::gameLoop() {
 
             UI.displayPrompt("\nYou are now in the foyer. You can use the 'KITCHEN' command to return to the kitchen.\n");
         }
+
         else if (command == "KITCHEN DOOR" && userPlayer.getRoomName() == "FOYER") {
+            system("cls");
             // Allow access back to the kitchen if the door is open
             if (kitchenDoorOpen) {
                 UI.displayPrompt("\nYou pass through the open door to the kitchen.\n");
@@ -399,17 +437,17 @@ void GameControllerClass::gameLoop() {
             UI.displayPrompt("The DINING HALL DOOR is locked from this side\n");
         }
 
-        if (command == "CANDLE" && userPlayer.getRoomName() == "RITUAL ROOM") //user will type candle in input section to place a candle, only a valid input if they are in the RITUAL ROOM
-        {
-            if (userPlayer.getInventorySize() != 0)
-            {
-           
-                if (userPlayer.inInventory("CANDLE","C1"))
-                {
-                    userPlayer.useItem("CANDLE","C1"); //Uses Candle from inventory, is removed
+        if (command == "CANDLE" && userPlayer.getRoomName() == "RITUAL ROOM") {
+            if (userPlayer.getInventorySize() != 0) {
+                if (userPlayer.inInventory("CANDLE", "C1")) {
+                    userPlayer.useItem("CANDLE", "C1"); // Uses Candle from inventory, is removed
                     UI.displayPrompt("You have placed a candle\n");
                     currentRoom_temp.addCandle();
-                    UI.displayPrompt(std::to_string(currentRoom_temp.getCandleValue()));// for testing purposes to see if candle is added to room
+                    UI.displayPrompt(std::to_string(currentRoom_temp.getCandleValue())); // For testing purposes
+
+                    // Display the pentagram immediately after placing the candle
+                    UI.displayPentacle(currentRoom_temp.getCandleValue());
+
                     // Open the tunnel to the kitchen
                     UI.displayPrompt("As you place the candle, a hidden tunnel opens, leading to the kitchen!\n");
 
