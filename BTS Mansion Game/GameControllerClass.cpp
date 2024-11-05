@@ -717,5 +717,10 @@ void GameControllerClass::sanitySequence(PlayerClass& userPlayer, std::atomic<bo
     }
 }
 
+void GameControllerClass::updateSanity(PlayerClass& player, int amount)
+{
+    player.setSanity(player.getSanity() + amount);
+}
+
 
 

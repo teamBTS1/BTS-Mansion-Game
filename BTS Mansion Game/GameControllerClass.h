@@ -41,6 +41,7 @@ public:
 	void handleDoors(PlayerClass& player, RoomClass& currentRoom, const std::string& targetRoom, const std::list<std::string>& newRoomOptions, std::unordered_map<std::string, RoomClass>& rooms, const std::string& openMessage);
 
 	void sanitySequence(PlayerClass& userPlayer, std::atomic<bool>& running); // function that handles sanity output
+	void updateSanity(PlayerClass& player, int amount); //Function that changes player sanity by passing an integer to add to the value
 };
 
 #endif
