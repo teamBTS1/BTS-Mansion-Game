@@ -14,6 +14,7 @@
 #include "FountainPuzzle.h"
 #include "MazePuzzle.h"
 #include "MemoryPuzzle.h"
+#include "ChantPuzzle.h"
 #include <iostream>
 #include <sstream>
 #include <list>
@@ -299,112 +300,113 @@ void GameControllerClass::gameLoop() {
 
     //-----------------------------------//
     //Candle Sequence 5
-    MemoryPuzzle memoryPuzzle = MemoryPuzzle("Memory Puzzle");
-    InteractClass* memoryPuzzleStarterInteraction = new InteractClass("A memory tank", "Test", memoryPuzzle);
-    ItemClass memoryPuzzleStarter = ItemClass("MEMORY TANK", "A crystal tank, that is labeled as MEMORY TANK. There is a hand inprint on the tank", false, memoryPuzzleStarterInteraction);
-    ItemClass playerMemory = ItemClass("YOUR MEMORY", "a glowing orb, reminiscent of your past", "YOURMEMORY", true, true); 
-    bool memoryGobletIsActive = false;
 
-    InteractClass* gobletInteraction = new InteractClass("Approch the goblet", "You interact with the goblet");
-    ItemClass memoryGoblet = ItemClass("MEMORY GOBLET", "A transparent challice called the MEMORY GOBLET, a place where memories can be added", false, gobletInteraction);
 
-    ItemClass Sight = ItemClass("SIGHT", "Allows you to see the unseen", true, true);
+    MemoryPuzzle memoryPuzzle = MemoryPuzzle("Memory Puzzle"); //instance for the memory puzzle
+    InteractClass* memoryPuzzleStarterInteraction = new InteractClass("A memory tank", "Test", memoryPuzzle);//interaction that runs the memory puzzle
+    ItemClass memoryPuzzleStarter = ItemClass("MEMORY TANK", "A crystal tank, that is labeled as MEMORY TANK. There is a hand inprint on the tank", false, memoryPuzzleStarterInteraction); //item in THE LIFT to start puzzle
+    ItemClass playerMemory = ItemClass("YOUR MEMORY", "a glowing orb, reminiscent of your past", "YOURMEMORY", true, true); //Reward for completing memory puzzle
+    bool memoryGobletIsActive = false; //boolean to determine whether memory goblet is active or not 
 
-    std::vector<Door> memoryOfTheMansionDoors = {};
-    std::vector<ItemClass> memoryOfTheMansionItems = {};
 
-    std::vector<Door> memoryOfTheFoyerDoors = {};
-    std::vector<ItemClass> memoryOfTheFoyerItems = {};
+    ChantPuzzle chantPuzzle = ChantPuzzle("Chant Puzzle"); //instance for chant puzzle 
+    InteractClass* chantPuzzleStarterInteraction = new InteractClass("A chanting altar", "Test", chantPuzzle); //interaction to run puzzle
+    ItemClass chantPuzzleStarter = ItemClass("CHANTING ALTAR", "A CHANTING ALTAR, there appears to be a 4 word phrase ingraved on the altar, but its been scrached away",false, chantPuzzleStarterInteraction); //item you can interact with
+    ItemClass Candle5 = ItemClass("CANDLE", "The 5th and Final Candle", true, true); //declaration for candle
 
-    std::vector<Door> memoryOfTheLibraryDoors = {};
-    std::vector<ItemClass> memoryOfTheLibraryItems = {};
 
-    std::vector<Door> memoryOfTheGardenDoors = {};
-    std::vector<ItemClass> memoryOfTheGardenItems = {};
 
-    std::vector<Door> memoryOfTheStudyDoors = {};
-    std::vector<ItemClass> memoryOfTheStudyItems = {};
 
-    std::vector<Door> memoryOfTheAtticDoors = {};
-    std::vector<ItemClass> memoryOfTheAtticItems = { memoryPuzzleStarter };
+    InteractClass* gobletInteraction = new InteractClass("Approch the goblet", "You interact with the goblet");//item in THE CONSCIOUS that allows user to put the item playerMemory
+    ItemClass memoryGoblet = ItemClass("MEMORY GOBLET", "A transparent challice called the MEMORY GOBLET, a place where memories can be added", false, gobletInteraction); //interaction for memory goblet
 
-    std::vector<Door> theConsciousDoors = {};
-    std::vector<ItemClass> theConsciousItems = { memoryGoblet };
+    ItemClass Sight = ItemClass("SIGHT", "Allows you to see the unseen", true, true); //item awarded from putting playermemory into the goblet 
+
+    std::vector<Door> memoryOfTheMansionDoors = {}; //doors for MemoryOfThe Mansion
+    std::vector<ItemClass> memoryOfTheMansionItems = {};//items for Memory Of The Mansion
+
+    std::vector<Door> memoryOfTheFoyerDoors = {}; //Doors inside the memory of the foyer
+    std::vector<ItemClass> memoryOfTheFoyerItems = {}; //items inside the memory of the foyer
+
+    std::vector<Door> memoryOfTheLibraryDoors = {}; //doors inside the memory of the library
+    std::vector<ItemClass> memoryOfTheLibraryItems = {};//items inside memory  of the library
+
+    std::vector<Door> memoryOfTheGardenDoors = {}; //doors inside memory of the garden
+    std::vector<ItemClass> memoryOfTheGardenItems = {}; //items inside memory of the garden
+
+    std::vector<Door> memoryOfTheStudyDoors = {}; //doors inside memory of the study
+    std::vector<ItemClass> memoryOfTheStudyItems = {}; //items inside memory of the study
+
+    std::vector<Door> memoryOfTheAtticDoors = {}; //the doors inside the attic or AKA the LIFT
+    std::vector<ItemClass> memoryOfTheAtticItems = { memoryPuzzleStarter }; //memory puzzle item inside the attic
+
+    std::vector<Door> theConsciousDoors = {}; //doors for the CONSCIOUS
+    std::vector<ItemClass> theConsciousItems = { memoryGoblet , chantPuzzleStarter };// items in THE CONSCIOUS has memory goblet and chant puzzle started
 
     
 
 
-
+    //room declaration for memory of the mansion
     rooms["MEMORY OF THE MANSION"] = RoomClass("You arrive in a broken mansion, it looks familiar but different. Its the mansion from the memories of the monster. You are no longer in your reality, but a twisted one where the mansion has been destroyed, and its debris are lingering in the air. There are portraits and pieces of staircase floating in the air with a pink nebula in the background",
         "MEMORY OF THE MANSION",
-        std::list<std::string>{"MEMORY OF THE FOYER", "MEMORY OF THE LIBRARY", "MEMORY OF THE GARDEN", "MEMORY OF THE STUDY", "THE LIFT", "THE CONSCIOUS"},
+        std::list<std::string>{"MEMORY OF THE FOYER", "MEMORY OF THE LIBRARY", "MEMORY OF THE GARDEN", "MEMORY OF THE STUDY", "THE LIFT", "THE CONSCIOUS"},//adjacent rooms
         memoryOfTheMansionDoors,
         memoryOfTheMansionItems
     );
 
-    rooms["MEMORY OF THE FOYER"] = RoomClass("You arrive to a broken foyer, you an see a floating statue and doors that are floating away from their hinges",
+    //room for declaration of memory of the foyer
+    rooms["MEMORY OF THE FOYER"] = RoomClass("You arrive to a broken foyer, you an see a floating statue and doors that are floating away from their hinges.(TEMPORARY TEXT: This is room 4 of 4.) You see the text UROTMU which appears to be scrambled.",
         "MEMORY OF THE FOYER",
-        std::list<std::string>{"MEMORY OF THE MANSION"},
+        std::list<std::string>{"MEMORY OF THE MANSION"},//adjacent rooms
         memoryOfTheFoyerDoors,
-        memoryOfTheFoyerItems
-        );
-
-    rooms["MEMORY OF THE LIBRARY"] = RoomClass("You arrive to a broken library, books and bookshelfs are floating around",
+        memoryOfTheFoyerItems,
+        true, //boolean to determine if the room has a conditonal description
+        "You arrive to a broken foyer, you an see a floating statue and doors that are floating away from their hinges. (TEMPORARY TEXT: This is room 4 of 4.) Adjecent to this room is MEMORY OF THE MANSION The letters re-arrange to form TUORUM."
+        );//Conditional description to be displayed ^^
+    //room for declaration of memory of the library
+    rooms["MEMORY OF THE LIBRARY"] = RoomClass("You arrive to a broken library, books and bookshelfs are floating around. (TEMPORARY TEXT: This is room 3 of 4.).  You see the text OACPMEURTC which appears to be scrambled.",
         "MEMORY OF THE LIBRARY",
-        std::list<std::string>{"MEMORY OF THE MANSION"},
+        std::list<std::string>{"MEMORY OF THE MANSION"}, //adjacent rooms
         memoryOfTheLibraryDoors,
-        memoryOfTheLibraryItems
+        memoryOfTheLibraryItems,
+        true,//boolean to determine if the room has a conditonal description
+        "You arrive to a broken library, books and bookshelfs are floating around. (TEMPORARY TEXT: This is room 3 of 4.) The letters re arrange to form: PECCATORUM"
+        //Conditional description to be displayed ^^
     );
-
-    rooms["MEMORY OF THE GARDEN"] = RoomClass("You arrive to a broken garden, the grass is no longer green, and the hedgmaze has been burnt away",
+    //room for declaration of memory of the garden
+    rooms["MEMORY OF THE GARDEN"] = RoomClass("You arrive to a broken garden, the grass is no longer green, and the hedgmaze has been burnt away. (TEMPORARY TEXT: This is room 1 of 4.) You see the text GNXUIEET which appears to be scrambled.",
         "MEMORY OF THE GARDEN",
-        std::list<std::string>{"MEMORY OF THE MANSION"},
+        std::list<std::string>{"MEMORY OF THE MANSION"},//adjacent rooms
         memoryOfTheGardenDoors,
-        memoryOfTheGardenItems
+        memoryOfTheGardenItems,
+        true,//boolean to determine if the room has a conditonal description
+        "You arrive to a broken study. (TEMPORARY TEXT: This is room 1 of 4.) Adjecent to this room is MEMORY OF THE MANSION The letters re arrange to form: EXTINGUE."
+        //Conditional description to be displayed ^^
     );
-
-    rooms["MEMORY OF THE STUDY"] = RoomClass("You arrive to a broken study",
+    //room for declaration of memory of the study
+    rooms["MEMORY OF THE STUDY"] = RoomClass("You arrive to a broken study. (TEMPORARY TEXT: This is room 2 of 4.)  You see the letters LMMMFAA.",
         "MEMORY OF THE STUDY",
-        std::list<std::string>{"MEMORY OF THE MANSION"},
+        std::list<std::string>{"MEMORY OF THE MANSION"},//adjacent rooms
         memoryOfTheStudyDoors,
-        memoryOfTheStudyItems
+        memoryOfTheStudyItems,
+        true,//boolean to determine if the room has a conditonal description
+        "You arrive to a broken study. (TEMPORARY TEXT: This is room 2 of 4.) Adjecent to this room is MEMORY OF THE MANSION The letters re-arrange to form FLAMMAM."
+        //Conditional description to be displayed ^^
     );
-
+    //room for declaration of memory of the lift
     rooms["THE LIFT"] = RoomClass("The beam of energy carries your body up to place that is unrecognizable, it appears to be an attic",
         "THE LIFT",
-        std::list<std::string>{"MEMORY OF THE MANSION"},
+        std::list<std::string>{"MEMORY OF THE MANSION"},//adjacent rooms
         memoryOfTheAtticDoors,
         memoryOfTheAtticItems
     );
-
+    //room for declaration of memory of the conscious
     rooms["THE CONSCIOUS"] = RoomClass("You enter a new room, which looks nothing like the mansion, it has an evil influence, as if you were inside the concious of the monster itself",
         "THE CONSCIOUS",
-        std::list<std::string>{"MEMORY OF THE MANSION"},
+        std::list<std::string>{"MEMORY OF THE MANSION"}, //adjacent rooms
         theConsciousDoors,
         theConsciousItems
     );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     
     std::string startingRoom = "A";
@@ -416,8 +418,14 @@ void GameControllerClass::gameLoop() {
         UI.displayPrompt("\n"); //Giving space for text
         
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
+
+        if (currentRoom_temp.getHasConditionalDescription()) { //cond to check if the room has a specific conditonal rendering property
+            UI.displayPrompt(currentRoom_temp.conditionalDescription(userPlayer.getInventory(), Sight)); //display special condition
+        }
+        else {
+            UI.displayPrompt(currentRoom_temp.AmendDescription()); //display for rest of the rooms 
+        }
         
-        UI.displayPrompt(currentRoom_temp.AmendDescription());
         //UI.displayPrompt(userPlayer.getRoomDescription());
         //currentRoom_temp.displayRoomItems(); //Displaying room items, TEMP function until can implement into UI class
         //std::cout << endl;
@@ -670,7 +678,7 @@ void GameControllerClass::gameLoop() {
 
                 else if (currentRoom_temp.getRoomItemByName(itemName).getInteraction()->getIsPuzzle() == true) //If interaction is a puzzle, call overloaded runInteraction
                 {
-                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer, galleryKey, mirrorKey, masterKey, mazeKey, mazeExitKey, playerMemory); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
+                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer, galleryKey, mirrorKey, masterKey, mazeKey, mazeExitKey, playerMemory, Candle5); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
                 }
                 else //Run interact sequence if not pick up able object
                 {

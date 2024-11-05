@@ -63,6 +63,9 @@
     <ClCompile Include="MemoryPuzzle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ChantPuzzle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RoomClass.h">
@@ -108,6 +111,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MemoryPuzzle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChantPuzzle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

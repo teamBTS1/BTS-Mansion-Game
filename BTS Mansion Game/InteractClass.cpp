@@ -48,12 +48,20 @@ InteractClass::InteractClass(std::string inMssg, std::string interactMssg, MazeP
     isPuzzle = true;
 }
 
-InteractClass::InteractClass(std::string inMssg, std::string interactMssg, MemoryPuzzle puzz) //constructor for fountain puzzle
+InteractClass::InteractClass(std::string inMssg, std::string interactMssg, MemoryPuzzle puzz) //constructor for memory puzzle
 {
     inputMessage = inMssg;
     interactMessage = interactMssg;
     interacted = false;
     memPuzzle = puzz;
+    isPuzzle = true;
+}
+InteractClass::InteractClass(std::string inMssg, std::string interactMssg, ChantPuzzle puzz) //constructor for chant puzzle
+{
+    inputMessage = inMssg;
+    interactMessage = interactMssg;
+    interacted = false;
+    chaPuzzle = puzz;
     isPuzzle = true;
 }
 
@@ -114,7 +122,7 @@ void InteractClass::runInteraction() {
     
 }
 
-void InteractClass::runInteraction(PlayerClass& player, ItemClass& galleryItm, ItemClass& mirrorItm, ItemClass& masterItm, ItemClass& fountainItem, ItemClass& mazeItem, ItemClass& memoryItem) { //Function to run an interaction with items and picking up
+void InteractClass::runInteraction(PlayerClass& player, ItemClass& galleryItm, ItemClass& mirrorItm, ItemClass& masterItm, ItemClass& fountainItem, ItemClass& mazeItem, ItemClass& memoryItem, ItemClass& chantItem) { //Function to run an interaction with items and picking up
     UserInterfaceClass ui;
     //input interaction message;
     //simulate user input demonstrate
@@ -245,6 +253,22 @@ void InteractClass::runInteraction(PlayerClass& player, ItemClass& galleryItm, I
                 else
                 {
                     ui.displayPrompt("This item seems dormant.");
+                }
+            }
+            else if (chaPuzzle.getDescription() == "Chant Puzzle") {
+
+                if (chaPuzzle.isSolved() == false) {
+                    chaPuzzle.runPuzzle(); 
+
+                    if (chaPuzzle.isSolved()) {
+                        ui.displayPrompt("The monster roars as you chant, you get teleported back to the ritual room with the 5th candle in your hand");
+                        ui.displayPrompt("WORK IN PROGRESS: Functionality to teleport back to the RITUAL ROOM");
+                        player.addItem(chantItem);
+                        
+                    }
+                    else {
+                        ui.displayPrompt("");
+                    }
                 }
             }
     }
