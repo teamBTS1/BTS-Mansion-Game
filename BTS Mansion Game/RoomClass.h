@@ -10,7 +10,7 @@
 #include "Door.h"
 #include "ItemClass.h"
 #include "Puzzle.h"
-#include "SafeSpot.h"
+
 
 using namespace std;
 
@@ -22,6 +22,7 @@ class RoomClass
 private:
 	std::vector<Door> roomDoors;
 	bool isRitual; //bool value that determines whether room is ritual room, default value is false
+	bool isSafe; // // bool value that determines if the room is safe, default value is false
 	int candles; // Candle count, will only be used for the ritual room
 	std::string roomDescription; //Variable that stores a description of the room
 	std::string roomName; //Variable that stores the name of the room
@@ -32,8 +33,7 @@ private:
 	int itemsLength;
 	Puzzle roomPuzzle;
 	bool hasPuzzle;
-	std::vector<SafeSpot> safeSpots;
-	std::list<std::string> options;
+
 
 
 public:
@@ -42,6 +42,7 @@ public:
 	RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<Door>& doors);//Constructor that takes name and description as input.
 	RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<Door>& doors, std::vector<ItemClass> itemList); //Constructor for door and itemlist
 	RoomClass(std::string description, std::string name, std::list<std::string> options, bool isRitual); // Consturctor for ritual room
+	RoomClass(std::string description, std::string name, std::list<std::string> options, bool isRitual, bool isSafe); // Constructor with isSafe
 	RoomClass(std::string description, std::string name, std::list<std::string> options); //Basic constructor
 
 	RoomClass(std::string description, std::vector<Door>& doors);
@@ -71,11 +72,9 @@ public:
 	bool returnRitualStatus(); //returns whether room is tirual room or not
 	void AddItem(ItemClass itm); //Adds an item to the list
 
-	void addSafeSpot(const SafeSpot& spot); // add safe spot to room
-	bool hasSafeSpot() const; // check if room has any safe spots
-
-	std::string getSafeSpotName()const; // get the name of the safe spot of room 
-
+	// Getter and Setter for isSafe
+	bool getIsSafe() const { return isSafe; } // Getter
+	void setIsSafe(bool safe) { isSafe = safe; } // Setter
 
 
 

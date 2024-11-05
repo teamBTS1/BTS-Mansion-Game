@@ -287,22 +287,3 @@ Puzzle RoomClass::getPuzzle()
 {
 	return roomPuzzle;
 }
-// SafeSpot constructor implementation
-SafeSpot::SafeSpot(std::string name, bool isSafe)
-	: name(name), isSafe(isSafe) {}
-// Add a safe spot to the room
-void RoomClass::addSafeSpot(const SafeSpot& spot) {
-	safeSpots.push_back(spot);
-}
-// Check if the room has any safe spots
-bool RoomClass::hasSafeSpot() const {
-	return !safeSpots.empty();
-}
-
-// Get the name of the first safe spot in the room (if available)
-std::string RoomClass::getSafeSpotName() const {
-	if (!safeSpots.empty()) {
-		return safeSpots[0].name;  // Return the name of the first safe spot, if any
-	}
-	return "";
-}

@@ -157,7 +157,6 @@
     <ClInclude Include="Puzzle.h" />
     <ClInclude Include="RoomClass.h" />
     <ClInclude Include="Door.h" />
-    <ClInclude Include="SafeSpot.h" />
     <ClInclude Include="UserInterfaceClass.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
