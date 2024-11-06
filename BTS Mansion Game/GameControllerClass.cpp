@@ -97,6 +97,14 @@ void GameControllerClass::viewInventory(PlayerClass& myPlayer) {
         {
             system("cls");
             std::cout << myInventory[i].getName() << ": " << myInventory[i].getDescription() << std::endl;
+            //below is temporary functionality for using an item to reduce sanity
+            //TODO: have logic to prompt the player on whether they want to use an item in the inventory
+            if (myInventory[i].getName() == "BOTTLE OF PILLS")
+            {
+                updateSanity(myPlayer, myInventory[i].getValue());
+                myPlayer.useItem("BOTTLE OF PILLS");
+                std::cout << "You used the bottle of sanity pills. The world makes a bit more sense again." << std::endl;
+            }
             itemFound = true;
             break;
         }
@@ -159,6 +167,7 @@ void GameControllerClass::gameLoop() {
     //define all items
     ItemClass statueA("STATUE", "a STATUE of a woman carrying a book", false, userInteractStatueA); // Define the statue as an item
     ItemClass keyB("RUSTY KEY", "a RUSTY KEY", "BBBB", true, true); //Initialzing items TEMP key B
+    ItemClass loungeBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
     ItemClass noteA("NOTE A", "A note with dust and cobwebs all over", true); //Defining TEMP note A
     ItemClass metalSafe("METAL SAFE", "A safe that appears to accept a 4 digit code", false, userInterectSafeDiningHall);
     ItemClass deadBody1("DEAD BODY 1", "A dead body with a red shirt with a number 8 on and has his mouth open", false, userInteractBody1);
@@ -194,7 +203,7 @@ void GameControllerClass::gameLoop() {
     
     //define all itemclass vectors for rooms
     std::vector <ItemClass> roomA_Items = { noteA, statueA }; //Creating items
-    std::vector <ItemClass> roomB_Items = { keyB };
+    std::vector <ItemClass> roomB_Items = { keyB, loungeBottle };
     std::vector <ItemClass> library_Items = {Book};
     std::vector<ItemClass>diningHallItems = { metalSafe, deadBody1,deadBody2,deadBody3,deadBody4 };
     std::vector <ItemClass> hiddensection_Items = { Candle1 };
@@ -719,7 +728,7 @@ void GameControllerClass::sanitySequence(PlayerClass& userPlayer, std::atomic<bo
 
 void GameControllerClass::updateSanity(PlayerClass& player, int amount)
 {
-    player.setSanity(player.getSanity() + amount);
+    player.setSanity(std::max(0, std::min(100, player.getSanity() + amount)));
 }
 
 
