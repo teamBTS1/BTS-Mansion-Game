@@ -63,6 +63,19 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 
 }
 
+RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, bool ritual, bool safe)
+{
+	this->hasPuzzle = false;
+	this->roomDescription = description;
+	this->roomName = name;
+	this->RoomOptions = options;
+	this->isRitual = ritual;
+	this->isRitual = false;
+	this->candles = 0;
+	this->isSafe = safe;
+	
+}
+
 int RoomClass::getCandleValue()
 {
 	return candles;
@@ -287,3 +300,13 @@ Puzzle RoomClass::getPuzzle()
 {
 	return roomPuzzle;
 }
+//Getter
+bool RoomClass::getIsSafe() const 
+{ 
+	return isSafe; 
+}
+//Setter
+void RoomClass::setIsSafe(bool safe) 
+{ 
+	isSafe = safe;
+} 

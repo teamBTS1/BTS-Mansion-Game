@@ -189,7 +189,7 @@ void GameControllerClass::gameLoop() {
     ItemClass studyCandle("CANDLE", "A CANDLE with a pentagram design", "C2", true, true);
     ItemClass candle3 = ItemClass("CANDLE", "THE third CANDLE is scribbled on the side... hm", "C3", true, true); //Third candle item
     ItemClass candle4 = ItemClass("CANDLE", "The fourth CANDLE, one more until you're finally out of this nightmare.", "C4", true, true); //Fourth candle
-    
+
     //define all itemclass vectors for rooms
     std::vector <ItemClass> roomA_Items = { noteA, statueA }; //Creating items
     std::vector <ItemClass> roomB_Items = { keyB };
@@ -202,7 +202,6 @@ void GameControllerClass::gameLoop() {
     std::vector<ItemClass>studyItem = { studyCandle };
     std::vector<ItemClass>kitchenItems = { kitchenCounter };
     std::vector <ItemClass> portraits = { lordPainting, barkeepPainting };
-
 
     //define puzzle solution/s
     std::vector <std::string> mirrorSolution = { "MOONLIGHT", "FOREST GREEN", "BLACK" };
@@ -231,11 +230,23 @@ void GameControllerClass::gameLoop() {
 
     //Defining downstairs rooms
     rooms["FOYER"] = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR","KITCHEN DOOR",}, FoyerDoors, roomA_Items);
-    rooms["LIBRARY"] = RoomClass("You enter the library, filled to the brim with bookshelves.\n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF", "GREATER LIBRARY DOOR"}, Library_Doors, library_Items);
-    rooms["LOUNGE"] = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER", "DINING HALL DOOR"}, roomB_Items);
+    
+    //hiding Table for library
+    rooms["LIBRARY TABLE"] = RoomClass("You are under the table. You are safe from any threats.", "LIBRARY TABLE", std::list<std::string>{"LIBRARY"}, false, true);
+
+    rooms["LIBRARY"] = RoomClass("You enter the library, filled to the brim with bookshelves. There is a table that can be used to hide from the monster.\n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF", "GREATER LIBRARY DOOR","LIBRARY TABLE"}, Library_Doors, library_Items);
+    
+    //Hiding closet for Lounge
+    rooms["LOUNGE CLOSET"] = RoomClass("You are in the lounge closet. You are safe from any threats.", "LOUNGE CLOSET", std::list<std::string>{"LOUNGE"}, false, true);
+
+    rooms["LOUNGE"] = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way. There is a tiny closet in the corner, this can be used to hide from the monster\n", "LOUNGE", std::list<std::string>{"FOYER", "DINING HALL DOOR", "LOUNGE CLOSET"}, roomB_Items);
     rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE"});
-    rooms["STUDY"] = RoomClass("You enter the study, the walls are dark brown with shelfs full of books and paper scrolls. There is a desk that is rather neat and organize. Behind the desk is grand portrait of a man with a stern face, eyes so dark its you uncomfortable.The man's finger is pointing to what seems to be a cabinet and on behind a pile of books you see a candle.", "STUDY", std::list<std::string>{"GREATER LIBRARY"}, studyItem);
-    //defenition for ritual room class, specific constructor
+    
+    //Hiding table for study
+    rooms["STUDY DESK"] = RoomClass("You are under the study desk. You are safe from any threats.", "STUDY DESK", std::list<std::string>{"STUDY"}, false, true);
+
+    rooms["STUDY"] = RoomClass("You enter the study, the walls are dark brown with shelfs full of books and paper scrolls. There is a desk that is rather neat and organize, this desk can be used to hide from the monster. Behind the desk is grand portrait of a man with a stern face, eyes so dark its you uncomfortable.The man's finger is pointing to what seems to be a cabinet and on behind a pile of books you see a candle.", "STUDY", std::list<std::string>{"GREATER LIBRARY", "STUDY DESK"}, studyItem);
+    //definition for ritual room class, specific constructor
     rooms["RITUAL ROOM"] = RoomClass("You enter a room that does not invite you back. A perfect, pentacle drawn on the floor invites you to place a candle at each of it's vertecies. [Hint: enter CANDLE as input if you posses a candle]", "RITUAL ROOM", std::list<std::string>{"HIDDEN SECTION",}, true);
     //HIDDEN SECTION 
     rooms["HIDDEN SECTION"] = RoomClass("You now enter the hidden section, nothing is safe here, you feel a presense linger, as if it was plucking your heartstrings, there is a table with a candle on top", "HIDDEN SECTION", std::list<std::string>{"LIBRARY", "RITUAL ROOM"}, hiddensection_Items);
@@ -248,17 +259,38 @@ void GameControllerClass::gameLoop() {
     rooms["UPSTAIRS"] = RoomClass("You are now upstairs. The area is dimly lit, and there are several doors leading to other parts of the mansion. There is a set of double doors at the end of the hallway with a complex lock. The lock has two halves of a dais empty, that form an opening mechanism similair to a safe. There is also a three word combination lock on the wall in between MIRROR ROOM 1 and MIRROR ROOM 2.",
         "UPSTAIRS", std::list<std::string>{"PORTAL", "MIRROR ROOM 1", "MIRROR ROOM 2", "STORYTELLER'S ROOM", "GALLERY", "DOUBLE DOORS"}, Master_Doors, upstairsItems);  // Add PORTAL as an option
     //Defining upstairs rooms
-    rooms["MIRROR ROOM 1"] = RoomClass("You enter a grand parlor bathed in soft, golden sunlight streaming through tall, arched windows. The room is elegantly furnished, with a velvet chaise lounge positioned in the center, its deep burgundy fabric complementing the warm tones of the oak-paneled walls. A large, ornate mirror hangs above a marble fireplace on the north wall. On a small table beside the chaise, a crystal vase holds a single white rose, perfectly fresh. The air smells faintly of lavender, adding a serene ambiance to the room. A plush rug, embroidered with intricate floral patterns, covers the floor, leading to a door on the opposite side of the room.", "MIRROR ROOM 1", std::list<string>{"UPSTAIRS"});
-    rooms["MIRROR ROOM 2"] = RoomClass("Stepping into this parlor feels eerily familiar. Bathed in soft golden moonlight streaming through tall, arched windows. The room is elegantly furnished, with a velvet chaise lounge positioned in the center, its deep forest green fabric complementing the warm tones of the oak-paneled walls. A large, ornate mirror hangs above a marble fireplace on the north wall. On a small table beside the chaise, a crystal vase holds a single black rose, perfectly fresh. The air smells faintly of soot, adding a serene ambiance to the room. A plush rug, embroidered with intricate floral patterns, covers the floor, leading to a door on the opposite side of the room.", "MIRROR ROOM 2", std::list<string>{"UPSTAIRS"});
-    rooms["STORYTELLER'S ROOM"] = RoomClass("You enter a room filled with a luxuorious carpet, fancy linen bedsheets, and elegant embroidery all about. In the center of the room on a stand, is a big tome open to the page of a story.", "STORYTELLER'S ROOM", std::list <string> {"UPSTAIRS"}, storytellerItems); //have a non pick upable item with poem in it
-    rooms["GALLERY"] = RoomClass("You enter a room with many portraits, all of them depicting different people of different statuses. All of the portraits are almost calling you to touch them.", "GALLERY", std::list <string> {"UPSTAIRS"}, galleryItems); //Room full of portraits for poem puzzle
+    rooms["MIRROR ROOM 1"] = RoomClass("You enter a grand parlor bathed in soft, golden sunlight streaming through tall, arched windows. The room is elegantly furnished, with a velvet chaise lounge positioned in the center, its deep burgundy fabric complementing the warm tones of the oak-paneled walls. A large, ornate mirror hangs above a marble fireplace on the north wall. On a small table beside the chaise, a crystal vase holds a single white rose, perfectly fresh. The air smells faintly of lavender, adding a serene ambiance to the room. A plush rug, embroidered with intricate floral patterns, covers the floor, leading to a door on the opposite side of the room.", "MIRROR ROOM 1", std::list<string>{"UPSTAIRS"} );
+    
+    //Hiding table for Mirror Room 2
+    rooms["MIRROR ROOM 2 TABLE"] = RoomClass("You are under the table. You are safe from any threats.", "MIRROR ROOM 2 TABLE", std::list<std::string>{"MIRROR ROOM 2"}, false, true);
+
+    rooms["MIRROR ROOM 2"] = RoomClass("Stepping into this parlor feels eerily familiar. Bathed in soft golden moonlight streaming through tall, arched windows. The room is elegantly furnished, with a velvet chaise lounge positioned in the center, its deep forest green fabric complementing the warm tones of the oak-paneled walls. A large, ornate mirror hangs above a marble fireplace on the north wall. On a small table beside the chaise, a crystal vase holds a single black rose, perfectly fresh. The air smells faintly of soot, adding a serene ambiance to the room. A plush rug, embroidered with intricate floral patterns, covers the floor, leading to a door on the opposite side of the room. There is anoter table that can used to be hide from the monster", "MIRROR ROOM 2", std::list<string>{"UPSTAIRS","MIRROR ROOM 2 TABLE"});
+    
+    //Hiding bed for StoryTeller's Room
+    rooms["STORYTELLER'S BED"] = RoomClass("You are under the bed. You are safe from any threats.", "STORYTELLER'S BED", std::list<std::string>{"STORYTELLER'S ROOM"}, false, true);
+
+    rooms["STORYTELLER'S ROOM"] = RoomClass("You enter a room filled with a luxuorious carpet, fancy linen bedsheets, and elegant embroidery all about. In the center of the room on a stand, is a big tome open to the page of a story. There is a bed that can be used to hide from the monster.", "STORYTELLER'S ROOM", std::list <string> {"UPSTAIRS","STORYTELLER'S BED"}, storytellerItems); //have a non pick upable item with poem in it
+    rooms["GALLERY"] = RoomClass("You enter a room with many portraits, all of them depicting different people of different statuses. All of the portraits are almost calling you to touch them.", "GALLERY", std::list <string> {"UPSTAIRS",}, galleryItems); //Room full of portraits for poem puzzle
+   
+    //Hiding bed for Master Bedroom
+    rooms["MASTER BED"] = RoomClass("You are under the bed. You are safe from any threats.", "MASTER BED", std::list<std::string>{"MASTER BEDROOM"}, false, true);
+
     rooms["MASTER BEDROOM"] = RoomClass(
-        "You are now in the Master Bedroom. The room is elegantly decorated with fine linens and rich colors.",
+        "You are now in the Master Bedroom. The room is elegantly decorated with fine linens and rich colors. There is a bed that can be used to hide from the monster.",
         "MASTER BEDROOM",
-        std::list<std::string>{"UPSTAIRS", "GARDEN"}, // Add GARDEN as an option
+        std::list<std::string>{"UPSTAIRS", "GARDEN","MASTER BED"}, // Add GARDEN as an option
         masterBedroomItems
-    );    rooms["DINING HALL"] = RoomClass("You are now in the Dining Hall. There is a large table and chairs. From here, you can go to the kitchen.\n", "DINING HALL", std::list<std::string>{"DINING HALL DOOR", "KITCHEN"}, diningHallItems);
-    rooms["KITCHEN"] = RoomClass("You are now in the Kitchen,You can return to the dining hall from here.\n", "KITCHEN", std::list<std::string>{"DINING HALL", "KITCHEN DOOR"}, kitchenItems);
+    );    
+
+    //Hiding table for dining hall
+    rooms["DINING TABLE"] = RoomClass("You are under the dining table. You are safe from any threats.", "DINING TABLE", std::list<std::string>{"DINING HALL"}, false, true);
+
+    rooms["DINING HALL"] = RoomClass("You are now in the Dining Hall. There is a large table which can be used for hiding from the monster and chairs. From here, you can go to the kitchen.\n", "DINING HALL", std::list<std::string>{"DINING HALL DOOR", "KITCHEN","DINING TABLE"}, diningHallItems);
+    
+    //Hiding closet/Pantry for Kitchen
+    rooms["PANTRY"] = RoomClass("You are in the pantry. You are safe from any threats.", "PANTRY", std::list<std::string>{"KITCHEN"}, false, true);
+
+    rooms["KITCHEN"] = RoomClass("You are now in the Kitchen. There is a pantry closet that can be used to hide from the monster. You can return to the dining hall from here.\n", "KITCHEN", std::list<std::string>{"DINING HALL", "KITCHEN DOOR","PANTRY"}, kitchenItems);
     rooms["GARDEN"] = RoomClass(
         "You step outside into a serene garden, filled with vibrant flowers and lush greenery. The moon shines brightly above, and you can hear the gentle rustling of leaves in the breeze. There's a feeling of tranquility here, but also an underlying sense of mystery, as if the garden holds secrets waiting to be uncovered.",
         "GARDEN",
@@ -267,13 +299,17 @@ void GameControllerClass::gameLoop() {
         std::vector<ItemClass>{} // No items initially in the garden
     );
 
+
+    //Hiding closet for Shed 
+    rooms["SHED CLOSET"] = RoomClass("You are in the shed closet. You are safe from any threats.", "SHED CLOSET", std::list<std::string>{"SHED"}, false, true);
+
     // Shed Room
     rooms["SHED"] = RoomClass(
-        "You enter a small, dusty shed filled with various gardening tools and supplies. The air is thick with the smell of soil and wood. A single window allows a sliver of moonlight to illuminate the cobwebs in the corners.",
+        "You enter a small, dusty shed filled with various gardening tools and supplies. The air is thick with the smell of soil and wood. A single window allows a sliver of moonlight to illuminate the cobwebs in the corners. There is a small closet can be used to hide from the monster.",
         "SHED",
-        std::list<std::string>{"GARDEN"}, // Only accessible back to the Garden
+        std::list<std::string>{"GARDEN", "SHED CLOSET"}, // Only accessible back to the Garden
         shedDoors, // Use the empty shed doors
-        std::vector<ItemClass>{} // No items in the shed
+        std::vector<ItemClass>{} // No items 
     );
 
     // Hedge Maze Room
@@ -445,6 +481,7 @@ void GameControllerClass::gameLoop() {
                 }
             }
         }
+
         if (command == "QUIT") {
             endGame();  // Call endGame method
             return;  // Exit the game loop

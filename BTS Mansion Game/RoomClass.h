@@ -73,12 +73,8 @@ public:
 	void AddItem(ItemClass itm); //Adds an item to the list
 
 	// Getter and Setter for isSafe
-	bool getIsSafe() const { return isSafe; } // Getter
-	void setIsSafe(bool safe) { isSafe = safe; } // Setter
+	bool getIsSafe() const; // Getter
+	void setIsSafe(bool safe); // Setter
 
-
-
-
-}
-
+};
 #endif
