@@ -19,6 +19,27 @@ void UserInterfaceClass::displayMenu() const
     std::cout << "Words in all caps will be input options for this game, please enter an option: ";
 }
 
+static inline std::string ltrim(std::string s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
+        return !std::isspace(ch);
+        }));
+    return s;
+}
+
+// Function to trim whitespace from the end of a string
+static inline std::string rtrim(std::string s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+        return !std::isspace(ch);
+        }).base(), s.end());
+    return s;
+}
+
+// Function to trim whitespace from both ends of a string
+static inline std::string trim(std::string s) {
+    return ltrim(rtrim(s));
+}
+
+
 void UserInterfaceClass::setCurrentInput(std::string& uInput)
 {
     UserInterfaceClass::current_input = uInput; //set passed string to current input private member variable
@@ -34,7 +55,7 @@ std::string UserInterfaceClass::userInput()
     std::string input;
     std::getline(std::cin, input);
     this->setCurrentInput(input); //sets current input to this
-    return input;
+    return trim(input);
 }
 
 void UserInterfaceClass::waitForInput() const {

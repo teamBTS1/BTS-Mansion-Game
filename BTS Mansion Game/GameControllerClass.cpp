@@ -45,29 +45,6 @@ void GameControllerClass::startGame() {
 }
 
 
-// Function to trim whitespace from the start of a string
-static inline std::string ltrim(std::string s) {
-    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
-        return !std::isspace(ch);
-        }));
-    return s;
-}
-
-// Function to trim whitespace from the end of a string
-static inline std::string rtrim(std::string s) {
-    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
-        return !std::isspace(ch);
-        }).base(), s.end());
-    return s;
-}
-
-// Function to trim whitespace from both ends of a string
-static inline std::string trim(std::string s) {
-    return ltrim(rtrim(s));
-}
-
-
-
 void GameControllerClass::pickUpNoteSequence(PlayerClass& myPlayer) {
 
     ItemClass note1("Welcome Note", "You have entered the mansion", true); // define note item
@@ -118,7 +95,7 @@ void GameControllerClass::viewInventory(PlayerClass& myPlayer) {
     bool itemFound = false;
     for (int i = 0; i < inventorySize; i++)
     {
-        if (myInventory[i].getName() == Myuserinterface.getCurrentInput()) //Checking all the input and printing the description of entered item
+        if (myInventory[i].getName() == Myuserinterface.getCurrentInput()); //Checking all the input and printing the description of entered item
         {
             system("cls");
             std::cout << myInventory[i].getName() << ": " << myInventory[i].getDescription() << std::endl;
@@ -326,7 +303,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
+    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
 
     while (true) {
         UI.displayPrompt("\n"); //Giving space for text
@@ -342,7 +319,7 @@ void GameControllerClass::gameLoop() {
         
 
         std::string command = UI.userInput();
-        command = trim(command);  // Trim any leading or trailing whitespace
+
 
         // Boolean to track whether the kitchen door is open
         bool kitchenDoorOpen = false;
