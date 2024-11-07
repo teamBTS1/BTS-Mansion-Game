@@ -19,6 +19,8 @@
 #include <algorithm>
 #include<string>
 #include <unordered_map>
+#include <chrono>
+#include <thread>
 #include <algorithm> 
 #include <cctype>
 #include <locale>
@@ -99,6 +101,17 @@ void GameControllerClass::viewInventory(PlayerClass& myPlayer) {
         {
             system("cls");
             std::cout << myInventory[i].getName() << ": " << myInventory[i].getDescription() << std::endl;
+            //below is temporary functionality for using an item to reduce sanity
+            //TODO: have logic to prompt the player on whether they want to use an item in the inventory
+            //because right now it just uses the item with no care for whether the player wants to or not
+            //and also it's just the pills working right now and if we want more usable items this needs refactoring
+            if (myInventory[i].getName() == "BOTTLE OF PILLS")
+            {
+                updateSanity(myPlayer, myInventory[i].getValue());
+                myPlayer.useItem("BOTTLE OF PILLS");
+                std::cout << "You used the bottle of sanity pills. The world makes a bit more sense again." << std::endl;
+            }
+            //End sanity item functionality
             itemFound = true;
             break;
         }
@@ -161,6 +174,7 @@ void GameControllerClass::gameLoop() {
     //define all items
     ItemClass statueA("STATUE", "a STATUE of a woman carrying a book", false, userInteractStatueA); // Define the statue as an item
     ItemClass keyB("RUSTY KEY", "a RUSTY KEY", "BBBB", true, true); //Initialzing items TEMP key B
+    ItemClass loungeBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
     ItemClass noteA("NOTE A", "A note with dust and cobwebs all over", true); //Defining TEMP note A
     ItemClass metalSafe("METAL SAFE", "A safe that appears to accept a 4 digit code", false, userInterectSafeDiningHall);
     ItemClass deadBody1("DEAD BODY 1", "A dead body with a red shirt with a number 8 on and has his mouth open", false, userInteractBody1);
@@ -171,9 +185,13 @@ void GameControllerClass::gameLoop() {
     ItemClass diningHallKey = ItemClass("DINING HALL KEY", "A Shiny DINING HALL KEY with grapes on the handle,it appears to open the greater library","DHKey",true, true);    //Initializing key from safe in dining hall
     ItemClass mirrorKey = ItemClass("MIRROR HALF KEY", "Half of the key needed to enter the master bedroom.");
     ItemClass kitchenCounter("KITCHEN COUNTER", "The kitchen counter has different colors as its design, it red as its first color, then blue, green, and purple", false, userInteractKitchenCounter);
+    ItemClass kitchenBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
 
     //Library Items
     ItemClass Book("OLD BOOK", "an OLD BOOK which appears to belong to a bookshelf", "BookKey", true, true);
+
+    //Greater Library Items
+    ItemClass greaterLibraryBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
 
     //Upstairs items
     ItemClass lordPainting = ItemClass("CRIMSON LORD PORTRAIT", "CRIMSON LORD PORTRAIT of a regal man in a crimson cloak, with blood dripping from his lips as a glass is raised to his lips.", false, lordPaintingInteraction);
@@ -181,7 +199,11 @@ void GameControllerClass::gameLoop() {
     ItemClass noteUpA = ItemClass("SCRIBBLED NOTE", "SCRIBBLED NOTE that looks like a child's drawing of two kids side by side, both looking almost exactly similair, but one of the children seems to have jagged teeth instead of normal teeth.", true); //Note for clue to mirror puzzle
     ItemClass storyBook = ItemClass("STORYBOOK", "A giant STORYBOOK made of tough leather and weathered pages, indicating many stories have been told from this book. It is open to a page with a poem on it.", false, storyBookInteraction);
     ItemClass masterKey = ItemClass("MASTER KEY", "Fully completed MASTER KEY to the master bedroom", "idMaster", true, true); //Adding master bedroom key
+    ItemClass bedroomBottle = ItemClass("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
 
+    //Shed items
+    ItemClass shedBottle = ItemClass("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
+    
     //Fountain items
     ItemClass mazeKey = ItemClass("HOLY WATER", "Pristine bottle of blessed water", "MAZEKEY", true, true); //Key to unlock hedge maze
 
@@ -196,15 +218,16 @@ void GameControllerClass::gameLoop() {
     
     //define all itemclass vectors for rooms
     std::vector <ItemClass> roomA_Items = { noteA, statueA }; //Creating items
-    std::vector <ItemClass> roomB_Items = { keyB };
+    std::vector <ItemClass> roomB_Items = { keyB, loungeBottle };
     std::vector <ItemClass> library_Items = {Book};
     std::vector<ItemClass>diningHallItems = { metalSafe, deadBody1,deadBody2,deadBody3,deadBody4 };
+    std::vector<ItemClass> greaterLibraryItems = { greaterLibraryBottle };
     std::vector <ItemClass> hiddensection_Items = { Candle1 };
     std::vector <ItemClass> storytellerItems = { storyBook }; //Storyteller's items
-    std::vector <ItemClass> masterBedroomItems = { candle3 }; //Master bedroom items
+    std::vector <ItemClass> masterBedroomItems = { candle3, bedroomBottle }; //Master bedroom items
     //InteractClass* userInteractCandle = new InteractClass("Would you like to look at the candle?", "Pickup the candle");
     std::vector<ItemClass>studyItem = { studyCandle };
-    std::vector<ItemClass>kitchenItems = { kitchenCounter };
+    std::vector<ItemClass>kitchenItems = { kitchenCounter, kitchenBottle };
     std::vector <ItemClass> portraits = { lordPainting, barkeepPainting };
 
 
@@ -229,6 +252,7 @@ void GameControllerClass::gameLoop() {
     ItemClass mazePuzzleStarter = ItemClass("LANTERN", "A LANTERN to help you see while exploring the maze...", false, mazePuzzleStarterInteraction);
     std::vector <ItemClass> upstairsItems = { noteUpA, mirrorPuzzleStarter }; //Upstairs items
     std::vector <ItemClass> galleryItems = { galleryPuzzleStarter, lordPainting, barkeepPainting }; //Gallery items
+    std::vector <ItemClass> shedItems = { shedBottle }; //Shed items
     std::vector <ItemClass> fountainItems = { fountainPuzzleStarter }; //Fountain items
     std::vector <ItemClass> mazeExitItems = { candle4 }; //Maze exit items
     std::vector <ItemClass> hedgeMazeItems = { mazePuzzleStarter }; //Hedge Maze Items
@@ -237,7 +261,7 @@ void GameControllerClass::gameLoop() {
     rooms["FOYER"] = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR","KITCHEN DOOR",}, FoyerDoors, roomA_Items);
     rooms["LIBRARY"] = RoomClass("You enter the library, filled to the brim with bookshelves.\n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF", "GREATER LIBRARY DOOR"}, Library_Doors, library_Items);
     rooms["LOUNGE"] = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER", "DINING HALL DOOR"}, roomB_Items);
-    rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE"});
+    rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE"}, greaterLibraryItems);
     rooms["STUDY"] = RoomClass("You enter the study, the walls are dark brown with shelfs full of books and paper scrolls. There is a desk that is rather neat and organize. Behind the desk is grand portrait of a man with a stern face, eyes so dark its you uncomfortable.The man's finger is pointing to what seems to be a cabinet and on behind a pile of books you see a candle.", "STUDY", std::list<std::string>{"GREATER LIBRARY"}, studyItem);
     //defenition for ritual room class, specific constructor
     rooms["RITUAL ROOM"] = RoomClass("You enter a room that does not invite you back. A perfect, pentacle drawn on the floor invites you to place a candle at each of it's vertecies. [Hint: enter CANDLE as input if you posses a candle]", "RITUAL ROOM", std::list<std::string>{"HIDDEN SECTION",}, true);
@@ -277,7 +301,7 @@ void GameControllerClass::gameLoop() {
         "SHED",
         std::list<std::string>{"GARDEN"}, // Only accessible back to the Garden
         shedDoors, // Use the empty shed doors
-        std::vector<ItemClass>{} // No items in the shed
+        shedItems // Vector containing only a pill bottle
     );
 
     // Hedge Maze Room
@@ -305,11 +329,17 @@ void GameControllerClass::gameLoop() {
 
     PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
 
+    std::atomic<bool> running(true);
+    std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));
+
+    UI.displayPrompt("It's always important to stay sane in such a stressful situation. The lower your sanity gets, the less you'll understand what is going on...\nUnfortunately, it is only a matter of time before you completely lose it. Consume SANITY PILLS to increase your sanity.");
+
     while (true) {
         UI.displayPrompt("\n"); //Giving space for text
         
+        UI.displayPrompt("Sanity Level: " + std::to_string(userPlayer.getSanity()) + "\n");
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
-        
+
         UI.displayPrompt(currentRoom_temp.AmendDescription());
         //UI.displayPrompt(userPlayer.getRoomDescription());
         //currentRoom_temp.displayRoomItems(); //Displaying room items, TEMP function until can implement into UI class
@@ -660,6 +690,7 @@ void GameControllerClass::showMenu() {
 }
 
 void GameControllerClass::endGame() {
+    system("cls");
     UI.displayPrompt("\nYour world disappears around you. You are still aware but there is nothing, like someone pulled the plug on your brain - Am I dead?\n...You wonder if this will end.\nThank you for playing");
     exit(0);  // Exit the game
 }
@@ -719,8 +750,23 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
         UI.displayPrompt("You unlocked the door!");
     }
 
+void GameControllerClass::sanitySequence(PlayerClass& userPlayer, std::atomic<bool>& running) {
+    while (running) {
+        int sanity = userPlayer.getSanity();
+        userPlayer.setSanity(sanity - 2);
+
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+
+        if (userPlayer.getSanity() < 2) {
+            endGame();
+        }
+    }
 }
 
+void GameControllerClass::updateSanity(PlayerClass& player, int amount)
+{
+    player.setSanity(std::max(0, std::min(100, player.getSanity() + amount)));
+}
 
 
 
