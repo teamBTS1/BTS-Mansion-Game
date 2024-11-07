@@ -9,6 +9,7 @@
 #include <vector>
 
 
+
 class MirrorPuzzle : public Puzzle {
 private:
 	std::vector<std::string> answers;

@@ -6,7 +6,7 @@
 #include <vector>
 #include <iostream>
 #include <thread>
-
+#include <conio.h>
 
 class MemoryPuzzle : public Puzzle  
 {

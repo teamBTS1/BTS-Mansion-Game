@@ -63,6 +63,10 @@ bool MemoryPuzzle::displayLetters(std::string& sequence, UserInterfaceClass ui) 
 	std::this_thread::sleep_for(std::chrono::milliseconds(3000));//delay before wiping console
 	system("cls"); //wiping console to avoid cheating
 
+	while (_kbhit()) {
+		_getch();
+	}
+
 	ui.displayPrompt("Recite the memory");
 	input = ui.userInput();
 
