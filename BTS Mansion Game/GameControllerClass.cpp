@@ -669,6 +669,7 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
 {
     system("cls");
     std::vector<Door>& doors = currentRoom.GetDoors();
+    bool wasKeyFound = false; //To track if a key was found that unlocks door
   
     for (int i = 0; i < doors.size(); i++) {
         if (doors[i].getIsLocked()) {
@@ -686,25 +687,36 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
                     doors[i].unlockDoor(); 
                     currentRoom.setRoomOption(newRoomOptions); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
                     player.setRoom(currentRoom); //set room
+                    wasKeyFound = true; //Sets to true to display the locked message once
                     break;
                 }
                 else
                 {
-                    UI.displayPrompt("The door is locked");
+                    //UI.displayPrompt("The door is locked");
                 }
             }
             else
             {
-                UI.displayPrompt("The door is locked");
+                //UI.displayPrompt("The door is locked");
             }
         }
         else
         {
             //player.setRoom(rooms[targetRoom]);
             //currentRoom_temp = userPlayer.getRoom();
+            
         }
 
     
+    }
+
+    if (!wasKeyFound)
+    {
+        UI.displayPrompt("The door is locked.");
+    }
+    else
+    {
+        UI.displayPrompt("You unlocked the door!");
     }
 
 }

@@ -31,6 +31,7 @@ private:
 	int itemsLength;
 	Puzzle roomPuzzle;
 	bool hasPuzzle;
+	ItemClass defaultItem;
 	
 
 
