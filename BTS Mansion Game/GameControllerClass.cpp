@@ -143,14 +143,14 @@ void GameControllerClass::gameLoop() {
 
     //Declare all doors TODO: Joey add logic for door map 
 
-    doors["DOOR"] = Door(true, "BBBB", "You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move.A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you.There also appears to be a ornate wooden DOOR that is locked"); // create FOYER door
-    doors["BOOKSHELF"] = Door(true, "BookKey", "You enter the library, filled to the brim with bookshelves.");
-    doors["DOUBLE DOORS"] = Door(true, "idMaster", "You are now in the Master Bedroom. The room is elegantly decorated with fine linens and rich colors."); //Adding master bedroom door
-    doors["BLOCKED HEDGE MAZE"] = Door(true, "MAZEKEY", "You pour the holy water on the dark force blocking the entrance to the hedge maze, granting yourself access as the dark sludge burns away.");
-    doors["MAZE EXIT"] = Door(true, "MAZEEXITKEY", "Using the map, you are able to find your way out of the maze, reaching the exit.");
+    doors["DOOR"] = Door(true, "BBBB", "You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move.A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you.There also appears to be a ornate wooden DOOR that is locked", "DOOR"); // create FOYER door
+    doors["BOOKSHELF"] = Door(true, "BookKey", "You enter the library, filled to the brim with bookshelves.", "BOOKSHELF");
+    doors["DOUBLE DOORS"] = Door(true, "idMaster", "You are now in the Master Bedroom. The room is elegantly decorated with fine linens and rich colors.", "DOUBLE DOORS"); //Adding master bedroom door
+    doors["BLOCKED HEDGE MAZE"] = Door(true, "MAZEKEY", "You pour the holy water on the dark force blocking the entrance to the hedge maze, granting yourself access as the dark sludge burns away.","BLOCKED HEDGE MAZE");
+    doors["MAZE EXIT"] = Door(true, "MAZEEXITKEY", "Using the map, you are able to find your way out of the maze, reaching the exit.", "MAZE EXIT");
 
     //Greater Library Door
-    doors["GREATER LIBRARY DOOR"] = Door(true, "DHKey", "You have now opened the door, you are now in the GREATER LIBRARY");
+    doors["GREATER LIBRARY DOOR"] = Door(true, "DHKey", "You have now opened the door, you are now in the GREATER LIBRARY", "GREATER LIBRARY DOOR");
 
     std::vector<Door> FoyerDoors = { doors["DOOR"] };
     std::vector <Door> Library_Doors = { doors["BOOKSHELF"], doors["DOOR"], doors["GREATER LIBRARY DOOR"]};
@@ -440,7 +440,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
+    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
 
     std::atomic<bool> running(true);
     std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));
@@ -758,30 +758,30 @@ void GameControllerClass::gameLoop() {
                 }
                 else if (command == "DOUBLE DOORS") {
                     std::list<std::string> options = { "PORTAL", "MIRROR ROOM 1", "MIRROR ROOM 2", "STORYTELLER'S ROOM", "GALLERY", "MASTER BEDROOM" };
-                    handleDoors(userPlayer, currentRoom_temp, "MASTER BEDROOM", options, rooms,"");
+                    handleDoors(userPlayer, currentRoom_temp, "MASTER BEDROOM", options, rooms,"", command);
                 }
                 else if (command == "DOOR") {
                     std::list<std::string> options = { "LOUNGE", "LIBRARY", "KITCHEN DOOR" };
-                    handleDoors(userPlayer, currentRoom_temp, "LIBRARY", options, rooms,"");
+                    handleDoors(userPlayer, currentRoom_temp, "LIBRARY", options, rooms,"", command);
                 }
                 else if (command == "GREATER LIBRARY DOOR")
                 {
                     std::list<std::string> options = {"FOYER", "HIDDEN SECTION", "LIBRARY","GREATER LIBRARY"};
-                    handleDoors(userPlayer, currentRoom_temp, "GREATER LIBRARY", options, rooms, "");
+                    handleDoors(userPlayer, currentRoom_temp, "GREATER LIBRARY", options, rooms, "", command);
                 }
                 else if (command == "BOOKSHELF") {
                     std::list<std::string> options = { "FOYER","HIDDEN SECTION", "GREATER LIBRARY DOOR" };
-                    handleDoors(userPlayer, currentRoom_temp, "HIDDEN SECTION", options, rooms, "You place the book on the shelf. The Bookshelf begins to move, screeching across the wooden floor. It reveals a staircase leading down to the HIDDEN SECTION. \n\n");
+                    handleDoors(userPlayer, currentRoom_temp, "HIDDEN SECTION", options, rooms, "You place the book on the shelf. The Bookshelf begins to move, screeching across the wooden floor. It reveals a staircase leading down to the HIDDEN SECTION. \n\n", command);
                 }
                 else if (command == "BLOCKED HEDGE MAZE")
                 {
                     std::list<std::string> options = { "SHED", "FOUNTAIN", "HEDGE MAZE"};
-                    handleDoors(userPlayer, currentRoom_temp, "HEDGE MAZE", options, rooms, "You pour the holy water on the dark force blocking the entrance to the hedge maze, granting yourself access as the dark sludge burns away.\n\n");
+                    handleDoors(userPlayer, currentRoom_temp, "HEDGE MAZE", options, rooms, "You pour the holy water on the dark force blocking the entrance to the hedge maze, granting yourself access as the dark sludge burns away.\n\n", command);
                 }
                 else if (command == "MAZE EXIT")
                 {
                     std::list<std::string> options = { "GARDEN", "HEDGE MAZE EXIT"};
-                    handleDoors(userPlayer, currentRoom_temp, "HEDGE MAZE EXIT", options, rooms, "");
+                    handleDoors(userPlayer, currentRoom_temp, "HEDGE MAZE EXIT", options, rooms, "", command);
                 }
                 else if (command == "PUZZLE")
                 {
@@ -845,26 +845,29 @@ void GameControllerClass::endGame() {
 }
 
 
-void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoom, const std::string& targetRoom, const std::list<std::string>& newRoomOptions,std::unordered_map<std::string,RoomClass>& rooms, const std::string& openMessage)
+void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoom, const std::string& targetRoom, const std::list<std::string>& newRoomOptions, std::unordered_map<std::string, RoomClass>& rooms, const std::string& openMessage, std::string command)
 {
     system("cls");
     std::vector<Door>& doors = currentRoom.GetDoors();
     bool wasKeyFound = false; //To track if a key was found that unlocks door
-  
+
     for (int i = 0; i < doors.size(); i++) {
         if (doors[i].getIsLocked()) {
             if (player.getInventorySize() != 0) {
 
                 std::string playerKey = player.searchForKey(doors[i].getDoorKeyID());
+              
+               
 
 
-                if (doors[i].getDoorKeyID() == playerKey)
+                if (doors[i].getDoorKeyID() == playerKey && command == doors[i].getDoorName())
                 {
+                   
                     std::cout << openMessage;
                     player.useKey(playerKey); //Uses correct key from inventory
                     //UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the " + targetRoom + ".\n");
                     currentRoom.unlockDoor(i); //unlocks door, sets description to different openDoor description through
-                    doors[i].unlockDoor(); 
+                    doors[i].unlockDoor();
                     currentRoom.setRoomOption(newRoomOptions); //set options to new, this is TEMPORARY solution and there will be refactor which includes function within room class to find the option to modify instead of setting it explicity
                     player.setRoom(currentRoom); //set room
                     wasKeyFound = true; //Sets to true to display the locked message once
@@ -884,10 +887,10 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
         {
             //player.setRoom(rooms[targetRoom]);
             //currentRoom_temp = userPlayer.getRoom();
-            
+
         }
 
-    
+
     }
 
     if (!wasKeyFound)
@@ -898,13 +901,14 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
     {
         UI.displayPrompt("You unlocked the door!");
     }
+}
 
 void GameControllerClass::sanitySequence(PlayerClass& userPlayer, std::atomic<bool>& running) {
     while (running) {
         int sanity = userPlayer.getSanity();
         userPlayer.setSanity(sanity - 2);
 
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::this_thread::sleep_for(std::chrono::seconds(9));
 
         if (userPlayer.getSanity() < 2) {
             endGame();

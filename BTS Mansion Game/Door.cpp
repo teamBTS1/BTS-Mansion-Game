@@ -4,19 +4,26 @@ Door::Door()
 {
 	isLocked = false;
 	doorKeyID = " ";
+	doorName = "";
 }
 
-Door::Door(bool locked, std::string id, std::string newDescription)
+Door::Door(bool locked, std::string id, std::string newDescription, std::string name)
 {
 	isLocked = locked;
 	doorKeyID = id;
 	openDoorDescription = newDescription;
+	doorName = name;
 }
 
 bool Door::getIsLocked()
 {
 	return isLocked;
 }
+
+std::string Door::getDoorName() {
+	return doorName;
+}
+
 
 std::string Door::getDoorKeyID()
 {
