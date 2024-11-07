@@ -729,9 +729,9 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
 void GameControllerClass::sanitySequence(PlayerClass& userPlayer, std::atomic<bool>& running) {
     while (running) {
         int sanity = userPlayer.getSanity();
-        userPlayer.setSanity(sanity - static_cast<int>(sanity * 0.02));
+        userPlayer.setSanity(sanity - 2);
 
-        std::this_thread::sleep_for(std::chrono::seconds(5));
+        std::this_thread::sleep_for(std::chrono::seconds(1));
 
         if (userPlayer.getSanity() < 2) {
             endGame();
