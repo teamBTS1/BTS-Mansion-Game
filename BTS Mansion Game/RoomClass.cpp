@@ -14,6 +14,8 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 	this->roomDescription = description;
 	this->roomName = name;
 	this->RoomOptions = options;
+	this->hasConditionalDescription = false; //bool to determine if room has cond description
+	this->conditonalRoomDescription = ""; //string to display based on conditonal value
 	this->defaultItem.setName("NULL");
 }
 
@@ -24,6 +26,8 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 	this->roomName = name;
 	this->RoomOptions = options;
 	roomDoors = doors;
+	this->hasConditionalDescription = false; //bool to determine if room has cond description
+	this->conditonalRoomDescription = ""; //string to display based on conditonal value
 	this->defaultItem.setName("NULL");
 }
 
@@ -36,6 +40,8 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 	roomDoors = doors;
 	items = itemList;
 	this->itemsLength = items.size();
+	this->hasConditionalDescription = false; //bool to determine if room has cond description
+	this->conditonalRoomDescription = ""; //string to display based on conditonal value
 	this->defaultItem.setName("NULL");
 }
 
@@ -48,6 +54,8 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 	this->RoomOptions = options;
 	items = itemList;
 	this->itemsLength = items.size();
+	this->hasConditionalDescription = false;//bool to determine if room has cond description
+	this->conditonalRoomDescription = ""; //string to display based on conditonal value
 	this->defaultItem.setName("NULL");
 }
 
@@ -63,8 +71,23 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 	this->isRitual = ritual;
 	this->isRitual = false; //default value of room, will be modified in ritual room constuctor
 	this->candles = 0; // default value for candles is 0
+	this->hasConditionalDescription = false; //bool to determine if room has cond description
+	this->conditonalRoomDescription = ""; //string to display based on conditonal value
 	this->defaultItem.setName("NULL");
 
+}
+
+RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<Door>& doors, std::vector<ItemClass> itemList, bool conditonalDescription, std::string conditionalDescriptionString)
+{
+	this->hasPuzzle = false;
+	this->roomDescription = description;
+	this->roomName = name;
+	this->RoomOptions = options;
+	roomDoors = doors;
+	items = itemList;
+	this->itemsLength = items.size();
+	this->hasConditionalDescription = conditonalDescription; //bool to determine if room has cond description
+	this->conditonalRoomDescription = conditionalDescriptionString; //string to display based on conditonal value
 }
 
 int RoomClass::getCandleValue()
@@ -207,10 +230,40 @@ std::string RoomClass::AmendDescription()
 	if (puzzleDesc.size() != 0) {
 		returnMeString += "Curiously, a " + this->roomPuzzle.getDescription() + " seems to join you in the room";
 	}*/ //what to do foor puzzles? They get passed in as items as opposed to being a member variable of the room
-
-	
-
 }
+
+bool RoomClass::getHasConditionalDescription(){
+
+	return hasConditionalDescription; 
+}
+
+
+std::string RoomClass::conditionalDescription(std::vector<ItemClass>& userInventory, ItemClass item)
+{
+	bool hasItem = false;
+	for (int inventoryIndex = 0; inventoryIndex < userInventory.size(); inventoryIndex++) { //loop to check if user has item in inventory
+		if (userInventory[inventoryIndex].getName() == item.getName()) {
+			hasItem = true; // Item found in inventory
+			break;
+		}
+	}
+
+
+	if (hasItem) { // if they have a specific item, the conditonal description will display
+
+		return conditonalRoomDescription;
+
+	}
+	else { //display normal description
+
+		return AmendDescription();
+
+	}
+}
+
+
+
+
 
 std::vector<ItemClass>& RoomClass::getItems()
 {

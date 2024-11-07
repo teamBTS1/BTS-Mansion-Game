@@ -32,6 +32,8 @@ private:
 	Puzzle roomPuzzle;
 	bool hasPuzzle;
 	ItemClass defaultItem;
+	bool hasConditionalDescription; //boolean to detemine  if the room has conditional description 
+	std::string conditonalRoomDescription; 
 	
 
 
@@ -42,6 +44,7 @@ public:
 	RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<Door>& doors, std::vector<ItemClass> itemList); //Constructor for door and itemlist
 	RoomClass(std::string description, std::string name, std::list<std::string> options, bool isRitual); // Consturctor for ritual room
 	RoomClass(std::string description, std::string name, std::list<std::string> options); //Basic constructor
+	RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<Door>& doors, std::vector<ItemClass> itemList, bool hasConditionalDescription, std::string conditionalDescription); //constructor for rooms that have conditonal text rendering
 
 	RoomClass(std::string description, std::vector<Door>& doors);
 	RoomClass(std::string description, bool isLockedRoom);
@@ -65,6 +68,8 @@ public:
 	void displayAdjacentRooms(); //Displays adjacent rooms
 	void setPuzzle(Puzzle puzzle);
 	Puzzle getPuzzle();
+	bool getHasConditionalDescription(); //used to determine if the room requires special description displaying 
+	std::string conditionalDescription(std::vector<ItemClass>& userInventory, ItemClass item); //special room description depending on having a certain item
 
 	void addCandle(); // adds candle to candle count in ritual room
 	int getCandleValue(); // returns value of candles in ritual room, will be important for 
