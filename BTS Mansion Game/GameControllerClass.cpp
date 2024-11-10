@@ -169,6 +169,10 @@ void GameControllerClass::gameLoop() {
     InteractClass* userInteractBody2 = new InteractClass("Would you like to look at dead body 2", "");
     InteractClass* userInteractBody3 = new InteractClass("Would you like to look at dead body 3", "");
     InteractClass* userInteractBody4 = new InteractClass("Would you like to look at dead body 4", "");
+    InteractClass* userInteractTombstone1 = new InteractClass("Would you like to look at tombstone 1?", "");
+    InteractClass* userInteractTombstone2 = new InteractClass("Would you like to look at tombstone 2?", "");
+    InteractClass* userInteractTombstone3 = new InteractClass("Would you like to look at tombstone 3?", "");
+    InteractClass* userInteractTombstone4 = new InteractClass("Would you like to look at tombstone 4?", "");
     InteractClass* storyBookInteraction = new InteractClass("You read the title of a poem, 'The Cycle of a Servant'.", " The lord with crimson cloak, His eyes once sharp, but now they choke. \n A wineglass shattered at his feet, his lips were poisoned - death so sweet. \n The servant went into the night, The deed done, taking flight, blocking the way a spear of the night. \n The lord’s son seeking justice, lunged forward claiming blood. \n The servant however did not fall, gutting the son, no longer standing tall. \n The servant reached the lowly village, To the bar seeking refuge, Bleeding from his gut. \n The town drunk drank into the night, While the barkeep kept the light. \n However a mob did approach, The servant hid, but could not hide, Seized by the people he despised. \n So the end approached for the lowly servant, Vengeance acquired, accepted his end. \n Before he met his end, His son’s eyes he met, \n Looking at his father’s soon to be killer, The servant knew the look, for he had seen it before, \n The reason that he had killed his lord, The servant was killed purpose fulfilled, \n However the servant knew before he died, His son would now live his same life.");
     InteractClass* lordPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You reach to your mouth and see a speck of blood on your finger.");
     InteractClass* barkeepPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You feel a sensation wash over you, dulling your senses briefly.");
@@ -183,12 +187,18 @@ void GameControllerClass::gameLoop() {
     ItemClass deadBody2("DEAD BODY 2", "A dead body with a blue shirt with a number 6 on and has his skull cracked open", false, userInteractBody2);
     ItemClass deadBody3("DEAD BODY 3", "A dead body with a green shirt with a number 9 on and has his hands on the floor", false, userInteractBody3);
     ItemClass deadBody4("DEAD BODY 4", "A dead body with a purple shirt with a number 1 on and has his right leg over his left leg", false, userInteractBody4);
+    ItemClass tombstone1("TOMBSTONE 1", "", false, userInteractTombstone1);
+    ItemClass tombstone2("TOMBSTONE 2", "", false, userInteractTombstone2);
+    ItemClass tombstone3("TOMBSTONE 3", "", false, userInteractTombstone3);
+    ItemClass tombstone4("TOMBSTONE 4", "", false, userInteractTombstone4);
     ItemClass galleryKey = ItemClass("GALLERY HALF KEY", "Half of the key needed to enter the master bedroom.");
     ItemClass diningHallKey = ItemClass("DINING HALL KEY", "A Shiny DINING HALL KEY with grapes on the handle,it appears to open the greater library","DHKey",true, true);    //Initializing key from safe in dining hall
     ItemClass mirrorKey = ItemClass("MIRROR HALF KEY", "Half of the key needed to enter the master bedroom.");
     ItemClass kitchenCounter("KITCHEN COUNTER", "The kitchen counter has different colors as its design, it red as its first color, then blue, green, and purple", false, userInteractKitchenCounter);
     ItemClass kitchenBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
-
+    ItemClass ballroomNote("BALLROOM NOTE", "A handwritten note left behind, detailing strange occurrences during the last grand ball.", false);
+    ItemClass guestroomJournal("GUESTROOM JOURNAL", "A leather-bound journal filled with notes from a guest. Some entries are scribbled hastily, mentioning strange noises and shadows in the night.", false);
+    ItemClass bathroomNote("BATHROOM NOTE", "A faded note, scribbled with hurried handwriting. It reads: 'The mirror is the key to the next step. Look closely.'", false);
     //Library Items
     ItemClass Book("OLD BOOK", "an OLD BOOK which appears to belong to a bookshelf", "BookKey", true, true);
 
@@ -223,10 +233,14 @@ void GameControllerClass::gameLoop() {
     std::vector <ItemClass> roomB_Items = { keyB, loungeBottle };
     std::vector <ItemClass> library_Items = {Book};
     std::vector<ItemClass>diningHallItems = { metalSafe, deadBody1,deadBody2,deadBody3,deadBody4 };
+    std::vector <ItemClass>graveyardItems = { tombstone1, tombstone2,tombstone3,tombstone4 };
     std::vector<ItemClass> greaterLibraryItems = { greaterLibraryBottle };
     std::vector <ItemClass> hiddensection_Items = { Candle1 };
     std::vector <ItemClass> storytellerItems = { storyBook }; //Storyteller's items
     std::vector <ItemClass> masterBedroomItems = { candle3, bedroomBottle }; //Master bedroom items
+    std::vector<ItemClass> ballroomItems = { ballroomNote };
+    std::vector<ItemClass> guestroomItems = { guestroomJournal };
+    std::vector<ItemClass> bathroomItems = { bathroomNote };
     //InteractClass* userInteractCandle = new InteractClass("Would you like to look at the candle?", "Pickup the candle");
     std::vector<ItemClass>studyItem = { studyCandle };
     std::vector<ItemClass>kitchenItems = { kitchenCounter, kitchenBottle };
@@ -260,10 +274,13 @@ void GameControllerClass::gameLoop() {
     std::vector <ItemClass> hedgeMazeItems = { mazePuzzleStarter }; //Hedge Maze Items
 
     //Defining downstairs rooms
-    rooms["FOYER"] = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR","KITCHEN DOOR",}, FoyerDoors, roomA_Items);
+    rooms["FOYER"] = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR","KITCHEN DOOR", "GUESTROOM"}, FoyerDoors, roomA_Items);
     rooms["LIBRARY"] = RoomClass("You enter the library, filled to the brim with bookshelves.\n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF", "GREATER LIBRARY DOOR"}, Library_Doors, library_Items);
-    rooms["LOUNGE"] = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER", "DINING HALL DOOR"}, roomB_Items);
-    rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE"}, greaterLibraryItems);
+    rooms["LOUNGE"] = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER", "DINING HALL DOOR","BATHROOM"}, roomB_Items);
+    rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE","BALLROOM"}, greaterLibraryItems);
+    rooms["BALLROOM"] = RoomClass("The grand ballroom is magnificent, with a chandelier hanging overhead and rows of windows draped in heavy, velvet curtains. The polished marble floors reflect the moonlight streaming through the windows, but there’s an eerie silence, as if the ghosts of past parties linger in the shadows.", "BALLROOM", std::list<std::string>{"GREATER LIBRARY"},ballroomItems);
+    rooms["GUESTROOM"] = RoomClass("The guestroom is modest yet elegant, with a large bed covered in fine linens, and a single window overlooking the mansion grounds. A wardrobe stands in one corner, and a small desk is positioned near the bed. The air feels slightly colder here, as though the room hasn’t been used in a while.","GUESTROOM",std::list<std::string>{"FOYER",},guestroomItems );
+    rooms["BATHROOM"] = RoomClass( "The bathroom is dimly lit, with a large, ornate mirror above a marble sink. A clawfoot tub stands in the corner, its porcelain surface chipped, while faded towels hang on a rack nearby. The air is thick with the smell of dampness, and the floor creaks underfoot as if the room is in disrepair.","BATHROOM",std::list<std::string>{"LOUNGE"},bathroomItems );
     rooms["STUDY"] = RoomClass("You enter the study, the walls are dark brown with shelfs full of books and paper scrolls. There is a desk that is rather neat and organize. Behind the desk is grand portrait of a man with a stern face, eyes so dark its you uncomfortable.The man's finger is pointing to what seems to be a cabinet and on behind a pile of books you see a candle.", "STUDY", std::list<std::string>{"GREATER LIBRARY"}, studyItem);
     //defenition for ritual room class, specific constructor
     rooms["RITUAL ROOM"] = RoomClass("You enter a room that does not invite you back. A perfect, pentacle drawn on the floor invites you to place a candle at each of it's vertecies. [Hint: enter CANDLE as input if you posses a candle]", "RITUAL ROOM", std::list<std::string>{"HIDDEN SECTION",}, true);
@@ -292,10 +309,17 @@ void GameControllerClass::gameLoop() {
     rooms["GARDEN"] = RoomClass(
         "You step outside into a serene garden, filled with vibrant flowers and lush greenery. The moon shines brightly above, and you can hear the gentle rustling of leaves in the breeze. There's a feeling of tranquility here, but also an underlying sense of mystery, as if the garden holds secrets waiting to be uncovered.",
         "GARDEN",
-        std::list<std::string>{"SHED", "FOUNTAIN", "BLOCKED HEDGE MAZE"},
+        std::list<std::string>{"SHED", "FOUNTAIN", "BLOCKED HEDGE MAZE","GRAVEYARD"},
         mazeDoors,
-        std::vector<ItemClass>{} // No items initially in the garden
+        std::vector<ItemClass>{}// No items initially in the garden
     );
+    rooms["GRAVEYARD"] = RoomClass(
+        "You enter a shadowy graveyard, with headstones scattered across the mist-covered ground. The air is thick with an eerie silence, broken only by the distant hoot of an owl. A chill runs down your spine as you realize this place holds secrets long forgotten.",
+        "GRAVEYARD",
+        std::list<std::string>{"MAUSOLEUM", "GARDEN", "BROKEN GATE"},
+        graveyardItems // Items found in the graveyard
+    );
+
 
     // Shed Room
     rooms["SHED"] = RoomClass(
