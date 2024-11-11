@@ -484,7 +484,7 @@ void GameControllerClass::gameLoop() {
     PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
 
     //Defining variables for timer
-    MonsterClass monsterTimer(10);
+    MonsterClass monsterTimer(10, *this);
     monsterTimer.start();
 
 
@@ -495,10 +495,14 @@ void GameControllerClass::gameLoop() {
     UI.displayPrompt("It's always important to stay sane in such a stressful situation. The lower your sanity gets, the less you'll understand what is going on...\nUnfortunately, it is only a matter of time before you completely lose it. Consume SANITY PILLS to increase your sanity.");
 
     while (true) {
+
         if (monsterTimer.isTriggered())
         {
             monsterTimer.start(); //Resets monster timer to start again
         }
+  
+
+       
 
         UI.displayPrompt("\n"); //Giving space for text
         
@@ -680,9 +684,11 @@ void GameControllerClass::gameLoop() {
       
         else if (command == "INVENTORY")
         {
+            isInProtectedAction = true;
             system("cls");
             viewInventory(userPlayer); //Call view inventory function
             UI.displayPrompt("\n");
+            isInProtectedAction = false;
         }
         else if (command == "INSPECT") //If user wants to pick up item
         {
@@ -981,11 +987,14 @@ void GameControllerClass::sanitySequence(PlayerClass& userPlayer, std::atomic<bo
         }
     }
 }
-
+ 
 void GameControllerClass::updateSanity(PlayerClass& player, int amount)
 {
     player.setSanity(std::max(0, std::min(100, player.getSanity() + amount)));
 }
 
+bool GameControllerClass::inProtectedState() {
+    return isInProtectedAction;
+}
 
 

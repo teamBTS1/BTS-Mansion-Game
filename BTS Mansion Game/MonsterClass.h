@@ -1,13 +1,15 @@
 #pragma once
 #ifndef MONSTERCLASS_H
 #define MONSTERCLASS_H
-
+#include "GameControllerClass.h"
 #include "UserInterfaceClass.h"
 #include <string>
 #include <thread> //Thread, atomic, functional, and chrono used for timer implementation
 #include <atomic>
 #include <functional>
 #include <chrono>
+
+class GameControllerClass;
 
 class MonsterClass
 {
@@ -19,10 +21,12 @@ private:
 	std::atomic<bool> gameOverFlag; //Checks if monster killed player and game over
 	std::atomic<bool> grabFlag; //Checks if in monster grab sequence
 	std::thread timerThread;
+	GameControllerClass* currentGameController;// used to check if user is in a protected state
+	
 
 public:
 	MonsterClass(); //Constructors
-	MonsterClass(int duration);
+	MonsterClass(int duration, GameControllerClass& controller);
 
 	void onTimerTriggered(); //Function for callback when timer is triggered
 
