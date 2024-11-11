@@ -4,6 +4,7 @@
 
 #include<iostream>
 #include<string>
+#include <sstream>
 
 #include "PickUpItemClass.h" //Include header for PickUpItemClass
 #include "UserInterfaceClass.h" // Included header for UserInterFaceClass

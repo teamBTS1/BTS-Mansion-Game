@@ -169,9 +169,14 @@ void GameControllerClass::gameLoop() {
     InteractClass* userInteractBody2 = new InteractClass("Would you like to look at dead body 2", "");
     InteractClass* userInteractBody3 = new InteractClass("Would you like to look at dead body 3", "");
     InteractClass* userInteractBody4 = new InteractClass("Would you like to look at dead body 4", "");
-    InteractClass* storyBookInteraction = new InteractClass("You read the title of a poem, 'The Cycle of a Servant'.", " The lord with crimson cloak, His eyes once sharp, but now they choke. \n A wineglass shattered at his feet, his lips were poisoned - death so sweet. \n The servant went into the night, The deed done, taking flight, blocking the way a spear of the night. \n The lord’s son seeking justice, lunged forward claiming blood. \n The servant however did not fall, gutting the son, no longer standing tall. \n The servant reached the lowly village, To the bar seeking refuge, Bleeding from his gut. \n The town drunk drank into the night, While the barkeep kept the light. \n However a mob did approach, The servant hid, but could not hide, Seized by the people he despised. \n So the end approached for the lowly servant, Vengeance acquired, accepted his end. \n Before he met his end, His son’s eyes he met, \n Looking at his father’s soon to be killer, The servant knew the look, for he had seen it before, \n The reason that he had killed his lord, The servant was killed purpose fulfilled, \n However the servant knew before he died, His son would now live his same life.");
+    InteractClass* storyBookInteraction = new InteractClass("You read the title of a poem, 'The Cycle of a Servant'.", " The lord with crimson cloak, His eyes once sharp, but now they choke. \n A wineglass shattered at his feet, his lips were poisoned - death so sweet. \n The servant went into the night, The deed done, taking flight, blocking the way a spear of the night. \n The lords son seeking justice, lunged forward claiming blood. \n The servant however did not fall, gutting the son, no longer standing tall. \n The servant reached the lowly village, To the bar seeking refuge, Bleeding from his gut. \n The town drunk drank into the night, While the barkeep kept the light. \n However a mob did approach, The servant hid, but could not hide, Seized by the people he despised. \n So the end approached for the lowly servant, Vengeance acquired, accepted his end. \n Before he met his end, His son’s eyes he met, \n Looking at his fathers soon to be killer, The servant knew the look, for he had seen it before, \n The reason that he had killed his lord, The servant was killed purpose fulfilled, \n However the servant knew before he died, His son would now live his same life.");
     InteractClass* lordPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You reach to your mouth and see a speck of blood on your finger.");
     InteractClass* barkeepPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You feel a sensation wash over you, dulling your senses briefly.");
+    InteractClass* servantPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You begin to feel a sense of subservience that quickly turns into hatred.");
+    InteractClass* lordSonPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "A blanket of pressure to perform falls over you, suffocating you with expectations unmet.");
+    InteractClass* townDrunkPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "Your mind becomesm muddy and you stumble, catching yourself quickly.");
+    InteractClass* servantSonPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "A burning vengeance fills your chest as you feel great loss.");
+    InteractClass* mobPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "A whirl of strong emotion pushes you forward, in a fervorous burst.");
 
     //define all items
     ItemClass statueA("STATUE", "a STATUE of a woman carrying a book", false, userInteractStatueA); // Define the statue as an item
@@ -195,9 +200,16 @@ void GameControllerClass::gameLoop() {
     //Greater Library Items
     ItemClass greaterLibraryBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
 
-    //Upstairs items
+    //Gallery Items
     ItemClass lordPainting = ItemClass("CRIMSON LORD PORTRAIT", "CRIMSON LORD PORTRAIT of a regal man in a crimson cloak, with blood dripping from his lips as a glass is raised to his lips.", false, lordPaintingInteraction);
     ItemClass barkeepPainting = ItemClass("BARKEEP PORTRAIT", "BARKEEP PORTRAIT of a stocky man cleaning a glass behind the bar, wearing a fake smile.", false, barkeepPaintingInteraction);
+    ItemClass servantPainting = ItemClass("SERVANT PORTRAIT", "SERVANT PORTRAIT of a slender man performing menial tasks, with a dripping green herb held behind his back.", false, servantPaintingInteraction);
+    ItemClass lordSonPainting = ItemClass("HEIR PORTRAIT", "HEIR PORTRAIT of a young teen with a crown to big for his head awkardly posing with his spear.", false, lordSonPaintingInteraction);
+    ItemClass townDrunkPainting = ItemClass("TOWN DRUNK PORTRAIT", "TOWN DRUNK PORTRAIT of an overweight man with a full glass of ale in his hand slumpt against the wall.", false, townDrunkPaintingInteraction);
+    ItemClass servantSonPainting = ItemClass("SERVANT'S SON PORTRAIT", "SERVANT'S SON PORTRAIT of a small child with fists clenched looking at a hanging man.", false, servantSonPaintingInteraction);
+    ItemClass mobPainting = ItemClass("MOB PORTRAIT", "MOB PORTRAIT of a group of people with pitchforks and torches approaching a building.", false, mobPaintingInteraction);
+
+    //Upstairs items
     ItemClass noteUpA = ItemClass("SCRIBBLED NOTE", "SCRIBBLED NOTE that looks like a child's drawing of two kids side by side, both looking almost exactly similair, but one of the children seems to have jagged teeth instead of normal teeth.", true); //Note for clue to mirror puzzle
     ItemClass storyBook = ItemClass("STORYBOOK", "A giant STORYBOOK made of tough leather and weathered pages, indicating many stories have been told from this book. It is open to a page with a poem on it.", false, storyBookInteraction);
     ItemClass masterKey = ItemClass("MASTER KEY", "Fully completed MASTER KEY to the master bedroom", "idMaster", true, true); //Adding master bedroom key
@@ -230,13 +242,13 @@ void GameControllerClass::gameLoop() {
     //InteractClass* userInteractCandle = new InteractClass("Would you like to look at the candle?", "Pickup the candle");
     std::vector<ItemClass>studyItem = { studyCandle };
     std::vector<ItemClass>kitchenItems = { kitchenCounter, kitchenBottle };
-    std::vector <ItemClass> portraits = { lordPainting, barkeepPainting };
+    std::vector <ItemClass> portraits = { lordPainting, barkeepPainting, servantPainting, lordSonPainting, mobPainting, townDrunkPainting, servantSonPainting };
 
 
     //define puzzle solution/s
     std::vector <std::string> mirrorSolution = { "MOONLIGHT", "FOREST GREEN", "BLACK" };
     //defining Gallery puzzle
-    GalleryPuzzle galleryPuzzle = GalleryPuzzle(portraits, { lordPainting });
+    GalleryPuzzle galleryPuzzle = GalleryPuzzle(portraits, { lordPainting, lordSonPainting, servantPainting });
     //defining mirror puzzle
     MirrorPuzzle mirrorPuzzle = MirrorPuzzle(mirrorSolution);
     //defining fountain puzzle
@@ -253,7 +265,7 @@ void GameControllerClass::gameLoop() {
     ItemClass fountainPuzzleStarter = ItemClass("FOUNTAIN PANEL", "A FOUNTAIN PANEL in the base of the fountain seems like you could push it like a button...", false, fountainPuzzleStarterInteraction);
     ItemClass mazePuzzleStarter = ItemClass("LANTERN", "A LANTERN to help you see while exploring the maze...", false, mazePuzzleStarterInteraction);
     std::vector <ItemClass> upstairsItems = { noteUpA, mirrorPuzzleStarter }; //Upstairs items
-    std::vector <ItemClass> galleryItems = { galleryPuzzleStarter, lordPainting, barkeepPainting }; //Gallery items
+    std::vector <ItemClass> galleryItems = { galleryPuzzleStarter, lordPainting, barkeepPainting, servantPainting, lordSonPainting, mobPainting, townDrunkPainting, servantSonPainting }; //Gallery items
     std::vector <ItemClass> shedItems = { shedBottle }; //Shed items
     std::vector <ItemClass> fountainItems = { fountainPuzzleStarter }; //Fountain items
     std::vector <ItemClass> mazeExitItems = { candle4 }; //Maze exit items
@@ -440,7 +452,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
+    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
 
     std::atomic<bool> running(true);
     std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));

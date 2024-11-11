@@ -113,7 +113,14 @@ void InteractClass::runInteraction() {
         if (ui.getCurrentInput() == "INTERACT")
         {
             //output interaction message
-            ui.displayPrompt(interactMessage);
+            std::istringstream stm(interactMessage);
+            std::string line;
+
+            while (std::getline(stm, line)) { //algorithm to display story line by line, user will press enter via waitForInput() function form UI class
+                ui.displayPrompt(line);
+                ui.waitForInput();
+            }
+            //ui.displayPrompt(interactMessage);
         }
         else {
             ui.displayPrompt("You walk away.");
