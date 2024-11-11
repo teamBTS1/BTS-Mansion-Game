@@ -1,5 +1,6 @@
 #include "RoomClass.h"
 #include <sstream>
+#include <string>
 
 
 
@@ -88,6 +89,19 @@ RoomClass::RoomClass(std::string description, std::string name, std::list<std::s
 	this->itemsLength = items.size();
 	this->hasConditionalDescription = conditonalDescription; //bool to determine if room has cond description
 	this->conditonalRoomDescription = conditionalDescriptionString; //string to display based on conditonal value
+}
+
+RoomClass::RoomClass(std::string description, std::string name, std::list<std::string> options, bool ritual, bool safe)
+{
+	this->hasPuzzle = false;
+	this->roomDescription = description;
+	this->roomName = name;
+	this->RoomOptions = options;
+	this->isRitual = ritual;
+	this->isRitual = false;
+	this->candles = 0;
+	this->isSafe = safe;
+	
 }
 
 int RoomClass::getCandleValue()
@@ -345,3 +359,13 @@ Puzzle RoomClass::getPuzzle()
 {
 	return roomPuzzle;
 }
+//Getter
+bool RoomClass::getIsSafe() const 
+{ 
+	return isSafe; 
+}
+//Setter
+void RoomClass::setIsSafe(bool safe) 
+{ 
+	isSafe = safe;
+} 
