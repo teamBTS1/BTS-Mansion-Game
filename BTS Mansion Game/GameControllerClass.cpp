@@ -148,12 +148,16 @@ void GameControllerClass::gameLoop() {
     doors["DOUBLE DOORS"] = Door(true, "idMaster", "You are now in the Master Bedroom. The room is elegantly decorated with fine linens and rich colors.", "DOUBLE DOORS"); //Adding master bedroom door
     doors["BLOCKED HEDGE MAZE"] = Door(true, "MAZEKEY", "You pour the holy water on the dark force blocking the entrance to the hedge maze, granting yourself access as the dark sludge burns away.","BLOCKED HEDGE MAZE");
     doors["MAZE EXIT"] = Door(true, "MAZEEXITKEY", "Using the map, you are able to find your way out of the maze, reaching the exit.", "MAZE EXIT");
+    doors["STUDY DOOR"] = Door(true, "STUDYKEY", "You unlock the door with the study key, unlocking the study.", "STUDY DOOR");
 
     //Greater Library Door
     doors["GREATER LIBRARY DOOR"] = Door(true, "DHKey", "You have now opened the door, you are now in the GREATER LIBRARY", "GREATER LIBRARY DOOR");
 
+
+
     std::vector<Door> FoyerDoors = { doors["DOOR"] };
     std::vector <Door> Library_Doors = { doors["BOOKSHELF"], doors["DOOR"], doors["GREATER LIBRARY DOOR"]};
+    std::vector<Door> greaterLibraryDoors = { doors["STUDY DOOR"] };
     std::vector <Door> Master_Doors = { doors["DOUBLE DOORS"] };
     std::vector<Door> shedDoors;       // Doors for the Shed
     std::vector<Door> mazeDoors = { doors["BLOCKED HEDGE MAZE"] };       // Doors for the Hedge Maze
@@ -199,6 +203,7 @@ void GameControllerClass::gameLoop() {
 
     //Greater Library Items
     ItemClass greaterLibraryBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
+    ItemClass studyKey = ItemClass("STUDY KEY", "An ornate key with lines of text scribbled on it.", "STUDYKEY", true, true); //Adding study key
 
     //Gallery Items
     ItemClass lordPainting = ItemClass("CRIMSON LORD PORTRAIT", "CRIMSON LORD PORTRAIT of a regal man in a crimson cloak, with blood dripping from his lips as a glass is raised to his lips.", false, lordPaintingInteraction);
@@ -230,8 +235,10 @@ void GameControllerClass::gameLoop() {
     ItemClass candle3 = ItemClass("CANDLE", "THE third CANDLE is scribbled on the side... hm", "C3", true, true); //Third candle item
     ItemClass candle4 = ItemClass("CANDLE", "The fourth CANDLE, one more until you're finally out of this nightmare.", "C4", true, true); //Fourth candle
     
+    
+
     //define all itemclass vectors for rooms
-    std::vector <ItemClass> roomA_Items = { noteA, statueA }; //Creating items
+    std::vector <ItemClass> roomA_Items = { noteA, statueA, diningHallKey, studyKey }; //Creating items
     std::vector <ItemClass> roomB_Items = { keyB, loungeBottle };
     std::vector <ItemClass> library_Items = {Book};
     std::vector<ItemClass>diningHallItems = { metalSafe, deadBody1,deadBody2,deadBody3,deadBody4 };
@@ -275,7 +282,7 @@ void GameControllerClass::gameLoop() {
     rooms["FOYER"] = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR","KITCHEN DOOR",}, FoyerDoors, roomA_Items);
     rooms["LIBRARY"] = RoomClass("You enter the library, filled to the brim with bookshelves.\n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF", "GREATER LIBRARY DOOR"}, Library_Doors, library_Items);
     rooms["LOUNGE"] = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER", "DINING HALL DOOR"}, roomB_Items);
-    rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE"}, greaterLibraryItems);
+    rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "STUDY DOOR"}, greaterLibraryDoors, greaterLibraryItems);
     rooms["STUDY"] = RoomClass("You enter the study, the walls are dark brown with shelfs full of books and paper scrolls. There is a desk that is rather neat and organize. Behind the desk is grand portrait of a man with a stern face, eyes so dark its you uncomfortable.The man's finger is pointing to what seems to be a cabinet and on behind a pile of books you see a candle.", "STUDY", std::list<std::string>{"GREATER LIBRARY"}, studyItem);
     //defenition for ritual room class, specific constructor
     rooms["RITUAL ROOM"] = RoomClass("You enter a room that does not invite you back. A perfect, pentacle drawn on the floor invites you to place a candle at each of it's vertecies. [Hint: enter CANDLE as input if you posses a candle]", "RITUAL ROOM", std::list<std::string>{"HIDDEN SECTION",}, true);
@@ -795,26 +802,10 @@ void GameControllerClass::gameLoop() {
                     std::list<std::string> options = { "GARDEN", "HEDGE MAZE EXIT"};
                     handleDoors(userPlayer, currentRoom_temp, "HEDGE MAZE EXIT", options, rooms, "", command);
                 }
-                else if (command == "PUZZLE")
+                else if (command == "STUDY DOOR")
                 {
-                    system("cls");
-                    if (!puzzleSolved)
-                    {
-                        UI.displayPrompt("WORK IN PROGRESS: The door is locked there seems to be a puzzle before entering. Solve this puzzle.\n");
-                        UI.displayPrompt("The secret word is YDDID\n");
-                        std::string puzzleAnswer = UI.userInput();
-
-                        if (puzzleAnswer == "YDDID") {
-                            UI.displayPrompt("You solved the puzzle you can now enter the study\n");
-                            puzzleSolved = true;
-                            currentRoom_temp.setRoomOption(std::list<std::string>{"LIBRARY", "STUDY"});
-                            rooms[currentRoom_temp.GetName()] = currentRoom_temp; //update room in map
-                        }
-                        else {
-                            UI.displayPrompt("That is not the correct answer. The door remains locked.\n");
-                        }
-
-                    }
+                    std::list<std::string> options = { "LIBRARY", "STUDY" };
+                    handleDoors(userPlayer, currentRoom_temp, "STUDY", options, rooms, "", command);
                 }
             }
             else
