@@ -1,4 +1,4 @@
-
+ï»¿
 #include "GameControllerClass.h"
 #include "RoomClass.h"
 #include "InteractClass.h"
@@ -176,7 +176,7 @@ void GameControllerClass::gameLoop() {
     InteractClass* userInteractBody2 = new InteractClass("Would you like to look at dead body 2", "");
     InteractClass* userInteractBody3 = new InteractClass("Would you like to look at dead body 3", "");
     InteractClass* userInteractBody4 = new InteractClass("Would you like to look at dead body 4", "");
-    InteractClass* storyBookInteraction = new InteractClass("You read the title of a poem, 'The Cycle of a Servant'.", " The lord with crimson cloak, His eyes once sharp, but now they choke. \n A wineglass shattered at his feet, his lips were poisoned - death so sweet. \n The servant went into the night, The deed done, taking flight, blocking the way a spear of the night. \n The lords son seeking justice, lunged forward claiming blood. \n The servant however did not fall, gutting the son, no longer standing tall. \n The servant reached the lowly village, To the bar seeking refuge, Bleeding from his gut. \n The town drunk drank into the night, While the barkeep kept the light. \n However a mob did approach, The servant hid, but could not hide, Seized by the people he despised. \n So the end approached for the lowly servant, Vengeance acquired, accepted his end. \n Before he met his end, His son’s eyes he met, \n Looking at his fathers soon to be killer, The servant knew the look, for he had seen it before, \n The reason that he had killed his lord, The servant was killed purpose fulfilled, \n However the servant knew before he died, His son would now live his same life.");
+    InteractClass* storyBookInteraction = new InteractClass("You read the title of a poem, 'The Cycle of a Servant'.", " The lord with crimson cloak, His eyes once sharp, but now they choke. \n A wineglass shattered at his feet, his lips were poisoned - death so sweet. \n The servant went into the night, The deed done, taking flight, blocking the way a spear of the night. \n The lords son seeking justice, lunged forward claiming blood. \n The servant however did not fall, gutting the son, no longer standing tall. \n The servant reached the lowly village, To the bar seeking refuge, Bleeding from his gut. \n The town drunk drank into the night, While the barkeep kept the light. \n However a mob did approach, The servant hid, but could not hide, Seized by the people he despised. \n So the end approached for the lowly servant, Vengeance acquired, accepted his end. \n Before he met his end, His sonâ€™s eyes he met, \n Looking at his fathers soon to be killer, The servant knew the look, for he had seen it before, \n The reason that he had killed his lord, The servant was killed purpose fulfilled, \n However the servant knew before he died, His son would now live his same life.");
     InteractClass* lordPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You reach to your mouth and see a speck of blood on your finger.");
     InteractClass* barkeepPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You feel a sensation wash over you, dulling your senses briefly.");
     InteractClass* servantPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You begin to feel a sense of subservience that quickly turns into hatred.");
@@ -418,42 +418,42 @@ void GameControllerClass::gameLoop() {
     );
 
     //room for declaration of memory of the foyer
-    rooms["MEMORY OF THE FOYER"] = RoomClass("You arrive to a broken foyer, you an see a floating statue and doors that are floating away from their hinges.(TEMPORARY TEXT: This is room 4 of 4.) You see the text UROTMU which appears to be scrambled.",
+    rooms["MEMORY OF THE FOYER"] = RoomClass("You arrive to a broken foyer, you an see a floating statue and doors that are floating away from their hinges. Appartions of a family of f!?o^ur@ with their eyes blacked out watch you. You see the text UROTMU which appears to be scrambled.",
         "MEMORY OF THE FOYER",
         std::list<std::string>{"MEMORY OF THE MANSION"},//adjacent rooms
         memoryOfTheFoyerDoors,
         memoryOfTheFoyerItems,
         true, //boolean to determine if the room has a conditonal description
-        "You arrive to a broken foyer, you an see a floating statue and doors that are floating away from their hinges. (TEMPORARY TEXT: This is room 4 of 4.) Adjecent to this room is MEMORY OF THE MANSION The letters re-arrange to form TUORUM."
+        "You arrive to a broken foyer, you an see a floating statue and doors that are floating away from their hinges. Appartions of a family of f!?o^ur@ with their eyes blacked out watch you. Adjecent to this room is MEMORY OF THE MANSION The letters re-arrange to form TUORUM."
         );//Conditional description to be displayed ^^
     //room for declaration of memory of the library
-    rooms["MEMORY OF THE LIBRARY"] = RoomClass("You arrive to a broken library, books and bookshelfs are floating around. (TEMPORARY TEXT: This is room 3 of 4.).  You see the text OACPMEURTC which appears to be scrambled.",
+    rooms["MEMORY OF THE LIBRARY"] = RoomClass("You arrive to a broken library, books and bookshelfs are floating around. There is a woman lying on the floor with t$hr#@ee darts in her head. You see the text OACPMEURTC which appears to be scrambled.",
         "MEMORY OF THE LIBRARY",
         std::list<std::string>{"MEMORY OF THE MANSION"}, //adjacent rooms
         memoryOfTheLibraryDoors,
         memoryOfTheLibraryItems,
         true,//boolean to determine if the room has a conditonal description
-        "You arrive to a broken library, books and bookshelfs are floating around. (TEMPORARY TEXT: This is room 3 of 4.) The letters re arrange to form: PECCATORUM"
+        "You arrive to a broken library, books and bookshelfs are floating around. There is a woman lying on the floor with t$hr#@ee darts in her head. The letters re arrange to form: PECCATORUM"
         //Conditional description to be displayed ^^
     );
     //room for declaration of memory of the garden
-    rooms["MEMORY OF THE GARDEN"] = RoomClass("You arrive to a broken garden, the grass is no longer green, and the hedgmaze has been burnt away. (TEMPORARY TEXT: This is room 1 of 4.) You see the text GNXUIEET which appears to be scrambled.",
+    rooms["MEMORY OF THE GARDEN"] = RoomClass("You arrive to a broken garden, the grass is no longer green, and the hedgmaze has been burnt away. There is o!(ne& figure all in black digging a gravestone with your name on it. You see the text GNXUIEET which appears to be scrambled.",
         "MEMORY OF THE GARDEN",
         std::list<std::string>{"MEMORY OF THE MANSION"},//adjacent rooms
         memoryOfTheGardenDoors,
         memoryOfTheGardenItems,
         true,//boolean to determine if the room has a conditonal description
-        "You arrive to a broken study. (TEMPORARY TEXT: This is room 1 of 4.) Adjecent to this room is MEMORY OF THE MANSION The letters re arrange to form: EXTINGUE."
+        "You arrive to a broken study. There is o!(ne& figure all in black digging a gravestone with your name on it. Adjecent to this room is MEMORY OF THE MANSION The letters re arrange to form: EXTINGUE."
         //Conditional description to be displayed ^^
     );
     //room for declaration of memory of the study
-    rooms["MEMORY OF THE STUDY"] = RoomClass("You arrive to a broken study. (TEMPORARY TEXT: This is room 2 of 4.)  You see the letters LMMMFAA.",
+    rooms["MEMORY OF THE STUDY"] = RoomClass("You arrive to a broken study. On the desk a revolver sits with blood all around, as %t^w*o men lie lifeless on the desk, holes in their heads. You see the letters LMMMFAA.",
         "MEMORY OF THE STUDY",
         std::list<std::string>{"MEMORY OF THE MANSION"},//adjacent rooms
         memoryOfTheStudyDoors,
         memoryOfTheStudyItems,
         true,//boolean to determine if the room has a conditonal description
-        "You arrive to a broken study. (TEMPORARY TEXT: This is room 2 of 4.) Adjecent to this room is MEMORY OF THE MANSION The letters re-arrange to form FLAMMAM."
+        "You arrive to a broken study. On the desk a revolver sits with blood all around, as %t^w*o men lie lifeless on the desk, holes in their heads. Adjecent to this room is MEMORY OF THE MANSION The letters re-arrange to form FLAMMAM."
         //Conditional description to be displayed ^^
     );
     //room for declaration of memory of the lift
@@ -475,7 +475,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["GREATER LIBRARY"]);
+    PlayerClass userPlayer = PlayerClass(rooms["MEMORY OF THE FOYER"]);
 
     std::atomic<bool> running(true);
     std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));
@@ -522,7 +522,7 @@ void GameControllerClass::gameLoop() {
             }
             userPlayer.setRoom(rooms["FOYER"]);  // Move player to the foyer
 
-            // Add "KITCHEN" as an option in the foyer room only if it’s not already there
+            // Add "KITCHEN" as an option in the foyer room only if itâ€™s not already there
             auto currentRoom_temp = rooms["FOYER"];
             std::list<std::string> updatedOptions = currentRoom_temp.GetRoomOption();
 
@@ -530,7 +530,7 @@ void GameControllerClass::gameLoop() {
             if (std::find(updatedOptions.begin(), updatedOptions.end(), "KITCHEN") == updatedOptions.end()) {
                 updatedOptions.push_back("KITCHEN");
 
-                // Remove "KITCHEN DOOR" if it’s already in the options
+                // Remove "KITCHEN DOOR" if itâ€™s already in the options
                 updatedOptions.remove("KITCHEN DOOR");
 
                 // Update the options in the foyer
@@ -568,7 +568,7 @@ void GameControllerClass::gameLoop() {
             }
             userPlayer.setRoom(rooms["LOUNGE"]);  // Move player to the lounge
 
-            // Add "DINING HALL" as an option in the lounge room only if it’s not already there
+            // Add "DINING HALL" as an option in the lounge room only if itâ€™s not already there
             auto currentRoom_temp = rooms["LOUNGE"];
             std::list<std::string> updatedOptions = currentRoom_temp.GetRoomOption();
 
