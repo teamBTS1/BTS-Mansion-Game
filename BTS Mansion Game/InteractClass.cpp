@@ -14,6 +14,14 @@ InteractClass::InteractClass(std::string inMssg, std::string interactMssg) {
     isPuzzle = false;
 }
 
+InteractClass::InteractClass(std::string inMssg, std::string interactMssg, GreaterLibraryPuzzle puzz) { //Constructor for greater library puzzle
+    inputMessage = inMssg;
+    interactMessage = interactMssg;
+    interacted = false;
+    gPuzzle = puzz;
+    isPuzzle = true;
+}
+
 InteractClass::InteractClass(std::string inMssg, std::string interactMssg, GalleryPuzzle puzz) { //Constructor for gallery puzzle
     inputMessage = inMssg;
     interactMessage = interactMssg;
@@ -129,12 +137,28 @@ void InteractClass::runInteraction() {
     
 }
 
-void InteractClass::runInteraction(PlayerClass& player, ItemClass& galleryItm, ItemClass& mirrorItm, ItemClass& masterItm, ItemClass& fountainItem, ItemClass& mazeItem, ItemClass& memoryItem, ItemClass& chantItem) { //Function to run an interaction with items and picking up
+void InteractClass::runInteraction(PlayerClass& player, ItemClass& greaterLibraryItem, ItemClass& galleryItm, ItemClass& mirrorItm, ItemClass& masterItm, ItemClass& fountainItem, ItemClass& mazeItem, ItemClass& memoryItem, ItemClass& chantItem) { //Function to run an interaction with items and picking up
     UserInterfaceClass ui;
     //input interaction message;
     //simulate user input demonstrate
     if (isPuzzle == true) //Check if interaction is a puzzle
     {
+        if (gPuzzle.getDescription() == "Greater Library Puzzle") //if in greater library puzzle
+        {
+            if (gPuzzle.isSolved() == false) //Is puzzle solved
+            {
+                gPuzzle.runPuzzle();
+
+                if (gPuzzle.isSolved() == true) //If puzzle was solved
+                {
+                    player.addItem(greaterLibraryItem); //Add key reward to inventory
+                }
+            }
+            else
+            {
+                ui.displayPrompt("This has already been unlocked."); //Already solved
+            }
+        }
         if (puzzle.getDescription() == "Gallery Puzzle") //if in gallery puzzle execute gallery puzzle
         {
             if (puzzle.isSolved() == false) //Is the puzzle solved

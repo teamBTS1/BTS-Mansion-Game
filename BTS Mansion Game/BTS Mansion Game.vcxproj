@@ -132,6 +132,7 @@
     <ClCompile Include="FountainPuzzle.cpp" />
     <ClCompile Include="GalleryPuzzle.cpp" />
     <ClCompile Include="GameControllerClass.cpp" />
+    <ClCompile Include="GreaterLibraryPuzzle.cpp" />
     <ClCompile Include="InteractClass.cpp" />
     <ClCompile Include="ItemClass.cpp" />
     <ClCompile Include="MazePuzzle.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="FountainPuzzle.h" />
     <ClInclude Include="GalleryPuzzle.h" />
     <ClInclude Include="GameControllerClass.h" />
+    <ClInclude Include="GreaterLibraryPuzzle.h" />
     <ClInclude Include="InteractClass.h" />
     <ClInclude Include="ItemClass.h" />
     <ClInclude Include="MazePuzzle.h" />

@@ -164,6 +164,9 @@ void GameControllerClass::gameLoop() {
     std::vector<Door> fountainDoors;   // Doors for the Fountain
     std::vector<Door> mazeExitDoors = { doors["MAZE EXIT"] }; //Exit of hedge maze
 
+    //greater library puzzle
+    GreaterLibraryPuzzle greaterLibraryPuzzle("DODGE");
+
     //define all ineractions
     InteractClass* userInteractStatueA = new InteractClass("Would you like to INTERACT with the statue?", "You feel a wave of knowledge wash over you, like you've learned something from someone previously here before you."); //Defining statue interaction
     InteractClass* userInteractKitchenCounter = new InteractClass("Would you like to look at the kitchen counter?", "");
@@ -181,6 +184,13 @@ void GameControllerClass::gameLoop() {
     InteractClass* townDrunkPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "Your mind becomesm muddy and you stumble, catching yourself quickly.");
     InteractClass* servantSonPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "A burning vengeance fills your chest as you feel great loss.");
     InteractClass* mobPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "A whirl of strong emotion pushes you forward, in a fervorous burst.");
+    InteractClass* greaterLibraryPuzzleStarter = new InteractClass("Would you like to INTERACT with the lock?", "", greaterLibraryPuzzle);
+    InteractClass* gBookInteraction1 = new InteractClass("Would you like to read the book?", "This book tells the story of a king who began a Dangerous journey across all of the lands.");
+    InteractClass* gBookInteraction2 = new InteractClass("Would you like to read the book?", "This book describes a king struggling to survive during the beginning of his jOurney.");
+    InteractClass* gBookInteraction3 = new InteractClass("Would you like to read the book?", "This book tells the tale of a king reaching his first town, and seeing the poverty of the people in his domain firsthanD");
+    InteractClass* gBookInteraction4 = new InteractClass("Would you like to read the book?", "This book describes a king having to beg alongside beGgars, selling his crown for food.");
+    InteractClass* gBookInteraction5 = new InteractClass("Would you like to read the book?", "This book shows an image of a corpse lying dEad in the wilderness, royal cape tattered.");
+
 
     //define all items
     ItemClass statueA("STATUE", "a STATUE of a woman carrying a book", false, userInteractStatueA); // Define the statue as an item
@@ -203,7 +213,13 @@ void GameControllerClass::gameLoop() {
 
     //Greater Library Items
     ItemClass greaterLibraryBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
+    ItemClass gBook1("PRISTINE BOOK", "PRISTINE BOOK with a picture of a king on his throne.", false, gBookInteraction1);
+    ItemClass gBook2("GRASSY BOOK", "GRASSY BOOK with a picture of a king in the woods.", false, gBookInteraction2);
+    ItemClass gBook3("WOODEN BOOK", "WOODEN BOOK with a picture of a king entering a town.", false, gBookInteraction3);
+    ItemClass gBook4("DIRTY BOOK", "DIRTY BOOK with a picture of a king sitting in the dirt", false, gBookInteraction4);
+    ItemClass gBook5("TATTERED BOOK", "TATTERED BOOK with a picture of a corpse.", false, gBookInteraction5);
     ItemClass studyKey = ItemClass("STUDY KEY", "An ornate key with lines of text scribbled on it.", "STUDYKEY", true, true); //Adding study key
+    ItemClass combLock = ItemClass("WORD LOCK", "WORD LOCK which takes a 5 letter word.", false, greaterLibraryPuzzleStarter);
 
     //Gallery Items
     ItemClass lordPainting = ItemClass("CRIMSON LORD PORTRAIT", "CRIMSON LORD PORTRAIT of a regal man in a crimson cloak, with blood dripping from his lips as a glass is raised to his lips.", false, lordPaintingInteraction);
@@ -238,11 +254,11 @@ void GameControllerClass::gameLoop() {
     
 
     //define all itemclass vectors for rooms
-    std::vector <ItemClass> roomA_Items = { noteA, statueA, diningHallKey, studyKey }; //Creating items
+    std::vector <ItemClass> roomA_Items = { noteA, statueA }; //Creating items
     std::vector <ItemClass> roomB_Items = { keyB, loungeBottle };
     std::vector <ItemClass> library_Items = {Book};
     std::vector<ItemClass>diningHallItems = { metalSafe, deadBody1,deadBody2,deadBody3,deadBody4 };
-    std::vector<ItemClass> greaterLibraryItems = { greaterLibraryBottle };
+    std::vector<ItemClass> greaterLibraryItems = { greaterLibraryBottle, combLock, gBook3, gBook1, gBook2, gBook4, gBook5 };
     std::vector <ItemClass> hiddensection_Items = { Candle1 };
     std::vector <ItemClass> storytellerItems = { storyBook }; //Storyteller's items
     std::vector <ItemClass> masterBedroomItems = { candle3, bedroomBottle }; //Master bedroom items
@@ -459,7 +475,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
+    PlayerClass userPlayer = PlayerClass(rooms["GREATER LIBRARY"]);
 
     std::atomic<bool> running(true);
     std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));
@@ -742,7 +758,7 @@ void GameControllerClass::gameLoop() {
 
                 else if (currentRoom_temp.getRoomItemByName(itemName).getInteraction()->getIsPuzzle() == true) //If interaction is a puzzle, call overloaded runInteraction
                 {
-                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer, galleryKey, mirrorKey, masterKey, mazeKey, mazeExitKey, playerMemory, Candle5); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
+                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer, studyKey, galleryKey, mirrorKey, masterKey, mazeKey, mazeExitKey, playerMemory, Candle5); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
                 }
                 else //Run interact sequence if not pick up able object
                 {
