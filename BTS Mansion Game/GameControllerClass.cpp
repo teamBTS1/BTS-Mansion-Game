@@ -242,7 +242,7 @@ void GameControllerClass::gameLoop() {
     //defining fountain puzzle
     FountainPuzzle fountainPuzzle = FountainPuzzle("FEAR", "MEMORY", "CLOCK", "GRAVE");
     //defining maze puzzle
-    MazePuzzle mazePuzzle = MazePuzzle({ "RABBIT", "CROW", "SNAKE", "SCARAB" });
+    MazePuzzle mazePuzzle = MazePuzzle({ "RABBIT", "CROW", "SNAKE", "SCARAB" }, {"BADGER", "GOAT", "CARDINAL", "OWL", "BEAR", "CAT", "COYOTE"});
 
     InteractClass* mirrorPuzzleStarterInteraction = new InteractClass("Do you want to solve the three word combination? (YES or NO)", "Test", mirrorPuzzle);
     InteractClass* altarInteraction = new InteractClass("Do you want to initiate puzzle? (YES or NO)", "Test", galleryPuzzle);
@@ -383,42 +383,42 @@ void GameControllerClass::gameLoop() {
     );
 
     //room for declaration of memory of the foyer
-    rooms["MEMORY OF THE FOYER"] = RoomClass("You arrive to a broken foyer, you an see a floating statue and doors that are floating away from their hinges.(TEMPORARY TEXT: This is room 4 of 4.) You see the text UROTMU which appears to be scrambled.",
+    rooms["MEMORY OF THE FOYER"] = RoomClass("You arrive to a broken foyer, you an see a floating statue and doors that are floating away from their hinges. Appartions of a family of f!?o^ur@ with their eyes blacked out watch you. You see the text UROTMU which appears to be scrambled.",
         "MEMORY OF THE FOYER",
         std::list<std::string>{"MEMORY OF THE MANSION"},//adjacent rooms
         memoryOfTheFoyerDoors,
         memoryOfTheFoyerItems,
         true, //boolean to determine if the room has a conditonal description
-        "You arrive to a broken foyer, you an see a floating statue and doors that are floating away from their hinges. (TEMPORARY TEXT: This is room 4 of 4.) Adjecent to this room is MEMORY OF THE MANSION The letters re-arrange to form TUORUM."
+        "You arrive to a broken foyer, you an see a floating statue and doors that are floating away from their hinges. Appartions of a family of f!?o^ur@ with their eyes blacked out watch you. Adjecent to this room is MEMORY OF THE MANSION The letters re-arrange to form TUORUM."
         );//Conditional description to be displayed ^^
     //room for declaration of memory of the library
-    rooms["MEMORY OF THE LIBRARY"] = RoomClass("You arrive to a broken library, books and bookshelfs are floating around. (TEMPORARY TEXT: This is room 3 of 4.).  You see the text OACPMEURTC which appears to be scrambled.",
+    rooms["MEMORY OF THE LIBRARY"] = RoomClass("You arrive to a broken library, books and bookshelfs are floating around. There is a woman lying on the floor with t$hr#@ee darts in her head.  You see the text OACPMEURTC which appears to be scrambled.",
         "MEMORY OF THE LIBRARY",
         std::list<std::string>{"MEMORY OF THE MANSION"}, //adjacent rooms
         memoryOfTheLibraryDoors,
         memoryOfTheLibraryItems,
         true,//boolean to determine if the room has a conditonal description
-        "You arrive to a broken library, books and bookshelfs are floating around. (TEMPORARY TEXT: This is room 3 of 4.) The letters re arrange to form: PECCATORUM"
+        "You arrive to a broken library, books and bookshelfs are floating around. There is a woman lying on the floor with t$hr#@ee darts in her head. The letters re arrange to form: PECCATORUM"
         //Conditional description to be displayed ^^
     );
     //room for declaration of memory of the garden
-    rooms["MEMORY OF THE GARDEN"] = RoomClass("You arrive to a broken garden, the grass is no longer green, and the hedgmaze has been burnt away. (TEMPORARY TEXT: This is room 1 of 4.) You see the text GNXUIEET which appears to be scrambled.",
+    rooms["MEMORY OF THE GARDEN"] = RoomClass("You arrive to a broken garden, the grass is no longer green, and the hedgmaze has been burnt away.  There is o!(ne& figure all in black digging a gravestone with your name on it. You see the text GNXUIEET which appears to be scrambled.",
         "MEMORY OF THE GARDEN",
         std::list<std::string>{"MEMORY OF THE MANSION"},//adjacent rooms
         memoryOfTheGardenDoors,
         memoryOfTheGardenItems,
         true,//boolean to determine if the room has a conditonal description
-        "You arrive to a broken study. (TEMPORARY TEXT: This is room 1 of 4.) Adjecent to this room is MEMORY OF THE MANSION The letters re arrange to form: EXTINGUE."
+        "You arrive to a broken study.  There is o!(ne& figure all in black digging a gravestone with your name on it. Adjecent to this room is MEMORY OF THE MANSION The letters re arrange to form: EXTINGUE."
         //Conditional description to be displayed ^^
     );
     //room for declaration of memory of the study
-    rooms["MEMORY OF THE STUDY"] = RoomClass("You arrive to a broken study. (TEMPORARY TEXT: This is room 2 of 4.)  You see the letters LMMMFAA.",
+    rooms["MEMORY OF THE STUDY"] = RoomClass("You arrive to a broken study.  On the desk a revolver sits with blood all around, as %t^w*o men lie lifeless on the desk, holes in their heads. You see the letters LMMMFAA.",
         "MEMORY OF THE STUDY",
         std::list<std::string>{"MEMORY OF THE MANSION"},//adjacent rooms
         memoryOfTheStudyDoors,
         memoryOfTheStudyItems,
         true,//boolean to determine if the room has a conditonal description
-        "You arrive to a broken study. (TEMPORARY TEXT: This is room 2 of 4.) Adjecent to this room is MEMORY OF THE MANSION The letters re-arrange to form FLAMMAM."
+        "You arrive to a broken study.  On the desk a revolver sits with blood all around, as %t^w*o men lie lifeless on the desk, holes in their heads. Adjecent to this room is MEMORY OF THE MANSION The letters re-arrange to form FLAMMAM."
         //Conditional description to be displayed ^^
     );
     //room for declaration of memory of the lift
@@ -440,7 +440,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
+    PlayerClass userPlayer = PlayerClass(rooms["HEDGE MAZE"]);
 
     std::atomic<bool> running(true);
     std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));
