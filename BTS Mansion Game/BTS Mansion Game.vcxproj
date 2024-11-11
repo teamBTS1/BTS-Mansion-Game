@@ -108,6 +108,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -137,6 +138,8 @@
     <ClCompile Include="MazePuzzle.cpp" />
     <ClCompile Include="MemoryPuzzle.cpp" />
     <ClCompile Include="MirrorPuzzle.cpp" />
+    <ClCompile Include="MonsterClass.cpp" />
+    <ClCompile Include="MonsterClass.h" />
     <ClCompile Include="MovementClass.cpp" />
     <ClCompile Include="PickUpItemClass.cpp" />
     <ClCompile Include="PlayerClass.cpp" />

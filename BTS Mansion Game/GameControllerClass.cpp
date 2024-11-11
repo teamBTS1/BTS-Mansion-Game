@@ -11,6 +11,7 @@
 #include "Puzzle.h"
 #include "GalleryPuzzle.h"
 #include "MirrorPuzzle.h"
+#include "MonsterClass.h"
 #include "FountainPuzzle.h"
 #include "MazePuzzle.h"
 #include "MemoryPuzzle.h"
@@ -126,6 +127,8 @@ void GameControllerClass::viewInventory(PlayerClass& myPlayer) {
 }
 
 
+
+
 void GameControllerClass::displayBackstory() {
     std::istringstream stream(GameControllerClass::backstory);
     std::string line;
@@ -170,7 +173,7 @@ void GameControllerClass::gameLoop() {
     InteractClass* userInteractBody2 = new InteractClass("Would you like to look at dead body 2", "");
     InteractClass* userInteractBody3 = new InteractClass("Would you like to look at dead body 3", "");
     InteractClass* userInteractBody4 = new InteractClass("Would you like to look at dead body 4", "");
-    InteractClass* storyBookInteraction = new InteractClass("You read the title of a poem, 'The Cycle of a Servant'.", " The lord with crimson cloak, His eyes once sharp, but now they choke. \n A wineglass shattered at his feet, his lips were poisoned - death so sweet. \n The servant went into the night, The deed done, taking flight, blocking the way a spear of the night. \n The lord’s son seeking justice, lunged forward claiming blood. \n The servant however did not fall, gutting the son, no longer standing tall. \n The servant reached the lowly village, To the bar seeking refuge, Bleeding from his gut. \n The town drunk drank into the night, While the barkeep kept the light. \n However a mob did approach, The servant hid, but could not hide, Seized by the people he despised. \n So the end approached for the lowly servant, Vengeance acquired, accepted his end. \n Before he met his end, His son’s eyes he met, \n Looking at his father’s soon to be killer, The servant knew the look, for he had seen it before, \n The reason that he had killed his lord, The servant was killed purpose fulfilled, \n However the servant knew before he died, His son would now live his same life.");
+    InteractClass* storyBookInteraction = new InteractClass("You read the title of a poem, 'The Cycle of a Servant'.", " The lord with crimson cloak, His eyes once sharp, but now they choke. \n A wineglass shattered at his feet, his lips were poisoned - death so sweet. \n The servant went into the night, The deed done, taking flight, blocking the way a spear of the night. \n The lordâ€™s son seeking justice, lunged forward claiming blood. \n The servant however did not fall, gutting the son, no longer standing tall. \n The servant reached the lowly village, To the bar seeking refuge, Bleeding from his gut. \n The town drunk drank into the night, While the barkeep kept the light. \n However a mob did approach, The servant hid, but could not hide, Seized by the people he despised. \n So the end approached for the lowly servant, Vengeance acquired, accepted his end. \n Before he met his end, His sonâ€™s eyes he met, \n Looking at his fatherâ€™s soon to be killer, The servant knew the look, for he had seen it before, \n The reason that he had killed his lord, The servant was killed purpose fulfilled, \n However the servant knew before he died, His son would now live his same life.");
     InteractClass* lordPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You reach to your mouth and see a speck of blood on your finger.");
     InteractClass* barkeepPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You feel a sensation wash over you, dulling your senses briefly.");
 
@@ -477,7 +480,14 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
+
     PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
+
+    //Defining variables for timer
+    MonsterClass monsterTimer(10);
+    monsterTimer.start();
+
+
 
     std::atomic<bool> running(true);
     std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));
@@ -485,6 +495,11 @@ void GameControllerClass::gameLoop() {
     UI.displayPrompt("It's always important to stay sane in such a stressful situation. The lower your sanity gets, the less you'll understand what is going on...\nUnfortunately, it is only a matter of time before you completely lose it. Consume SANITY PILLS to increase your sanity.");
 
     while (true) {
+        if (monsterTimer.isTriggered())
+        {
+            monsterTimer.start(); //Resets monster timer to start again
+        }
+
         UI.displayPrompt("\n"); //Giving space for text
         
         UI.displayPrompt("Sanity Level: " + std::to_string(userPlayer.getSanity()) + "\n");
@@ -524,7 +539,7 @@ void GameControllerClass::gameLoop() {
             }
             userPlayer.setRoom(rooms["FOYER"]);  // Move player to the foyer
 
-            // Add "KITCHEN" as an option in the foyer room only if it’s not already there
+            // Add "KITCHEN" as an option in the foyer room only if itâ€™s not already there
             auto currentRoom_temp = rooms["FOYER"];
             std::list<std::string> updatedOptions = currentRoom_temp.GetRoomOption();
 
@@ -532,7 +547,7 @@ void GameControllerClass::gameLoop() {
             if (std::find(updatedOptions.begin(), updatedOptions.end(), "KITCHEN") == updatedOptions.end()) {
                 updatedOptions.push_back("KITCHEN");
 
-                // Remove "KITCHEN DOOR" if it’s already in the options
+                // Remove "KITCHEN DOOR" if itâ€™s already in the options
                 updatedOptions.remove("KITCHEN DOOR");
 
                 // Update the options in the foyer
@@ -570,7 +585,7 @@ void GameControllerClass::gameLoop() {
             }
             userPlayer.setRoom(rooms["LOUNGE"]);  // Move player to the lounge
 
-            // Add "DINING HALL" as an option in the lounge room only if it’s not already there
+            // Add "DINING HALL" as an option in the lounge room only if itâ€™s not already there
             auto currentRoom_temp = rooms["LOUNGE"];
             std::list<std::string> updatedOptions = currentRoom_temp.GetRoomOption();
 
@@ -652,17 +667,23 @@ void GameControllerClass::gameLoop() {
         }
 
         if (command == "QUIT") {
+            monsterTimer.stop();
+            monsterTimer.join(); //Destory monster timer
             endGame();  // Call endGame method
             return;  // Exit the game loop
         }
-
+        
+        else if (command == "ESCAPE") //Handles when monster grabs player
+        {
+            UI.displayPrompt("You manage to escape the grasp of the monster and are back in the same room you just were in.");
+        }
+      
         else if (command == "INVENTORY")
         {
             system("cls");
             viewInventory(userPlayer); //Call view inventory function
             UI.displayPrompt("\n");
         }
-
         else if (command == "INSPECT") //If user wants to pick up item
         {
             system("cls");
@@ -844,9 +865,16 @@ void GameControllerClass::gameLoop() {
                 }
             }
             else
-            { //catch invalid input NOTE - in the future we will refactor to utilize UI class input validation
-                system("cls");
-                UI.displayPrompt("\nYou tried to choose your option but you couldn't move your body. It seems like there is an unforseen force telling you can't perform that action..You look around again\n");
+            { //catch invalid input NOTE - in the future we will refactor to utilize UI class input validation            
+                if (monsterTimer.isGrab() && command != "ESCAPE")
+                {
+                    UI.displayPrompt("The monster begins to siphon away any last vestiges of your being, as your mind quickly numbs and you feel nothing. Hear nothing. Are nothing.");
+                    endGame();
+                }
+                else
+                {
+                    UI.displayPrompt("\nYou tried to choose your option but you couldn't move your body. It seems like there is an unforseen force telling you can't perform that action..You look around again\n");
+                }   
             }
         }
     }
