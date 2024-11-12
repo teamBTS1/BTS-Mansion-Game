@@ -22,7 +22,7 @@ class RoomClass
 private:
 	std::vector<Door> roomDoors;
 	bool isRitual; //bool value that determines whether room is ritual room, default value is false
-	bool isSafe; // // bool value that determines if the room is safe, default value is false
+	bool isSafe = false; // // bool value that determines if the room is safe, default value is false
 	int candles; // Candle count, will only be used for the ritual room
 	std::string roomDescription; //Variable that stores a description of the room
 	std::string roomName; //Variable that stores the name of the room

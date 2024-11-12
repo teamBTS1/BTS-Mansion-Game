@@ -692,6 +692,7 @@ void GameControllerClass::gameLoop() {
         }
         else if (command == "INSPECT") //If user wants to pick up item
         {
+            isInProtectedAction = true;
             system("cls");
             currentRoom_temp.displayRoomItems();
             UI.displayPrompt("What item would you like to inspect?\n");
@@ -796,10 +797,11 @@ void GameControllerClass::gameLoop() {
                 }
             }
 
-
+            isInProtectedAction = false;
         }
         else {
             //std::string current_room = userPlayer.getRoomName();
+           
             std::list<std::string> validInputs = currentRoom_temp.GetRoomOption();
             if (std::find(validInputs.begin(), validInputs.end(), command) != validInputs.end()) //algorithm to parse command in valid room options
             {
@@ -808,6 +810,11 @@ void GameControllerClass::gameLoop() {
                 if (rooms.find(command) != rooms.end()) {
                     system("cls");
                     userPlayer.setRoom(rooms[command]);
+                    isInProtectedAction = userPlayer.getRoom().getIsSafe(); //checking to see if user is in a safe room
+
+                    if (isInProtectedAction) {
+                        monsterTimer.reset(); //if user is in a safe room then timer is reset
+                    }
                 }
                 else if (command == "PORTAL") {
                     system("cls");

@@ -22,6 +22,7 @@ private:
 	std::atomic<bool> grabFlag; //Checks if in monster grab sequence
 	std::thread timerThread;
 	GameControllerClass* currentGameController;// used to check if user is in a protected state
+	int timeRemaining;
 	
 
 public:

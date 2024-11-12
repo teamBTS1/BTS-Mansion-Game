@@ -18,19 +18,21 @@ MonsterClass::MonsterClass(int dur, GameControllerClass& myController)
 	timerTriggered = false;
 	stopFlag = false;
 	currentGameController = &myController;
+	timeRemaining = dur; 
 }
 
 void MonsterClass::onTimerTriggered() //Runs when timer finishes
 
 {
-
+	system("cls");
 	if (currentGameController && currentGameController->inProtectedState()) {
 		// If the player is in a protected state, skip the grab action
-		std::cout << "The player is in a protected state; the monster does not grab them.\n";
 		return;
 	}
 	grabFlag = true; //Setting grabFlag to true
 	
+
+	//Play sound and display ascii art when grabbed
 	
 	UserInterfaceClass ui;
 	ui.displayPrompt("A shadowy monster with elongated limbs grabs you, as the shadows encapsulating this monster consume you and all you can feel is its cold embrace.");
@@ -67,32 +69,38 @@ void MonsterClass::start()
 	stop(); //Stop any previous threads
 	stopFlag = false; //Reset stop flag
 	timerTriggered = false; //reset trigger status
+	timeRemaining = duration; // setting the time remaining to the total expected duration, initaliing it
+
 	timerThread = std::thread([this]() { //Creates thread that when it hits the end of timer, to run the onTimerTriggered member function
 
-		if (duration > 2) {
-			std::this_thread::sleep_for(std::chrono::seconds(duration - 2));
+		while (timeRemaining > 0 && !stopFlag) {
 
-			if (!stopFlag) {
-				std::cout << "You have two seconds to hide!" << std::endl;
+			if (currentGameController && currentGameController->inProtectedState()) //stops the timer if in protected
+			{
+				std::this_thread::sleep_for(std::chrono::seconds(1));
+				continue;
+			};
+
+
+			std::this_thread::sleep_for(std::chrono::seconds(1));
+			timeRemaining--; //lower the time left, keeps track while in protected state
+
+			if (timeRemaining == 2 && !stopFlag) {
+				std::cout << "The monster is approching, you must hide, hurry!" << endl; //if timer has less than 2 seconds, the user is notified to hide
 			}
-		};
-
-	
-		std::this_thread::sleep_for(std::chrono::seconds(2));
-		if (!stopFlag) {
-			timerTriggered = true;
-			onTimerTriggered();
 		}
 
-
-
-
+		if (timeRemaining == 0 && !stopFlag) {
+			timerTriggered = true;
+			onTimerTriggered(); //trigger if time is up
+		}
 	});
 }
 
 void MonsterClass::stop()
 {
 	stopFlag = true;
+	timeRemaining = duration; //when timer is reset, the duration is set equal to the time that was left
 	if (timerThread.joinable())
 	{
 		timerThread.join();
