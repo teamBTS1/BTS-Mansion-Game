@@ -12,13 +12,14 @@ MonsterClass::MonsterClass()
 	stopFlag = false;
 }
 
-MonsterClass::MonsterClass(int dur, GameControllerClass& myController)
+MonsterClass::MonsterClass(int dur, GameControllerClass& myController, PlayerClass& currPlayer)
 {
 	duration = dur;
 	timerTriggered = false;
 	stopFlag = false;
 	currentGameController = &myController;
 	timeRemaining = dur; 
+	currentPlayer = &currPlayer;
 }
 
 void MonsterClass::onTimerTriggered() //Runs when timer finishes
@@ -33,7 +34,7 @@ void MonsterClass::onTimerTriggered() //Runs when timer finishes
 	
 
 	//Play sound and display ascii art when grabbed
-	
+
 	UserInterfaceClass ui;
 	ui.displayPrompt("A shadowy monster with elongated limbs grabs you, as the shadows encapsulating this monster consume you and all you can feel is its cold embrace.");
 	PlaySound(TEXT("jumpscare.wav"), NULL, SND_FILENAME | SND_ASYNC);
@@ -58,6 +59,10 @@ void MonsterClass::onTimerTriggered() //Runs when timer finishes
 
 
 	ui.displayPrompt("You see a way out of its grasp for a brief moment, do you want to ESCAPE?");
+
+	currentPlayer->setSanity(currentPlayer->getSanity() - 30); //when user is grabbed, user loses 30 sanity
+
+
 
 	//can get input here and handle logic inside this function
 }
@@ -99,6 +104,7 @@ void MonsterClass::start()
 
 void MonsterClass::stop()
 {
+
 	stopFlag = true;
 	timeRemaining = duration; //when timer is reset, the duration is set equal to the time that was left
 	if (timerThread.joinable())

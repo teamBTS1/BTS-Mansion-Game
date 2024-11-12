@@ -484,7 +484,7 @@ void GameControllerClass::gameLoop() {
     PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
 
     //Defining variables for timer
-    MonsterClass monsterTimer(10, *this);
+    MonsterClass monsterTimer(10, *this, userPlayer);
     monsterTimer.start();
 
 
@@ -989,6 +989,7 @@ void GameControllerClass::sanitySequence(PlayerClass& userPlayer, std::atomic<bo
 
         std::this_thread::sleep_for(std::chrono::seconds(9));
 
+
         if (userPlayer.getSanity() < 2) {
             endGame();
         }
@@ -999,6 +1000,13 @@ void GameControllerClass::updateSanity(PlayerClass& player, int amount)
 {
     player.setSanity(std::max(0, std::min(100, player.getSanity() + amount)));
 }
+
+void GameControllerClass::updateSanityGrabbed(PlayerClass& player) {
+    player.setSanity(player.getSanity() - 30);
+
+}
+
+
 
 bool GameControllerClass::inProtectedState() {
     return isInProtectedAction;

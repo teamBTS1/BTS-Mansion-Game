@@ -3,6 +3,7 @@
 #define MONSTERCLASS_H
 #include "GameControllerClass.h"
 #include "UserInterfaceClass.h"
+#include "PlayerClass.h"
 #include <string>
 #include <thread> //Thread, atomic, functional, and chrono used for timer implementation
 #include <atomic>
@@ -23,11 +24,13 @@ private:
 	std::thread timerThread;
 	GameControllerClass* currentGameController;// used to check if user is in a protected state
 	int timeRemaining;
+	PlayerClass* currentPlayer;
+
 	
 
 public:
 	MonsterClass(); //Constructors
-	MonsterClass(int duration, GameControllerClass& controller);
+	MonsterClass(int duration, GameControllerClass& controller, PlayerClass& currentPlayer);
 
 	void onTimerTriggered(); //Function for callback when timer is triggered
 
