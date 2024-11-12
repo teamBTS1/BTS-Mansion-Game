@@ -340,7 +340,7 @@ void GameControllerClass::gameLoop() {
     ChantPuzzle chantPuzzle = ChantPuzzle("Chant Puzzle"); //instance for chant puzzle 
     InteractClass* chantPuzzleStarterInteraction = new InteractClass("A chanting altar", "Test", chantPuzzle); //interaction to run puzzle
     ItemClass chantPuzzleStarter = ItemClass("CHANTING ALTAR", "A CHANTING ALTAR, there appears to be a 4 word phrase ingraved on the altar, but its been scrached away",false, chantPuzzleStarterInteraction); //item you can interact with
-    ItemClass Candle5 = ItemClass("CANDLE", "The 5th and Final Candle", true, true); //declaration for candle
+    ItemClass Candle5 = ItemClass("CANDLE", "The 5th and Final Candle", "C5", true, true); //declaration for candle
 
 
 
@@ -440,7 +440,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["RITUAL ROOM"]);
+    PlayerClass userPlayer = PlayerClass(rooms["THE CONSCIOUS"]);
     userPlayer.addItem(candle4);
 
     std::atomic<bool> running(true);
@@ -449,6 +449,11 @@ void GameControllerClass::gameLoop() {
     UI.displayPrompt("It's always important to stay sane in such a stressful situation. The lower your sanity gets, the less you'll understand what is going on...\nUnfortunately, it is only a matter of time before you completely lose it. Consume SANITY PILLS to increase your sanity.");
 
     while (true) {
+        /*
+        if (userPlayer.inInventory("CANDLE", "C5")) { // ending condition
+            userPlayer.setRoom(rooms["RITUAL ROOM"]);
+        }*/
+
         UI.displayPrompt("\n"); //Giving space for text
         
         UI.displayPrompt("Sanity Level: " + std::to_string(userPlayer.getSanity()) + "\n");
@@ -731,6 +736,14 @@ void GameControllerClass::gameLoop() {
                 else if (currentRoom_temp.getRoomItemByName(itemName).getInteraction()->getIsPuzzle() == true) //If interaction is a puzzle, call overloaded runInteraction
                 {
                     currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer, galleryKey, mirrorKey, masterKey, mazeKey, mazeExitKey, playerMemory, Candle5); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
+
+                    if (userPlayer.inInventory("CANDLE", "C5")) { // condition that finds whether user get candle 5, whic specifically occurs right after they complete the chant puzzle sequence
+                        system("cls");
+                        UI.displayPrompt("The monster roars awake.");
+                        std::this_thread::sleep_for(std::chrono::seconds(3));
+                        userPlayer.setRoom(rooms["RITUAL ROOM"]);
+                    }
+
                 }
                 else //Run interact sequence if not pick up able object
                 {
