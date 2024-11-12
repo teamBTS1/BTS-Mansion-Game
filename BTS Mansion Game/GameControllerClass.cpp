@@ -440,7 +440,8 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
+    PlayerClass userPlayer = PlayerClass(rooms["RITUAL ROOM"]);
+    userPlayer.addItem(candle4);
 
     std::atomic<bool> running(true);
     std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));
@@ -475,8 +476,6 @@ void GameControllerClass::gameLoop() {
         
 
         //bool to track if player put memory in memory goblet
-
-
         // Check the command for the kitchen door
         if (command == "KITCHEN DOOR" && userPlayer.getRoomName() == "KITCHEN" && rooms.find("FOYER") != rooms.end()) {
             system("cls");
@@ -606,6 +605,18 @@ void GameControllerClass::gameLoop() {
                      rooms["RITUAL ROOM"] = currentRoom_temp;
                     continue;
                 }
+                else if (userPlayer.inInventory("CANDLE", "C4"))
+                {
+                    system("cls");
+                    UI.displayPrompt("You place the 4th candle");
+                    std::this_thread::sleep_for(std::chrono::seconds(2)); //DRAMATIC PAUSE
+                    userPlayer.useItem("CANDLE", "C4"); //use the candle
+                    userPlayer.setRoom(rooms["MEMORY OF THE MANSION"]); //set user to teleport to memory of mansion
+                    playTeleportSequence(); // CALL CANDLE STYLIZE SEQUENCE
+                    std::this_thread::sleep_for(std::chrono::seconds(3)); //DRAMATIC PAUSE 2 AFER SEQUENCE
+                    system("cls"); 
+                    continue;
+                }
                 else
                 {
                     UI.displayPrompt("You do not have a candle");
@@ -689,10 +700,6 @@ void GameControllerClass::gameLoop() {
                         std::cout << memoryGobletIsActive;
                        
                     }
- 
-                     
-
-
 
                 }
                 else if (command == "METAL SAFE")
@@ -921,5 +928,20 @@ void GameControllerClass::updateSanity(PlayerClass& player, int amount)
     player.setSanity(std::max(0, std::min(100, player.getSanity() + amount)));
 }
 
+
+void GameControllerClass::playTeleportSequence()
+{
+    //THIS FUNCTION IS A STYLISTIC FUNCTION FOR THE 4TH CANDLE SEQUENCE
+    for (int i = 0;i < 10000;i++) {
+        std::cout << "WHERE AM I GOING";
+        if (i % 30 == 0 && i < 3000) {
+            std::cout << "HELP ME\n";
+        }
+        if (i > 1500) {
+            std::cout << "THERE IS NO COMING BACK NOW";
+        }
+    }
+    system("cls");
+}
 
 

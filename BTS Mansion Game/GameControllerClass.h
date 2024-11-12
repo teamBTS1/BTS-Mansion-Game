@@ -42,6 +42,7 @@ public:
 
 	void sanitySequence(PlayerClass& userPlayer, std::atomic<bool>& running); // function that handles sanity output
 	void updateSanity(PlayerClass& player, int amount); //Function that changes player sanity by passing an integer to add to the value
+	void playTeleportSequence(); // function that plays the text sequence
 };
 
 #endif
