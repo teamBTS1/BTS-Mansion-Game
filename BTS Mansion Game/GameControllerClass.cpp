@@ -441,7 +441,7 @@ void GameControllerClass::gameLoop() {
     bool puzzleSolved = false;
 
     PlayerClass userPlayer = PlayerClass(rooms["THE CONSCIOUS"]);
-    userPlayer.addItem(candle4);
+    //userPlayer.addItem(candle4);
 
     std::atomic<bool> running(true);
     std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));
@@ -449,10 +449,6 @@ void GameControllerClass::gameLoop() {
     UI.displayPrompt("It's always important to stay sane in such a stressful situation. The lower your sanity gets, the less you'll understand what is going on...\nUnfortunately, it is only a matter of time before you completely lose it. Consume SANITY PILLS to increase your sanity.");
 
     while (true) {
-        /*
-        if (userPlayer.inInventory("CANDLE", "C5")) { // ending condition
-            userPlayer.setRoom(rooms["RITUAL ROOM"]);
-        }*/
 
         UI.displayPrompt("\n"); //Giving space for text
         
@@ -474,7 +470,6 @@ void GameControllerClass::gameLoop() {
         
 
         std::string command = UI.userInput();
-
 
         // Boolean to track whether the kitchen door is open
         bool kitchenDoorOpen = false;
@@ -570,7 +565,7 @@ void GameControllerClass::gameLoop() {
             system("cls");
             UI.displayPrompt("The DINING HALL DOOR is locked from this side\n");
         }
-
+        /*--------------------- CANDLE PLACEMENT LOGIC START ----------------------*/
         if (command == "CANDLE" && userPlayer.getRoomName() == "RITUAL ROOM") {
             if (userPlayer.getInventorySize() != 0) {
                 if (userPlayer.inInventory("CANDLE", "C1")) {
@@ -610,7 +605,7 @@ void GameControllerClass::gameLoop() {
                      rooms["RITUAL ROOM"] = currentRoom_temp;
                     continue;
                 }
-                else if (userPlayer.inInventory("CANDLE", "C4"))
+                else if (userPlayer.inInventory("CANDLE", "C4")) // candle 4 placed conditon
                 {
                     system("cls");
                     UI.displayPrompt("You place the 4th candle");
@@ -622,11 +617,17 @@ void GameControllerClass::gameLoop() {
                     system("cls"); 
                     continue;
                 }
+                else if (userPlayer.inInventory("CANDLE", "C5")) { //candle 5 placed condition
+                    system("cls");
+                    endingSequence(UI);
+                    break;
+                }
                 else
                 {
                     UI.displayPrompt("You do not have a candle");
                     continue;
                 }
+                /*--------------------- CANDLE PLACEMENT LOGIC END ----------------------*/
             }
         }
         if (command == "QUIT") {
@@ -832,6 +833,7 @@ void GameControllerClass::gameLoop() {
             }
         }
     }
+    UI.displayPrompt("\nGOODBYE."); // temp text here for when the loop exits u
 }
 
 
@@ -955,6 +957,32 @@ void GameControllerClass::playTeleportSequence()
         }
     }
     system("cls");
+}
+
+void GameControllerClass::endingSequence(UserInterfaceClass UI) {
+    UI.displayPrompt("I AM...\n");
+    // stylized sequence for demon intro
+    for (int i = 0; i < 2; i++) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        UI.displayPrompt("I AM\n");
+    }
+    bool failedSequence = false; // value that indicates whether user has failed the puzzle in any way 
+    for (int i = 0; i < 3; i++) {
+        UI.displayPrompt("SAY MY NAME");
+        std::string command = UI.userInput();
+        if (command != "MALUM") {
+            failedSequence = true; // if name was ever wrong in any point, you have failed to excercise the demon
+        }
+    }
+    if (failedSequence) {
+        //good ending
+        UI.displayPrompt("GOOD ENDING"); // temp ending
+    }
+    else {
+        UI.displayPrompt("BAD ENDING"); // temp ending
+    }
+
+
 }
 
 
