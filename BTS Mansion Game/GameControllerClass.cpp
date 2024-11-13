@@ -89,6 +89,11 @@ void GameControllerClass::viewInventory(PlayerClass& myPlayer) {
     std::cout << std::endl << std::endl;
     std::vector<ItemClass> myInventory = myPlayer.getInventory(); //Setting myInventory to direct reference of players inventory
     int inventorySize = myPlayer.getInventorySize();
+
+    if (myPlayer.getInventorySize() == 0) {
+        Myuserinterface.displayPrompt("You have nothing in your inventory");
+        return; 
+    }
     for (int i = 0; i < inventorySize; i++)
     {
         std::cout << myInventory[i].getName() << std::endl << std::endl; //Printing all of the users inventory
@@ -480,8 +485,8 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["RITUAL ROOM"]);
-    userPlayer.addItem(candle4);
+    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
+   
 
 
     //Defining variables for timer
