@@ -605,7 +605,7 @@ void GameControllerClass::gameLoop() {
                      rooms["RITUAL ROOM"] = currentRoom_temp;
                     continue;
                 }
-                else if (userPlayer.inInventory("CANDLE", "C4")) // candle 4 placed conditon
+                else if (userPlayer.inInventory("CANDLE", "C4")) // candle 4 placed conditon TODO: Add functionality for 4th and possible 5th candle to be printed on screen
                 {
                     system("cls");
                     UI.displayPrompt("You place the 4th candle");
@@ -620,7 +620,8 @@ void GameControllerClass::gameLoop() {
                 else if (userPlayer.inInventory("CANDLE", "C5")) { //candle 5 placed condition
                     system("cls");
                     endingSequence(UI);
-                    break;
+                    std::this_thread::sleep_for(std::chrono::seconds(3)); //pause after ext 
+                    endGame("\nThank you for playing."); 
                 }
                 else
                 {
@@ -970,6 +971,9 @@ void GameControllerClass::endingSequence(UserInterfaceClass UI) {
     for (int i = 0; i < 3; i++) {
         UI.displayPrompt("SAY MY NAME");
         std::string command = UI.userInput();
+
+        transform(command.begin(), command.end(), command.begin(),::toupper); //convert input to uppercase , user can input name in any combination of cases
+
         if (command != "MALUM") {
             failedSequence = true; // if name was ever wrong in any point, you have failed to excercise the demon
         }
@@ -981,8 +985,12 @@ void GameControllerClass::endingSequence(UserInterfaceClass UI) {
     else {
         UI.displayPrompt("BAD ENDING"); // temp ending
     }
+}
 
-
+void GameControllerClass::endGame(std::string flavorText) {
+    system("cls");
+    UI.displayPrompt(flavorText); //
+    exit(0);  // Exit the game
 }
 
 
