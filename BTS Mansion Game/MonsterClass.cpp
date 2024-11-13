@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <mmsystem.h>
 #include <iostream>
+#include <conio.h>
 #pragma comment(lib, "winmm.lib")
 
 MonsterClass::MonsterClass()
@@ -58,13 +59,46 @@ void MonsterClass::onTimerTriggered() //Runs when timer finishes
 		)");
 
 
-	ui.displayPrompt("You see a way out of its grasp for a brief moment, do you want to ESCAPE?");
+	ui.displayPrompt("The longer you stare, the more you feel you lose your ties to reality, as if it was sucking the life out of you");
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(5000)); //pause while user reads
+
+	ui.displayPrompt("Its been satisfied -- It disappears into nothingness, you have lost 30 sanity. and fall to the ground");
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+
 
 	currentPlayer->setSanity(currentPlayer->getSanity() - 30); //when user is grabbed, user loses 30 sanity
 
+	system("cls"); 
+
+	while (_kbhit()) { //stops the user from typing anything while frozen 
+		_getch();
+	}
+
+	if (currentPlayer->getSanity() <= 0) {
+		ui.displayPrompt("The monster sucked the remaining life out of your body");
+		ui.displayPrompt("You are unable to wake up");
 
 
-	//can get input here and handle logic inside this function
+		std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+		currentGameController->endGame();
+
+	}
+	else {
+		ui.displayPrompt("Press ENTER to wake up");
+
+		char key;
+
+		do { //ignores every other key other than enter
+			key = _getch();
+		} while (key != '\r'); //must be enter key
+
+		system("cls"); 
+	}
+
+
+
 }
 
 void MonsterClass::start()

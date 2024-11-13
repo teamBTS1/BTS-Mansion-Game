@@ -483,7 +483,6 @@ void GameControllerClass::gameLoop() {
     PlayerClass userPlayer = PlayerClass(rooms["RITUAL ROOM"]);
     userPlayer.addItem(candle4);
 
-    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
 
     //Defining variables for timer
     MonsterClass monsterTimer(10, *this, userPlayer);
@@ -880,16 +879,7 @@ void GameControllerClass::gameLoop() {
                 }
             }
             else
-            { //catch invalid input NOTE - in the future we will refactor to utilize UI class input validation            
-                if (monsterTimer.isGrab() && command != "ESCAPE")
-                {
-                    UI.displayPrompt("The monster begins to siphon away any last vestiges of your being, as your mind quickly numbs and you feel nothing. Hear nothing. Are nothing.");
-                    endGame();
-                }
-                else
-                {
-                    UI.displayPrompt("\nYou tried to choose your option but you couldn't move your body. It seems like there is an unforseen force telling you can't perform that action..You look around again\n");
-                }   
+            { 
             }
         }
     }
