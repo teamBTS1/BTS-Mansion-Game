@@ -173,7 +173,7 @@ void GameControllerClass::gameLoop() {
     InteractClass* userInteractBody2 = new InteractClass("Would you like to look at dead body 2", "");
     InteractClass* userInteractBody3 = new InteractClass("Would you like to look at dead body 3", "");
     InteractClass* userInteractBody4 = new InteractClass("Would you like to look at dead body 4", "");
-    InteractClass* storyBookInteraction = new InteractClass("You read the title of a poem, 'The Cycle of a Servant'.", " The lord with crimson cloak, His eyes once sharp, but now they choke. \n A wineglass shattered at his feet, his lips were poisoned - death so sweet. \n The servant went into the night, The deed done, taking flight, blocking the way a spear of the night. \n The lord’s son seeking justice, lunged forward claiming blood. \n The servant however did not fall, gutting the son, no longer standing tall. \n The servant reached the lowly village, To the bar seeking refuge, Bleeding from his gut. \n The town drunk drank into the night, While the barkeep kept the light. \n However a mob did approach, The servant hid, but could not hide, Seized by the people he despised. \n So the end approached for the lowly servant, Vengeance acquired, accepted his end. \n Before he met his end, His son’s eyes he met, \n Looking at his father’s soon to be killer, The servant knew the look, for he had seen it before, \n The reason that he had killed his lord, The servant was killed purpose fulfilled, \n However the servant knew before he died, His son would now live his same life.");
+    InteractClass* storyBookInteraction = new InteractClass("You read the title of a poem, 'The Cycle of a Servant'.", " The lord with crimson cloak, His eyes once sharp, but now they choke. \n A wineglass shattered at his feet, his lips were poisoned - death so sweet. \n The servant went into the night, The deed done, taking flight, blocking the way a spear of the night. \n The lord�s son seeking justice, lunged forward claiming blood. \n The servant however did not fall, gutting the son, no longer standing tall. \n The servant reached the lowly village, To the bar seeking refuge, Bleeding from his gut. \n The town drunk drank into the night, While the barkeep kept the light. \n However a mob did approach, The servant hid, but could not hide, Seized by the people he despised. \n So the end approached for the lowly servant, Vengeance acquired, accepted his end. \n Before he met his end, His son�s eyes he met, \n Looking at his father�s soon to be killer, The servant knew the look, for he had seen it before, \n The reason that he had killed his lord, The servant was killed purpose fulfilled, \n However the servant knew before he died, His son would now live his same life.");
     InteractClass* lordPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You reach to your mouth and see a speck of blood on your finger.");
     InteractClass* barkeepPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You feel a sensation wash over you, dulling your senses briefly.");
 
@@ -480,6 +480,8 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
+    PlayerClass userPlayer = PlayerClass(rooms["RITUAL ROOM"]);
+    userPlayer.addItem(candle4);
 
     PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
 
@@ -543,7 +545,7 @@ void GameControllerClass::gameLoop() {
             }
             userPlayer.setRoom(rooms["FOYER"]);  // Move player to the foyer
 
-            // Add "KITCHEN" as an option in the foyer room only if it’s not already there
+            // Add "KITCHEN" as an option in the foyer room only if it�s not already there
             auto currentRoom_temp = rooms["FOYER"];
             std::list<std::string> updatedOptions = currentRoom_temp.GetRoomOption();
 
@@ -551,7 +553,7 @@ void GameControllerClass::gameLoop() {
             if (std::find(updatedOptions.begin(), updatedOptions.end(), "KITCHEN") == updatedOptions.end()) {
                 updatedOptions.push_back("KITCHEN");
 
-                // Remove "KITCHEN DOOR" if it’s already in the options
+                // Remove "KITCHEN DOOR" if it�s already in the options
                 updatedOptions.remove("KITCHEN DOOR");
 
                 // Update the options in the foyer
@@ -589,7 +591,7 @@ void GameControllerClass::gameLoop() {
             }
             userPlayer.setRoom(rooms["LOUNGE"]);  // Move player to the lounge
 
-            // Add "DINING HALL" as an option in the lounge room only if it’s not already there
+            // Add "DINING HALL" as an option in the lounge room only if it�s not already there
             auto currentRoom_temp = rooms["LOUNGE"];
             std::list<std::string> updatedOptions = currentRoom_temp.GetRoomOption();
 
