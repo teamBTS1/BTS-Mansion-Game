@@ -115,7 +115,7 @@ void MonsterClass::start()
 			if (currentGameController && currentGameController->inProtectedState()) //stops the timer if in protected
 			{
 				std::this_thread::sleep_for(std::chrono::seconds(1));
-				continue;
+				continue; //continue prevents the time from going down, and freezes it
 			};
 
 
