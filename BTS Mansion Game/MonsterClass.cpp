@@ -122,7 +122,7 @@ void MonsterClass::start()
 			std::this_thread::sleep_for(std::chrono::seconds(1));
 			timeRemaining--; //lower the time left, keeps track while in protected state
 
-			if (timeRemaining == 10 && !stopFlag) {
+			if (timeRemaining == 15 && !stopFlag) {
 				std::cout << "The monster is approching, you must hide, hurry!" << endl; //if timer has less than 2 seconds, the user is notified to hide
 			}
 		}
