@@ -48,6 +48,8 @@ public:
 	RoomClass(std::string description, std::string name, std::list<std::string> options, bool isRitual, bool isSafe); // Constructor with isSafe
 	RoomClass(std::string description, std::string name, std::list<std::string> options); //Basic constructor
 	RoomClass(std::string description, std::string name, std::list<std::string> options, std::vector<Door>& doors, std::vector<ItemClass> itemList, bool hasConditionalDescription, std::string conditionalDescription); //constructor for rooms that have conditonal text rendering
+	
+
 
 	RoomClass(std::string description, std::vector<Door>& doors);
 	RoomClass(std::string description, bool isLockedRoom);
