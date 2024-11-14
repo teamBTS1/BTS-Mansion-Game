@@ -542,12 +542,12 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
+    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
    
 
 
     //Defining variables for timer
-    MonsterClass monsterTimer(2, *this, userPlayer);
+    MonsterClass monsterTimer(120, *this, userPlayer);
     monsterTimer.start();
 
 
