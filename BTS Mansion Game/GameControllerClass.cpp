@@ -279,7 +279,6 @@ void GameControllerClass::gameLoop() {
     std::vector<ItemClass>diningHallItems = { metalSafe, deadBody1,deadBody2,deadBody3,deadBody4 };
     std::vector<ItemClass> greaterLibraryItems = { greaterLibraryBottle, combLock, gBook4, gBook1, gBook2, gBook5, gBook3 };
     std::vector <ItemClass>graveyardItems = { tombstone1, tombstone2,tombstone3,tombstone4 };
-    std::vector<ItemClass> greaterLibraryItems = { greaterLibraryBottle };
     std::vector <ItemClass> hiddensection_Items = { Candle1 };
     std::vector <ItemClass> storytellerItems = { storyBook }; //Storyteller's items
     std::vector <ItemClass> masterBedroomItems = { candle3, bedroomBottle }; //Master bedroom items
