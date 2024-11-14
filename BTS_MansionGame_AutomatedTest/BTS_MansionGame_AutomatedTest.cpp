@@ -44,6 +44,27 @@ namespace BTSMansionGameAutomatedTest
 	TEST_CLASS(BTSMansionGameAutomatedTest)
 	{
 	public:
+
+		TEST_METHOD(BTS_Door_Test)
+		{
+			Logger::WriteMessage("Creating a door and verifying all data is returned correctly\n");
+
+			Door door(true, "thisid", "I'm new description"); 
+
+			//Testing is door locked, door key id, and open door description
+			Assert::IsTrue(door.getIsLocked() == true, L"Should be locked!");
+			Assert::IsTrue(door.getDoorKeyID() == "thisid", L"Returned wrong value for door key id!");
+			Assert::IsTrue(door.returnOpenDoorDescription() == "I'm new description", L"Returned wrong value for new door description!");
+
+			std::string message;
+			std::string st;
+			if (door.getIsLocked() == false) { st = "false"; } //logic to make bool a str to print
+			else { st = "true"; }
+
+			message = "Is door locked: " + st + "\tDoor key id: " + door.getDoorKeyID() + "\tNew open door description: " + door.returnOpenDoorDescription();
+			Logger::WriteMessage(message.c_str());
+		}
+
 		TEST_METHOD(BTS_Puzzle_Test)
 		{
 			Logger::WriteMessage("Creating a puzzle and verifying all data is returned correctly\n");
