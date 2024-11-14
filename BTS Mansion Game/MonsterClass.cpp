@@ -65,27 +65,27 @@ void MonsterClass::onTimerTriggered() //Runs when timer finishes
 
 	ui.displayPrompt("Its been satisfied -- It disappears into nothingness, you have lost 30 sanity. and fall to the ground");
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+	std::this_thread::sleep_for(std::chrono::milliseconds(5000)); //pause
 
 
 	currentPlayer->setSanity(currentPlayer->getSanity() - 30); //when user is grabbed, user loses 30 sanity
 
 	system("cls"); 
 
-	while (_kbhit()) { //stops the user from typing anything while frozen 
-		_getch();
-	}
 
 	if (currentPlayer->getSanity() <= 0) {
 		ui.displayPrompt("The monster sucked the remaining life out of your body");
 		ui.displayPrompt("You are unable to wake up");
 
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(10000));
-		currentGameController->endGame();
+		std::this_thread::sleep_for(std::chrono::milliseconds(10000)); //add a delay
+		currentGameController->endGame(); // end the game
 
 	}
 	else {
+		while (_kbhit()) { //stops the user from typing anything while frozen 
+			_getch();
+		}
 		ui.displayPrompt("Press ENTER to wake up");
 
 		char key;

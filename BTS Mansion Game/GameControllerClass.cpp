@@ -106,7 +106,7 @@ void GameControllerClass::viewInventory(PlayerClass& myPlayer) {
     bool itemFound = false;
     for (int i = 0; i < inventorySize; i++)
     {
-        if (myInventory[i].getName() == Myuserinterface.getCurrentInput()); //Checking all the input and printing the description of entered item
+        if (myInventory[i].getName() == Myuserinterface.getCurrentInput()) //Checking all the input and printing the description of entered item
         {
             system("cls");
             std::cout << myInventory[i].getName() << ": " << myInventory[i].getDescription() << std::endl;
