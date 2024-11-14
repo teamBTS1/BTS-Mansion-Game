@@ -256,7 +256,7 @@ void GameControllerClass::gameLoop() {
     ItemClass storyBook = ItemClass("STORYBOOK", "A giant STORYBOOK made of tough leather and weathered pages, indicating many stories have been told from this book. It is open to a page with a poem on it.", false, storyBookInteraction);
     ItemClass masterKey = ItemClass("MASTER KEY", "Fully completed MASTER KEY to the master bedroom", "idMaster", true, true); //Adding master bedroom key
     ItemClass bedroomBottle = ItemClass("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
-
+    ItemClass upstairsBottle = ItemClass("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
     //Shed items
     ItemClass shedBottle = ItemClass("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
     
@@ -309,7 +309,7 @@ void GameControllerClass::gameLoop() {
     ItemClass galleryPuzzleStarter = ItemClass("ALTAR", "An ALTAR stands before you with a knife...", false, altarInteraction);
     ItemClass fountainPuzzleStarter = ItemClass("FOUNTAIN PANEL", "A FOUNTAIN PANEL in the base of the fountain seems like you could push it like a button...", false, fountainPuzzleStarterInteraction);
     ItemClass mazePuzzleStarter = ItemClass("LANTERN", "A LANTERN to help you see while exploring the maze...", false, mazePuzzleStarterInteraction);
-    std::vector <ItemClass> upstairsItems = { noteUpA, mirrorPuzzleStarter }; //Upstairs items
+    std::vector <ItemClass> upstairsItems = { noteUpA, mirrorPuzzleStarter, upstairsBottle }; //Upstairs items
     std::vector <ItemClass> galleryItems = { galleryPuzzleStarter, lordPainting, barkeepPainting, servantPainting, lordSonPainting, mobPainting, townDrunkPainting, servantSonPainting }; //Gallery items
     std::vector <ItemClass> shedItems = { shedBottle }; //Shed items
     std::vector <ItemClass> fountainItems = { fountainPuzzleStarter }; //Fountain items
@@ -1023,7 +1023,7 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
 void GameControllerClass::sanitySequence(PlayerClass& userPlayer, std::atomic<bool>& running) {
     while (running) {
         int sanity = userPlayer.getSanity();
-        userPlayer.setSanity(sanity - 2);
+        userPlayer.setSanity(sanity - 1);
 
         std::this_thread::sleep_for(std::chrono::seconds(9));
 
