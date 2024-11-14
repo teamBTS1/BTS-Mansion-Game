@@ -157,17 +157,24 @@ void GameControllerClass::gameLoop() {
     doors["DOUBLE DOORS"] = Door(true, "idMaster", "You are now in the Master Bedroom. The room is elegantly decorated with fine linens and rich colors.", "DOUBLE DOORS"); //Adding master bedroom door
     doors["BLOCKED HEDGE MAZE"] = Door(true, "MAZEKEY", "You pour the holy water on the dark force blocking the entrance to the hedge maze, granting yourself access as the dark sludge burns away.","BLOCKED HEDGE MAZE");
     doors["MAZE EXIT"] = Door(true, "MAZEEXITKEY", "Using the map, you are able to find your way out of the maze, reaching the exit.", "MAZE EXIT");
+    doors["STUDY DOOR"] = Door(true, "STUDYKEY", "You unlock the door with the study key, unlocking the study.", "STUDY DOOR");
 
     //Greater Library Door
     doors["GREATER LIBRARY DOOR"] = Door(true, "DHKey", "You have now opened the door, you are now in the GREATER LIBRARY", "GREATER LIBRARY DOOR");
 
+
+
     std::vector<Door> FoyerDoors = { doors["DOOR"] };
     std::vector <Door> Library_Doors = { doors["BOOKSHELF"], doors["DOOR"], doors["GREATER LIBRARY DOOR"]};
+    std::vector<Door> greaterLibraryDoors = { doors["STUDY DOOR"] };
     std::vector <Door> Master_Doors = { doors["DOUBLE DOORS"] };
     std::vector<Door> shedDoors;       // Doors for the Shed
     std::vector<Door> mazeDoors = { doors["BLOCKED HEDGE MAZE"] };       // Doors for the Hedge Maze
     std::vector<Door> fountainDoors;   // Doors for the Fountain
     std::vector<Door> mazeExitDoors = { doors["MAZE EXIT"] }; //Exit of hedge maze
+
+    //greater library puzzle
+    GreaterLibraryPuzzle greaterLibraryPuzzle("DODGE");
 
     //define all ineractions
     InteractClass* userInteractStatueA = new InteractClass("Would you like to INTERACT with the statue?", "You feel a wave of knowledge wash over you, like you've learned something from someone previously here before you."); //Defining statue interaction
@@ -186,6 +193,18 @@ void GameControllerClass::gameLoop() {
     InteractClass* storyBookInteraction = new InteractClass("You read the title of a poem, 'The Cycle of a Servant'.", " The lord with crimson cloak, His eyes once sharp, but now they choke. \n A wineglass shattered at his feet, his lips were poisoned - death so sweet. \n The servant went into the night, The deed done, taking flight, blocking the way a spear of the night. \n The lord’s son seeking justice, lunged forward claiming blood. \n The servant however did not fall, gutting the son, no longer standing tall. \n The servant reached the lowly village, To the bar seeking refuge, Bleeding from his gut. \n The town drunk drank into the night, While the barkeep kept the light. \n However a mob did approach, The servant hid, but could not hide, Seized by the people he despised. \n So the end approached for the lowly servant, Vengeance acquired, accepted his end. \n Before he met his end, His son’s eyes he met, \n Looking at his father’s soon to be killer, The servant knew the look, for he had seen it before, \n The reason that he had killed his lord, The servant was killed purpose fulfilled, \n However the servant knew before he died, His son would now live his same life.");
     InteractClass* lordPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You reach to your mouth and see a speck of blood on your finger.");
     InteractClass* barkeepPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You feel a sensation wash over you, dulling your senses briefly.");
+    InteractClass* servantPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "You begin to feel a sense of subservience that quickly turns into hatred.");
+    InteractClass* lordSonPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "A blanket of pressure to perform falls over you, suffocating you with expectations unmet.");
+    InteractClass* townDrunkPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "Your mind becomesm muddy and you stumble, catching yourself quickly.");
+    InteractClass* servantSonPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "A burning vengeance fills your chest as you feel great loss.");
+    InteractClass* mobPaintingInteraction = new InteractClass("Would you like to touch the portrait?", "A whirl of strong emotion pushes you forward, in a fervorous burst.");
+    InteractClass* greaterLibraryPuzzleStarter = new InteractClass("Would you like to INTERACT with the lock?", "", greaterLibraryPuzzle);
+    InteractClass* gBookInteraction1 = new InteractClass("Would you like to read the book?", "This book tells the story of a king who began a Dangerous journey across all of the lands.");
+    InteractClass* gBookInteraction2 = new InteractClass("Would you like to read the book?", "This book describes a king struggling to survive during the beginning of his jOurney.");
+    InteractClass* gBookInteraction3 = new InteractClass("Would you like to read the book?", "This book tells the tale of a king reaching his first town, and seeing the poverty of the people in his domain firsthanD");
+    InteractClass* gBookInteraction4 = new InteractClass("Would you like to read the book?", "This book describes a king having to beg alongside beGgars, selling his crown for food.");
+    InteractClass* gBookInteraction5 = new InteractClass("Would you like to read the book?", "This book shows an image of a corpse lying dEad in the wilderness, royal cape tattered.");
+
 
     //define all items
     ItemClass statueA("STATUE", "a STATUE of a woman carrying a book", false, userInteractStatueA); // Define the statue as an item
@@ -215,10 +234,24 @@ void GameControllerClass::gameLoop() {
 
     //Greater Library Items
     ItemClass greaterLibraryBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
+    ItemClass gBook1("PRISTINE BOOK", "PRISTINE BOOK with a picture of a king on his throne.", false, gBookInteraction1);
+    ItemClass gBook2("GRASSY BOOK", "GRASSY BOOK with a picture of a king in the woods.", false, gBookInteraction2);
+    ItemClass gBook3("WOODEN BOOK", "WOODEN BOOK with a picture of a king entering a town.", false, gBookInteraction3);
+    ItemClass gBook4("DIRTY BOOK", "DIRTY BOOK with a picture of a king sitting in the dirt", false, gBookInteraction4);
+    ItemClass gBook5("TATTERED BOOK", "TATTERED BOOK with a picture of a corpse.", false, gBookInteraction5);
+    ItemClass studyKey = ItemClass("STUDY KEY", "An ornate key with lines of text scribbled on it.", "STUDYKEY", true, true); //Adding study key
+    ItemClass combLock = ItemClass("WORD LOCK", "WORD LOCK which takes a 5 letter word.", false, greaterLibraryPuzzleStarter);
 
-    //Upstairs items
+    //Gallery Items
     ItemClass lordPainting = ItemClass("CRIMSON LORD PORTRAIT", "CRIMSON LORD PORTRAIT of a regal man in a crimson cloak, with blood dripping from his lips as a glass is raised to his lips.", false, lordPaintingInteraction);
     ItemClass barkeepPainting = ItemClass("BARKEEP PORTRAIT", "BARKEEP PORTRAIT of a stocky man cleaning a glass behind the bar, wearing a fake smile.", false, barkeepPaintingInteraction);
+    ItemClass servantPainting = ItemClass("SERVANT PORTRAIT", "SERVANT PORTRAIT of a slender man performing menial tasks, with a dripping green herb held behind his back.", false, servantPaintingInteraction);
+    ItemClass lordSonPainting = ItemClass("HEIR PORTRAIT", "HEIR PORTRAIT of a young teen with a crown to big for his head awkardly posing with his spear.", false, lordSonPaintingInteraction);
+    ItemClass townDrunkPainting = ItemClass("TOWN DRUNK PORTRAIT", "TOWN DRUNK PORTRAIT of an overweight man with a full glass of ale in his hand slumpt against the wall.", false, townDrunkPaintingInteraction);
+    ItemClass servantSonPainting = ItemClass("SERVANT'S SON PORTRAIT", "SERVANT'S SON PORTRAIT of a small child with fists clenched looking at a hanging man.", false, servantSonPaintingInteraction);
+    ItemClass mobPainting = ItemClass("MOB PORTRAIT", "MOB PORTRAIT of a group of people with pitchforks and torches approaching a building.", false, mobPaintingInteraction);
+
+    //Upstairs items
     ItemClass noteUpA = ItemClass("SCRIBBLED NOTE", "SCRIBBLED NOTE that looks like a child's drawing of two kids side by side, both looking almost exactly similair, but one of the children seems to have jagged teeth instead of normal teeth.", true); //Note for clue to mirror puzzle
     ItemClass storyBook = ItemClass("STORYBOOK", "A giant STORYBOOK made of tough leather and weathered pages, indicating many stories have been told from this book. It is open to a page with a poem on it.", false, storyBookInteraction);
     ItemClass masterKey = ItemClass("MASTER KEY", "Fully completed MASTER KEY to the master bedroom", "idMaster", true, true); //Adding master bedroom key
@@ -244,6 +277,7 @@ void GameControllerClass::gameLoop() {
     std::vector <ItemClass> roomB_Items = { keyB, loungeBottle };
     std::vector <ItemClass> library_Items = {Book};
     std::vector<ItemClass>diningHallItems = { metalSafe, deadBody1,deadBody2,deadBody3,deadBody4 };
+    std::vector<ItemClass> greaterLibraryItems = { greaterLibraryBottle, combLock, gBook4, gBook1, gBook2, gBook5, gBook3 };
     std::vector <ItemClass>graveyardItems = { tombstone1, tombstone2,tombstone3,tombstone4 };
     std::vector<ItemClass> greaterLibraryItems = { greaterLibraryBottle };
     std::vector <ItemClass> hiddensection_Items = { Candle1 };
@@ -255,12 +289,12 @@ void GameControllerClass::gameLoop() {
     //InteractClass* userInteractCandle = new InteractClass("Would you like to look at the candle?", "Pickup the candle");
     std::vector<ItemClass>studyItem = { studyCandle };
     std::vector<ItemClass>kitchenItems = { kitchenCounter, kitchenBottle };
-    std::vector <ItemClass> portraits = { lordPainting, barkeepPainting };
+    std::vector <ItemClass> portraits = { lordPainting, barkeepPainting, servantPainting, lordSonPainting, mobPainting, townDrunkPainting, servantSonPainting };
 
     //define puzzle solution/s
     std::vector <std::string> mirrorSolution = { "MOONLIGHT", "FOREST GREEN", "BLACK" };
     //defining Gallery puzzle
-    GalleryPuzzle galleryPuzzle = GalleryPuzzle(portraits, { lordPainting });
+    GalleryPuzzle galleryPuzzle = GalleryPuzzle(portraits, { lordPainting, lordSonPainting, servantPainting });
     //defining mirror puzzle
     MirrorPuzzle mirrorPuzzle = MirrorPuzzle(mirrorSolution);
     //defining fountain puzzle
@@ -277,7 +311,7 @@ void GameControllerClass::gameLoop() {
     ItemClass fountainPuzzleStarter = ItemClass("FOUNTAIN PANEL", "A FOUNTAIN PANEL in the base of the fountain seems like you could push it like a button...", false, fountainPuzzleStarterInteraction);
     ItemClass mazePuzzleStarter = ItemClass("LANTERN", "A LANTERN to help you see while exploring the maze...", false, mazePuzzleStarterInteraction);
     std::vector <ItemClass> upstairsItems = { noteUpA, mirrorPuzzleStarter }; //Upstairs items
-    std::vector <ItemClass> galleryItems = { galleryPuzzleStarter, lordPainting, barkeepPainting }; //Gallery items
+    std::vector <ItemClass> galleryItems = { galleryPuzzleStarter, lordPainting, barkeepPainting, servantPainting, lordSonPainting, mobPainting, townDrunkPainting, servantSonPainting }; //Gallery items
     std::vector <ItemClass> shedItems = { shedBottle }; //Shed items
     std::vector <ItemClass> fountainItems = { fountainPuzzleStarter }; //Fountain items
     std::vector <ItemClass> mazeExitItems = { candle4 }; //Maze exit items
@@ -443,42 +477,42 @@ void GameControllerClass::gameLoop() {
     );
 
     //room for declaration of memory of the foyer
-    rooms["MEMORY OF THE FOYER"] = RoomClass("You arrive to a broken foyer, you an see a floating statue and doors that are floating away from their hinges.(TEMPORARY TEXT: This is room 4 of 4.) You see the text UROTMU which appears to be scrambled.",
+    rooms["MEMORY OF THE FOYER"] = RoomClass("You arrive to a broken foyer, you an see a floating statue and doors that are floating away from their hinges. Appartions of a family of f!?o^ur@ with their eyes blacked out watch you. You see the text UROTMU which appears to be scrambled.",
         "MEMORY OF THE FOYER",
         std::list<std::string>{"MEMORY OF THE MANSION"},//adjacent rooms
         memoryOfTheFoyerDoors,
         memoryOfTheFoyerItems,
         true, //boolean to determine if the room has a conditonal description
-        "You arrive to a broken foyer, you an see a floating statue and doors that are floating away from their hinges. (TEMPORARY TEXT: This is room 4 of 4.) Adjecent to this room is MEMORY OF THE MANSION The letters re-arrange to form TUORUM."
+        "You arrive to a broken foyer, you an see a floating statue and doors that are floating away from their hinges. Appartions of a family of f!?o^ur@ with their eyes blacked out watch you. Adjecent to this room is MEMORY OF THE MANSION The letters re-arrange to form TUORUM."
         );//Conditional description to be displayed ^^
     //room for declaration of memory of the library
-    rooms["MEMORY OF THE LIBRARY"] = RoomClass("You arrive to a broken library, books and bookshelfs are floating around. (TEMPORARY TEXT: This is room 3 of 4.).  You see the text OACPMEURTC which appears to be scrambled.",
+    rooms["MEMORY OF THE LIBRARY"] = RoomClass("You arrive to a broken library, books and bookshelfs are floating around. There is a woman lying on the floor with t$hr#@ee darts in her head. You see the text OACPMEURTC which appears to be scrambled.",
         "MEMORY OF THE LIBRARY",
         std::list<std::string>{"MEMORY OF THE MANSION"}, //adjacent rooms
         memoryOfTheLibraryDoors,
         memoryOfTheLibraryItems,
         true,//boolean to determine if the room has a conditonal description
-        "You arrive to a broken library, books and bookshelfs are floating around. (TEMPORARY TEXT: This is room 3 of 4.) The letters re arrange to form: PECCATORUM"
+        "You arrive to a broken library, books and bookshelfs are floating around. There is a woman lying on the floor with t$hr#@ee darts in her head. The letters re arrange to form: PECCATORUM"
         //Conditional description to be displayed ^^
     );
     //room for declaration of memory of the garden
-    rooms["MEMORY OF THE GARDEN"] = RoomClass("You arrive to a broken garden, the grass is no longer green, and the hedgmaze has been burnt away. (TEMPORARY TEXT: This is room 1 of 4.) You see the text GNXUIEET which appears to be scrambled.",
+    rooms["MEMORY OF THE GARDEN"] = RoomClass("You arrive to a broken garden, the grass is no longer green, and the hedgmaze has been burnt away. There is o!(ne& figure all in black digging a gravestone with your name on it. You see the text GNXUIEET which appears to be scrambled.",
         "MEMORY OF THE GARDEN",
         std::list<std::string>{"MEMORY OF THE MANSION"},//adjacent rooms
         memoryOfTheGardenDoors,
         memoryOfTheGardenItems,
         true,//boolean to determine if the room has a conditonal description
-        "You arrive to a broken study. (TEMPORARY TEXT: This is room 1 of 4.) Adjecent to this room is MEMORY OF THE MANSION The letters re arrange to form: EXTINGUE."
+        "You arrive to a broken study. There is o!(ne& figure all in black digging a gravestone with your name on it. Adjecent to this room is MEMORY OF THE MANSION The letters re arrange to form: EXTINGUE."
         //Conditional description to be displayed ^^
     );
     //room for declaration of memory of the study
-    rooms["MEMORY OF THE STUDY"] = RoomClass("You arrive to a broken study. (TEMPORARY TEXT: This is room 2 of 4.)  You see the letters LMMMFAA.",
+    rooms["MEMORY OF THE STUDY"] = RoomClass("You arrive to a broken study. On the desk a revolver sits with blood all around, as %t^w*o men lie lifeless on the desk, holes in their heads. You see the letters LMMMFAA.",
         "MEMORY OF THE STUDY",
         std::list<std::string>{"MEMORY OF THE MANSION"},//adjacent rooms
         memoryOfTheStudyDoors,
         memoryOfTheStudyItems,
         true,//boolean to determine if the room has a conditonal description
-        "You arrive to a broken study. (TEMPORARY TEXT: This is room 2 of 4.) Adjecent to this room is MEMORY OF THE MANSION The letters re-arrange to form FLAMMAM."
+        "You arrive to a broken study. On the desk a revolver sits with blood all around, as %t^w*o men lie lifeless on the desk, holes in their heads. Adjecent to this room is MEMORY OF THE MANSION The letters re-arrange to form FLAMMAM."
         //Conditional description to be displayed ^^
     );
     //room for declaration of memory of the lift
@@ -810,7 +844,7 @@ void GameControllerClass::gameLoop() {
 
                 else if (currentRoom_temp.getRoomItemByName(itemName).getInteraction()->getIsPuzzle() == true) //If interaction is a puzzle, call overloaded runInteraction
                 {
-                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer, galleryKey, mirrorKey, masterKey, mazeKey, mazeExitKey, playerMemory, Candle5); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
+                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer, studyKey, galleryKey, mirrorKey, masterKey, mazeKey, mazeExitKey, playerMemory, Candle5); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
                 }
                 else //Run interact sequence if not pick up able object
                 {
@@ -876,26 +910,10 @@ void GameControllerClass::gameLoop() {
                     std::list<std::string> options = { "GARDEN", "HEDGE MAZE EXIT"};
                     handleDoors(userPlayer, currentRoom_temp, "HEDGE MAZE EXIT", options, rooms, "", command);
                 }
-                else if (command == "PUZZLE")
+                else if (command == "STUDY DOOR")
                 {
-                    system("cls");
-                    if (!puzzleSolved)
-                    {
-                        UI.displayPrompt("WORK IN PROGRESS: The door is locked there seems to be a puzzle before entering. Solve this puzzle.\n");
-                        UI.displayPrompt("The secret word is YDDID\n");
-                        std::string puzzleAnswer = UI.userInput();
-
-                        if (puzzleAnswer == "YDDID") {
-                            UI.displayPrompt("You solved the puzzle you can now enter the study\n");
-                            puzzleSolved = true;
-                            currentRoom_temp.setRoomOption(std::list<std::string>{"LIBRARY", "STUDY"});
-                            rooms[currentRoom_temp.GetName()] = currentRoom_temp; //update room in map
-                        }
-                        else {
-                            UI.displayPrompt("That is not the correct answer. The door remains locked.\n");
-                        }
-
-                    }
+                    std::list<std::string> options = { "LIBRARY", "STUDY" };
+                    handleDoors(userPlayer, currentRoom_temp, "STUDY", options, rooms, "", command);
                 }
             }
             else
