@@ -44,7 +44,34 @@ namespace BTSMansionGameAutomatedTest
 	TEST_CLASS(BTSMansionGameAutomatedTest)
 	{
 	public:
-		
+		TEST_METHOD(BTS_Puzzle_Test)
+		{
+			Logger::WriteMessage("Creating a puzzle and verifying all data is returned correctly\n");
+
+
+			Puzzle puzz("Super hard puzzle");
+
+			//Checking is puzzle is solved, description
+			Assert::IsTrue(puzz.isSolved() == false, L"The puzzle should not be solved!"); 
+			Assert::IsTrue(puzz.getDescription() == "Super hard puzzle", L"Returned wrong description!");
+
+			std::string st;
+			if (puzz.isSolved() == false) { st = "false"; } //logic to make bool a str to print
+			else { st = "true"; }
+			std::string message = "Is puzzle solved: " + st + "\tPuzzle description: " + puzz.getDescription();
+			Logger::WriteMessage(message.c_str());
+
+			Logger::WriteMessage("\n Solving puzzle, testing to see if returns true...");
+			//Testing if solve puzzle, does it return the puzzle is solved
+			puzz.solve();
+
+			Assert::IsTrue(puzz.isSolved() == true, L"The puzzle should be solved!"); //Checking if puzzle solved (should be)
+			if (puzz.isSolved() == false) { st = "false"; }
+			else { st = "true"; }
+			std::string message2 = "\nIs puzzle solved: " + st;
+			Logger::WriteMessage(message2.c_str());
+
+		}
 		TEST_METHOD(BTS_Room_Test)
 		{
 			Logger::WriteMessage("Create a room and verify their names, descriptions, and ritual room status\n");
@@ -52,8 +79,6 @@ namespace BTSMansionGameAutomatedTest
 			std::list<std::string> opts = { "HALLWAY" }; //Room options
 			RoomClass bathroom("Stinky bathroom", "BATHROOM", {"HALLWAY"}, false);
 			
-
-
 			Assert::IsTrue(bathroom.GetName() == "BATHROOM", L"Returned wrong name for BATHROOM!"); //Verifying name, desc, ritual room status
 			Assert::IsTrue(bathroom.GetDescription() == "Stinky bathroom", L"Returned wrong name for description!");
 			Assert::IsTrue(bathroom.GetRoomOption() == opts, L"Returned wrong list of room options!");
