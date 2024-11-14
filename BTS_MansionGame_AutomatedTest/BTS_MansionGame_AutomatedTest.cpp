@@ -3,11 +3,14 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <list>
 #include "../BTS Mansion Game/PlayerClass.cpp"
 #include "../BTS Mansion Game/ItemClass.cpp"
 #include "../BTS Mansion Game/RoomClass.cpp"
 #include "../BTS Mansion Game/Door.cpp"
 #include "../BTS Mansion Game/Puzzle.cpp"
+
+
 
 
 /**
@@ -42,6 +45,39 @@ namespace BTSMansionGameAutomatedTest
 	{
 	public:
 		
+		TEST_METHOD(BTS_Room_Test)
+		{
+			Logger::WriteMessage("Create a room and verify their names, descriptions, and ritual room status\n");
+
+			std::list<std::string> opts = { "HALLWAY" }; //Room options
+			RoomClass bathroom("Stinky bathroom", "BATHROOM", {"HALLWAY"}, false);
+			
+
+
+			Assert::IsTrue(bathroom.GetName() == "BATHROOM", L"Returned wrong name for BATHROOM!"); //Verifying name, desc, ritual room status
+			Assert::IsTrue(bathroom.GetDescription() == "Stinky bathroom", L"Returned wrong name for description!");
+			Assert::IsTrue(bathroom.GetRoomOption() == opts, L"Returned wrong list of room options!");
+			Assert::IsTrue(bathroom.returnRitualStatus() == false, L"Should return false not true!");
+
+			std::string st;
+			if (bathroom.returnRitualStatus() == false) { st = "false"; }
+			else { st = "true"; }
+
+			std::string message = "Room Name: " + bathroom.GetName() + "\tDescriptions: " + bathroom.GetDescription() + "\tRitual Room Status: " + st + "\n";
+			Logger::WriteMessage(message.c_str());
+			auto it = opts.begin();
+			std::string msg = "Room options: " + *it;
+			Logger::WriteMessage(msg.c_str());
+		}
+		/*
+		TEST_METHOD(BTS_Interact_Test)
+		{
+			Logger::WriteMessage("Creating a few interactions\n");
+			InteractClass statue("Statue", "The statue glows");
+
+			Assert::IsTrue(statue.getIsPuzzle() == false, L"Statue should not be a puzzle!");
+		}
+		*/
 		TEST_METHOD(BTS_PlayerConstructor_Test)
 		{
 			Logger::WriteMessage("Hello from BTS_PlayerConstructor_Test\n");
