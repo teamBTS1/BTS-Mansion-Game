@@ -4,6 +4,7 @@
 #include <mmsystem.h>
 #include <iostream>
 #include <conio.h>
+
 #pragma comment(lib, "winmm.lib")
 
 MonsterClass::MonsterClass()
@@ -27,6 +28,7 @@ void MonsterClass::onTimerTriggered() //Runs when timer finishes
 
 {
 	system("cls");
+
 	if (currentGameController && currentGameController->inProtectedState()) {
 		// If the player is in a protected state, skip the grab action
 		return;
@@ -61,20 +63,25 @@ void MonsterClass::onTimerTriggered() //Runs when timer finishes
 
 	ui.displayPrompt("The longer you stare, the more you feel you lose your ties to reality, as if it was sucking the life out of you");
 
+
+	//for some reason, the code works fine when pressing enter, so i simulated an enter press, and then everything works as intended.
+	keybd_event(VK_RETURN, 0x1C, 0, 0);
+	keybd_event(VK_RETURN, 0x1C, KEYEVENTF_KEYUP, 0); 
+
 	std::this_thread::sleep_for(std::chrono::milliseconds(5000)); //pause while user reads
-
+	
 	ui.displayPrompt("Its been satisfied -- It disappears into nothingness, you have lost 30 sanity. and fall to the ground");
-
 	std::this_thread::sleep_for(std::chrono::milliseconds(5000)); //pause
-
-
 	currentPlayer->setSanity(currentPlayer->getSanity() - 30); //when user is grabbed, user loses 30 sanity
-
 	system("cls"); 
 
+	//clears buffer if the user spammed characters while frozen
+	while (_kbhit()) {
+		_getch(); 
+	}
 
 	if (currentPlayer->getSanity() <= 0) {
-		ui.displayPrompt("The monster sucked the remaining life out of your body");
+		ui.displayPrompt("The monster sucked the remaining life out of your body");//death message
 		ui.displayPrompt("You are unable to wake up");
 
 
@@ -83,22 +90,13 @@ void MonsterClass::onTimerTriggered() //Runs when timer finishes
 
 	}
 	else {
-		while (_kbhit()) { //stops the user from typing anything while frozen 
-			_getch();
-		}
 		ui.displayPrompt("Press ENTER to wake up");
-
 		char key;
-
-		do { //ignores every other key other than enter
+		do {
 			key = _getch();
-		} while (key != '\r'); //must be enter key
-
-		system("cls"); 
+		} while (key != '\r'); // Only exit if Enter is pressed
+		system("cls");
 	}
-
-
-
 }
 
 void MonsterClass::start()
@@ -124,7 +122,7 @@ void MonsterClass::start()
 			std::this_thread::sleep_for(std::chrono::seconds(1));
 			timeRemaining--; //lower the time left, keeps track while in protected state
 
-			if (timeRemaining == 2 && !stopFlag) {
+			if (timeRemaining == 10 && !stopFlag) {
 				std::cout << "The monster is approching, you must hide, hurry!" << endl; //if timer has less than 2 seconds, the user is notified to hide
 			}
 		}

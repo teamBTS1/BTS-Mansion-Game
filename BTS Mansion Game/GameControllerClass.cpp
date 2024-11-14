@@ -547,7 +547,7 @@ void GameControllerClass::gameLoop() {
 
 
     //Defining variables for timer
-    MonsterClass monsterTimer(10, *this, userPlayer);
+    MonsterClass monsterTimer(2, *this, userPlayer);
     monsterTimer.start();
 
 
