@@ -935,25 +935,49 @@ void GameControllerClass::gameLoop() {
 
 void GameControllerClass::showMenu() {
     while (true) {
-        UI.displayMenu();
+        // Display the main menu
+        UI.displayPrompt("\n--- Main Menu ---");
+        UI.displayPrompt("Type one of the following options:");
+        UI.displayPrompt("START - Start the game");
+        UI.displayPrompt("HELP - View instructions");
+        UI.displayPrompt("CREDITS - View developer credits");
+        UI.displayPrompt("QUIT - Exit the game");
+
+        // Get user input
         std::string input = UI.userInput();
 
-        if (input == "START") //conditional for input validation of menu selection
-        {
+        if (input == "START") {
+            // Start the game
             startGame();
-            return;  // Exit the menu after starting the game
+            // After the game ends, show the menu again
         }
-        else if (input == "QUIT")
-        {
-            endGame();  // Call endGame method to exit
-            return;  // Exit the menu
+        else if (input == "HELP") {
+            // Display instructions
+            UI.displayPrompt("\n--- Instructions ---");
+            UI.displayPrompt("Use keywords in ALL CAPS to perform actions during gameplay.");
+            UI.displayPrompt("Examples: INSPECT, PICKUP, GARDEN.");
+            UI.displayPrompt("Press Enter to return to the main menu...");
+            UI.userInput(); // Wait for user to press Enter
         }
-        else
-        {
+        else if (input == "CREDITS") {
+            // Display developer credits
+            UI.displayPrompt("\n--- Credits ---");
+            UI.displayPrompt("Game developed by: [Your Name]");
+            UI.displayPrompt("Press Enter to return to the main menu...");
+            UI.userInput(); // Wait for user to press Enter
+        }
+        else if (input == "QUIT") {
+            // End the game
+            endGame();
+            return; // Exit the menu loop and terminate the application
+        }
+        else {
+            // Invalid input
             UI.displayPrompt("Invalid choice. Please try again.");
         }
     }
 }
+
 
 void GameControllerClass::endGame() {
     system("cls");
