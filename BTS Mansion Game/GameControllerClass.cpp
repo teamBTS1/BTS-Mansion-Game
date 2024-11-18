@@ -550,7 +550,7 @@ void GameControllerClass::gameLoop() {
     MonsterClass monsterTimer(120, *this, userPlayer);
     monsterTimer.start();
 
-
+    //.setSanity(30);
 
     std::atomic<bool> running(true);
     std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));
@@ -565,8 +565,6 @@ void GameControllerClass::gameLoop() {
         }
   
 
-       
-
         UI.displayPrompt("\n"); //Giving space for text
         
         UI.displayPrompt("Sanity Level: " + std::to_string(userPlayer.getSanity()) + "\n");
@@ -576,7 +574,7 @@ void GameControllerClass::gameLoop() {
             UI.displayPrompt(currentRoom_temp.conditionalDescription(userPlayer.getInventory(), Sight)); //display special condition
         }
         else {
-            UI.displayPrompt(currentRoom_temp.AmendDescription()); //display for rest of the rooms 
+            UI.displayPrompt(currentRoom_temp.AmendDescription(), userPlayer.getSanity()); //display for rest of the rooms 
         }
         
         //UI.displayPrompt(userPlayer.getRoomDescription());

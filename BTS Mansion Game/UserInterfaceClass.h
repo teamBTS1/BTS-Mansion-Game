@@ -40,6 +40,16 @@ public:
 
 	void displayPentacle(int candleVal);
 	// prints pentagram with appropriate candle placements for RITUAL ROOM
+
+	void displayPrompt(const std::string& prompt, int sanityLevel) const; //overloaded displlay function that has sanity functionality
+
+	//-------------BELOW ARE THE HELPER FUNCTION FOR displayPrompt(string, int) overloaded function-------------------
+	bool is_all_uppercase(const std::string& word) const; 
+	//helper function that cheks if word is uppercase, as we are will skip the uppercase words for playability
+
+	std::string jumble_word(const std::string& word, int intensity) const;
+	//helper function that jumbles the word
+
 };
 
 #endif
