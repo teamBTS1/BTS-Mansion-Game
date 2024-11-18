@@ -208,7 +208,7 @@ void GameControllerClass::gameLoop() {
 
     //define all items
     ItemClass statueA("STATUE", "a STATUE of a woman carrying a book", false, userInteractStatueA); // Define the statue as an item
-    ItemClass keyB("RUSTY KEY", "a RUSTY KEY", "BBBB", true, true); //Initialzing items TEMP key B
+    ItemClass keyB("RUSTY KEY", "a RUSTY KEY", "BBBB", true, true, "Key_Pickup_Sound.wav"); //Initialzing items TEMP key B
     ItemClass loungeBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
     ItemClass noteA("NOTE A", "A note with dust and cobwebs all over", true); //Defining TEMP note A
     ItemClass metalSafe("METAL SAFE", "A safe that appears to accept a 4 digit code", false, userInterectSafeDiningHall);
@@ -542,7 +542,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
+    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
    
 
 
@@ -785,6 +785,7 @@ void GameControllerClass::gameLoop() {
                                 if (itm.getName() == itemName)
                                 {
                                     PickUpItemClass pickUp(itm); //Picking up item the user requested to pick up
+                                    itm.playItemSound();
                                     pickUp.addToInventory(userPlayer);
                                     currentRoom_temp.RemoveItem(itm);
                                     rooms[currentRoom_temp.GetName()] = currentRoom_temp;

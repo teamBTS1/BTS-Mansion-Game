@@ -21,6 +21,8 @@ private:
 	bool canPickUp; //Tracks whether item can be picked up or not
 	InteractClass* interaction = nullptr;
 
+	std::string soundFileName = ""; 
+
 	bool canExpire; //if the item dissapears after a certain amount of time
 	std::chrono::steady_clock::time_point timeTillExpiration; // expiration timer
 
@@ -32,6 +34,8 @@ public:
 	ItemClass(std::string n, std::string desc, int val, bool consumable, bool canPickUp); //Constructor for a consumable
 	ItemClass(std::string n, std::string desc, bool pickUp, InteractClass* interact); //Constructor for an interactable item
 	ItemClass(std::string n, std::string desc, bool pickUp, bool expire); //for expiring item
+
+	ItemClass(std::string n, std::string desc, std::string id, bool consumable, bool canPickUp,std::string fileName); //Constructor for a key
 
 	std::string getName(); //Return item name
 	void setName(std::string newName); //Sets item to a new name
@@ -55,6 +59,8 @@ public:
 
 	InteractClass* getInteraction(); //Returns interaction
 	void setInteraction(InteractClass* interact); //Sets interaction
+
+	void playItemSound(); // function for sound file
 };
 
 #endif

@@ -2,6 +2,7 @@
 #include "InteractClass.h"
 #include<iostream>
 #include<string>
+#include <windows.h>
 
 using namespace std;
 
@@ -86,6 +87,20 @@ looks in their inventory.
 		interaction = nullptr;
 		canExpire = expire; 
 	}
+
+	ItemClass::ItemClass(string n, string desc, string id, bool consumable, bool pickUp, string fileName) //Constructor for a key
+	{
+		name = n;
+		description = desc;
+		keyID = id;
+		isConsumable = consumable;
+		value = 0;
+		canPickUp = pickUp;
+		interaction = nullptr;
+		soundFileName = fileName;
+	}
+
+
 	string ItemClass::getName()
 	{
 		return name; //Returns item name
@@ -160,4 +175,12 @@ looks in their inventory.
 	void ItemClass::setInteraction(InteractClass* interact)
 	{
 		interaction = interact;
+	}
+
+	void ItemClass::playItemSound() {
+		// Convert std::string to std::wstring for Unicode compatibility
+		std::wstring wideSoundFile(soundFileName.begin(), soundFileName.end());
+		std::cerr << GetLastError();
+		// Pass the wide string to PlaySound
+		PlaySound(TEXT("KeySoundNew.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	}
