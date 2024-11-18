@@ -550,7 +550,7 @@ void GameControllerClass::gameLoop() {
     MonsterClass monsterTimer(120, *this, userPlayer);
     monsterTimer.start();
 
-    //.setSanity(30);
+    //Userplayer.setSanity(30);
 
     std::atomic<bool> running(true);
     std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));
@@ -566,8 +566,6 @@ void GameControllerClass::gameLoop() {
   
 
         UI.displayPrompt("\n"); //Giving space for text
-        
-        UI.displayPrompt("Sanity Level: " + std::to_string(userPlayer.getSanity()) + "\n");
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
 
         if (currentRoom_temp.getHasConditionalDescription()) { //cond to check if the room has a specific conditonal rendering property
@@ -592,6 +590,7 @@ void GameControllerClass::gameLoop() {
         
 
         //bool to track if player put memory in memory goblet
+
 
 
         // Check the command for the kitchen door
@@ -736,6 +735,14 @@ void GameControllerClass::gameLoop() {
             monsterTimer.join(); //Destory monster timer
             endGame();  // Call endGame method
             return;  // Exit the game loop
+        }
+
+        if (command == "SANITY") {
+            system("cls");
+            UI.displayPrompt("SANITY: " + std::to_string(userPlayer.getSanity()));
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            system("cls");
+            continue;
         }
         
         else if (command == "ESCAPE") //Handles when monster grabs player
