@@ -45,6 +45,7 @@ GameControllerClass::GameControllerClass() {
         "\n----------------------";
 }
 void GameControllerClass::startGame() {
+    showMenu();
     displayBackstory();
     system("cls");
     gameLoop();
@@ -948,7 +949,8 @@ void GameControllerClass::showMenu() {
 
         if (input == "START") {
             // Start the game
-            startGame();
+            displayBackstory();
+            gameLoop();
             // After the game ends, show the menu again
         }
         else if (input == "HELP") {
@@ -962,7 +964,7 @@ void GameControllerClass::showMenu() {
         else if (input == "CREDITS") {
             // Display developer credits
             UI.displayPrompt("\n--- Credits ---");
-            UI.displayPrompt("Game developed by: [Your Name]");
+            UI.displayPrompt("Game developed by: BTS! ");
             UI.displayPrompt("Press Enter to return to the main menu...");
             UI.userInput(); // Wait for user to press Enter
         }
@@ -977,7 +979,6 @@ void GameControllerClass::showMenu() {
         }
     }
 }
-
 
 void GameControllerClass::endGame() {
     system("cls");
