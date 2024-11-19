@@ -525,6 +525,8 @@ void GameControllerClass::gameLoop() {
 
         // Check the command for the dining hall door
         if (command == "DINING HALL DOOR" && userPlayer.getRoomName() == "DINING HALL" && rooms.find("LOUNGE") != rooms.end()) {
+            system("cls");
+
             // Player is in the dining hall and wants to enter the lounge through the door
             if (!diningHallDoorOpen) {
                 system("cls");
@@ -539,6 +541,8 @@ void GameControllerClass::gameLoop() {
 
             // Check if "DINING HALL" is already in the options
             if (std::find(updatedOptions.begin(), updatedOptions.end(), "DINING HALL") == updatedOptions.end()) {
+                system("cls");
+
                 updatedOptions.push_back("DINING HALL");
                 updatedOptions.remove("DINING HALL DOOR"); // Remove the dining hall door as an option in the foyer 
                 currentRoom_temp.setRoomOption(updatedOptions);
