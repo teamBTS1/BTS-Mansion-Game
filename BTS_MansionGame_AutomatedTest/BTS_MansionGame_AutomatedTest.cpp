@@ -115,5 +115,20 @@ namespace BTSMansionGameAutomatedTest
 			catString = catString += "\n";
 			return catString;
 		}
+
+		//Test method to test the basic functionality of the puzzle class.
+		TEST_METHOD(BTS_PuzzleTest)//TODO: finish this test method.
+		{
+			Logger::WriteMessage("Create a number of puzzles with the available constructors and verify they have been created properly.\n");
+			Puzzle puzzleOne;
+			Assert::IsTrue(puzzleOne.getDescription() == "Default description.");
+			Assert::IsTrue(puzzleOne.isSolved() == false);
+			Assert::IsTrue(puzzleOne.getHint() == "Default hint.");
+			Puzzle puzzleTwo("Description");
+			
+			
+		}
+
+
 	};
 }
