@@ -1,5 +1,6 @@
 
 #include "GameControllerClass.h"
+#define NOMINMAX
 #include "RoomClass.h"
 #include "InteractClass.h"
 #include "PickUpItemClass.h"
@@ -27,6 +28,7 @@
 #include <algorithm> 
 #include <cctype>
 #include <locale>
+#include<windows.h>
 
 GameControllerClass::GameControllerClass() {
     // Initialize backstory in the constructor
@@ -53,7 +55,7 @@ void GameControllerClass::startGame() {
 
 void GameControllerClass::pickUpNoteSequence(PlayerClass& myPlayer) {
 
-    ItemClass note1("Welcome Note", "You have entered the mansion", true); // define note item
+    ItemClass note1("Welcome Note", "You have entered the mansion", true,"PaperPickup.wav"); // define note item
     InteractClass interactWithNote; // define interact class
     PickUpItemClass myPickUpClass(note1); // define pickup class
     UserInterfaceClass Myuserinterface;
@@ -118,6 +120,8 @@ void GameControllerClass::viewInventory(PlayerClass& myPlayer) {
             {
                 updateSanity(myPlayer, myInventory[i].getValue());
                 myPlayer.useItem("BOTTLE OF PILLS");
+                PlaySound(TEXT("PillBottle.wav"), NULL, SND_FILENAME | SND_ASYNC);
+
                 std::cout << "You used the bottle of sanity pills. The world makes a bit more sense again." << std::endl;
             }
             //End sanity item functionality
@@ -208,9 +212,9 @@ void GameControllerClass::gameLoop() {
 
     //define all items
     ItemClass statueA("STATUE", "a STATUE of a woman carrying a book", false, userInteractStatueA); // Define the statue as an item
-    ItemClass keyB("RUSTY KEY", "a RUSTY KEY", "BBBB", true, true, "Key_Pickup_Sound.wav"); //Initialzing items TEMP key B
+    ItemClass keyB("RUSTY KEY", "a RUSTY KEY", "BBBB", true, true, "KeySoundNew.wav"); //Initialzing items TEMP key B
     ItemClass loungeBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
-    ItemClass noteA("NOTE A", "A note with dust and cobwebs all over", true); //Defining TEMP note A
+    ItemClass noteA("NOTE A", "A note with dust and cobwebs all over", true, std::string("PaperPickup.wav")); //Defining TEMP note A
     ItemClass metalSafe("METAL SAFE", "A safe that appears to accept a 4 digit code", false, userInterectSafeDiningHall);
     ItemClass deadBody1("DEAD BODY 1", "A dead body with a red shirt with a number 8 on and has his mouth open", false, userInteractBody1);
     ItemClass deadBody2("DEAD BODY 2", "A dead body with a blue shirt with a number 6 on and has his skull cracked open", false, userInteractBody2);
@@ -220,9 +224,9 @@ void GameControllerClass::gameLoop() {
     ItemClass tombstone2("TOMBSTONE 2", "", false, userInteractTombstone2);
     ItemClass tombstone3("TOMBSTONE 3", "", false, userInteractTombstone3);
     ItemClass tombstone4("TOMBSTONE 4", "", false, userInteractTombstone4);
-    ItemClass galleryKey = ItemClass("GALLERY HALF KEY", "Half of the key needed to enter the master bedroom.");
-    ItemClass diningHallKey = ItemClass("DINING HALL KEY", "A Shiny DINING HALL KEY with grapes on the handle,it appears to open the greater library","DHKey",true, true);    //Initializing key from safe in dining hall
-    ItemClass mirrorKey = ItemClass("MIRROR HALF KEY", "Half of the key needed to enter the master bedroom.");
+    ItemClass galleryKey = ItemClass("GALLERY HALF KEY", "Half of the key needed to enter the master bedroom.", true, true, "KeySoundNew.wav");
+    ItemClass diningHallKey = ItemClass("DINING HALL KEY", "A Shiny DINING HALL KEY with grapes on the handle,it appears to open the greater library","DHKey",true, true,"KeySoundNew.wav");    //Initializing key from safe in dining hall
+    ItemClass mirrorKey = ItemClass("MIRROR HALF KEY", "Half of the key needed to enter the master bedroom.",true, true, "KeySoundNew.wav");
     ItemClass kitchenCounter("KITCHEN COUNTER", "The kitchen counter has different colors as its design, it red as its first color, then blue, green, and purple", false, userInteractKitchenCounter);
     ItemClass kitchenBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
     // added items such as note and journal for the made classes 
@@ -230,7 +234,7 @@ void GameControllerClass::gameLoop() {
     ItemClass guestroomJournal("GUESTROOM JOURNAL", "A leather-bound journal filled with notes from a guest. Some entries are scribbled hastily, mentioning strange noises and shadows in the night.", true,true);
     ItemClass bathroomNote("BATHROOM NOTE", "A faded note, scribbled with hurried handwriting. It reads: 'The mirror is the key to the next step. Look closely.'", true,true);
     //Library Items
-    ItemClass Book("OLD BOOK", "an OLD BOOK which appears to belong to a bookshelf", "BookKey", true, true);
+    ItemClass Book("OLD BOOK", "an OLD BOOK which appears to belong to a bookshelf", "BookKey", true, true, "General Pickup.wav");
 
     //Greater Library Items
     ItemClass greaterLibraryBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
@@ -252,7 +256,7 @@ void GameControllerClass::gameLoop() {
     ItemClass mobPainting = ItemClass("MOB PORTRAIT", "MOB PORTRAIT of a group of people with pitchforks and torches approaching a building.", false, mobPaintingInteraction);
 
     //Upstairs items
-    ItemClass noteUpA = ItemClass("SCRIBBLED NOTE", "SCRIBBLED NOTE that looks like a child's drawing of two kids side by side, both looking almost exactly similair, but one of the children seems to have jagged teeth instead of normal teeth.", true); //Note for clue to mirror puzzle
+    ItemClass noteUpA = ItemClass("SCRIBBLED NOTE", "SCRIBBLED NOTE that looks like a child's drawing of two kids side by side, both looking almost exactly similair, but one of the children seems to have jagged teeth instead of normal teeth.", true, "PaperPickup.wav"); //Note for clue to mirror puzzle
     ItemClass storyBook = ItemClass("STORYBOOK", "A giant STORYBOOK made of tough leather and weathered pages, indicating many stories have been told from this book. It is open to a page with a poem on it.", false, storyBookInteraction);
     ItemClass masterKey = ItemClass("MASTER KEY", "Fully completed MASTER KEY to the master bedroom", "idMaster", true, true); //Adding master bedroom key
     ItemClass bedroomBottle = ItemClass("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
@@ -543,8 +547,7 @@ void GameControllerClass::gameLoop() {
     bool puzzleSolved = false;
 
     PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
-   
-
+    userPlayer.addItem(studyCandle);
 
     //Defining variables for timer
     MonsterClass monsterTimer(120, *this, userPlayer);
@@ -690,15 +693,19 @@ void GameControllerClass::gameLoop() {
             if (userPlayer.getInventorySize() != 0) {
                 if (userPlayer.inInventory("CANDLE", "C1")) {
                     userPlayer.useItem("CANDLE", "C1"); // Uses Candle from inventory, is removed
+                    PlaySound(TEXT("MonsterCandeRoar.wav"), NULL, SND_FILENAME | SND_ASYNC);
                     UI.displayPrompt("You have placed a candle\n");
                     currentRoom_temp.addCandle();
                     UI.displayPrompt(std::to_string(currentRoom_temp.getCandleValue())); // For testing purposes
 
                     // Display the pentagram immediately after placing the candle
                     UI.displayPentacle(currentRoom_temp.getCandleValue());
+                    std::this_thread::sleep_for(std::chrono::seconds(10));
+
 
                     // Open the tunnel to the kitchen
                     UI.displayPrompt("As you place the candle, a hidden tunnel opens, leading to the kitchen!\n");
+                    PlaySound(TEXT("TunnelOpening.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
                     // Add "KITCHEN" to the list of accessible rooms from the ritual room
                     std::list<std::string> updatedOptions = currentRoom_temp.GetRoomOption();
@@ -715,12 +722,23 @@ void GameControllerClass::gameLoop() {
                      UI.displayPrompt("You have placed a candle\n");
                      currentRoom_temp.addCandle();
                      UI.displayPrompt(std::to_string(currentRoom_temp.getCandleValue()));// for testing purposes to see if candle is added to room
+                     PlaySound(TEXT("MonsterCandeRoar.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                     UI.displayPentacle(currentRoom_temp.getCandleValue());
+                     std::this_thread::sleep_for(std::chrono::seconds(12));
+                    
+
+
+
+
+
                      UI.displayPrompt("As you place the candle, a portal is revealed!\n");
+
+                     PlaySound(TEXT("Portal Opening.wav"), NULL, SND_FILENAME | SND_ASYNC);
                         
                      std::list<std::string>updatedOptions = currentRoom_temp.GetRoomOption();
                      updatedOptions.push_back("PORTAL");
                      currentRoom_temp.setRoomOption(updatedOptions);
-                     UI.displayPentacle(currentRoom_temp.getCandleValue());
+                    
                      //Update the room in the map
                      rooms["RITUAL ROOM"] = currentRoom_temp;
                     continue;
@@ -785,7 +803,13 @@ void GameControllerClass::gameLoop() {
                                 if (itm.getName() == itemName)
                                 {
                                     PickUpItemClass pickUp(itm); //Picking up item the user requested to pick up
+                                    std::cout << "Attempting to play sound" << endl; 
                                     itm.playItemSound();
+
+                                        if (itm.getSoundFileName() == "") {
+                                            PlaySound(TEXT("General Pickup.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                                        }
+                                    itm.getSoundFileName();
                                     pickUp.addToInventory(userPlayer);
                                     currentRoom_temp.RemoveItem(itm);
                                     rooms[currentRoom_temp.GetName()] = currentRoom_temp;
@@ -836,7 +860,7 @@ void GameControllerClass::gameLoop() {
                         if (safeInputNum == 8691)
                         {
                             UI.displayPrompt("You entered the correct passcode! Safe is now open and there's a key");
-
+                            PlaySound(TEXT("SafeOpening.wav"), NULL, SND_FILENAME | SND_ASYNC);
                             rooms["DINING HALL"].RemoveItem(metalSafe);
                             rooms["DINING HALL"].AddItem(diningHallKey);
                             rooms["DINING HALL"].displayRoomItems();
@@ -874,6 +898,10 @@ void GameControllerClass::gameLoop() {
                 if (rooms.find(command) != rooms.end()) {
                     system("cls");
                     userPlayer.setRoom(rooms[command]);
+                    if (!(command == "PORTAL"))
+                    {
+                        PlaySound(TEXT("DoorOpen.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                    }
                     isInProtectedAction = userPlayer.getRoom().getIsSafe(); //checking to see if user is in a safe room
 
                     if (isInProtectedAction) {
@@ -882,6 +910,7 @@ void GameControllerClass::gameLoop() {
                 }
                 else if (command == "PORTAL") {
                     system("cls");
+                    PlaySound(TEXT("TeleportUpstairs.wav"), NULL, SND_FILENAME | SND_ASYNC);
                     if (userPlayer.getRoom().GetName() == "UPSTAIRS") {
                         userPlayer.setRoom(rooms["FOYER"]);  // If user is upstairs, return to Room A via the portal
                         UI.displayPrompt("You step through the portal and find yourself back in the foyer (Room A).");
@@ -898,6 +927,7 @@ void GameControllerClass::gameLoop() {
                 }
                 else if (command == "DOOR") {
                     std::list<std::string> options = { "LOUNGE", "LIBRARY", "KITCHEN DOOR" };
+                     UI.displayPentacle(currentRoom_temp.getCandleValue());
                     handleDoors(userPlayer, currentRoom_temp, "LIBRARY", options, rooms,"", command);
                 }
                 else if (command == "GREATER LIBRARY DOOR")
@@ -980,7 +1010,7 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
 
                 if (doors[i].getDoorKeyID() == playerKey && command == doors[i].getDoorName())
                 {
-                   
+                    PlaySound(TEXT("DoorUnlock.wav"), NULL, SND_FILENAME | SND_ASYNC);
                     std::cout << openMessage;
                     player.useKey(playerKey); //Uses correct key from inventory
                     //UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the " + targetRoom + ".\n");
