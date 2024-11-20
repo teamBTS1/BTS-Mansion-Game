@@ -294,7 +294,7 @@ void GameControllerClass::gameLoop() {
     //define puzzle solution/s
     std::vector <std::string> mirrorSolution = { "MOONLIGHT", "FOREST GREEN", "BLACK" };
     //defining Gallery puzzle
-    GalleryPuzzle galleryPuzzle = GalleryPuzzle(portraits, { lordPainting, lordSonPainting, servantPainting }, "Perhaps something left behind by a long dead storyteller could help you here.");
+    GalleryPuzzle galleryPuzzle = GalleryPuzzle(portraits, { lordPainting, lordSonPainting, servantPainting }, "If you are stuck, perhaps something left behind by a long dead storyteller could help you here....");
     //defining mirror puzzle
     MirrorPuzzle mirrorPuzzle = MirrorPuzzle(mirrorSolution, "You notice that the combination lock has a small mirror engraved at the bottom.");
     //defining fountain puzzle

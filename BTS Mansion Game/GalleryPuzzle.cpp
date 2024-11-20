@@ -50,12 +50,15 @@ void GalleryPuzzle::runPuzzle()
 					correctAnswerCount++;
 				}
 			}
-			else if(input == "HINT")
-			{
-				ui.displayPrompt(_hint);
-			}
-		}		
+			
+		}
+
 		system("cls"); //Clearing console
+		if (input == "HINT")
+		{
+			ui.displayPrompt(_hint + "\n");
+		}
+
 	}
 
 	if (correctAnswerCount == answers.size()) //Puzzle solved
@@ -64,6 +67,6 @@ void GalleryPuzzle::runPuzzle()
 		_isSolved = true;
 	}
 	else {
-		ui.displayPrompt("The blood continues bubbling, dissapointed in your order of selections, maybe you need to go back and look for more clues.");
+		ui.displayPrompt("The blood continues bubbling, dissapointed in your order of selections; maybe you need to go back and look for more clues.\n");
 	}
 }
