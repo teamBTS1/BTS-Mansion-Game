@@ -230,9 +230,9 @@ void GameControllerClass::gameLoop() {
     ItemClass kitchenCounter("KITCHEN COUNTER", "The kitchen counter has different colors as its design, it red as its first color, then blue, green, and purple", false, userInteractKitchenCounter);
     ItemClass kitchenBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
     // added items such as note and journal for the made classes 
-    ItemClass ballroomNote("BALLROOM NOTE", "A handwritten note left behind, detailing strange occurrences during the last grand ball.", true,true);
+    ItemClass ballroomNote("BALLROOM NOTE", "A handwritten note left behind, detailing strange occurrences during the last grand ball.", true, std::string("PaperPickup.wav"));
     ItemClass guestroomJournal("GUESTROOM JOURNAL", "A leather-bound journal filled with notes from a guest. Some entries are scribbled hastily, mentioning strange noises and shadows in the night.", true,true);
-    ItemClass bathroomNote("BATHROOM NOTE", "A faded note, scribbled with hurried handwriting. It reads: 'The mirror is the key to the next step. Look closely.'", true,true);
+    ItemClass bathroomNote("BATHROOM NOTE", "A faded note, scribbled with hurried handwriting. It reads: 'The mirror is the key to the next step. Look closely.'", true, std::string("PaperPickup.wav"));
     //Library Items
     ItemClass Book("OLD BOOK", "an OLD BOOK which appears to belong to a bookshelf", "BookKey", true, true, "General Pickup.wav");
 
@@ -546,8 +546,8 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
-    userPlayer.addItem(studyCandle);
+    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
+    
 
     //Defining variables for timer
     MonsterClass monsterTimer(120, *this, userPlayer);
@@ -609,7 +609,7 @@ void GameControllerClass::gameLoop() {
             }
             userPlayer.setRoom(rooms["FOYER"]);  // Move player to the foyer
 
-            // Add "KITCHEN" as an option in the foyer room only if it�s not already there
+            // Add "KITCHEN" as an option in the foyer room only if its not already there
             auto currentRoom_temp = rooms["FOYER"];
             std::list<std::string> updatedOptions = currentRoom_temp.GetRoomOption();
 
@@ -617,7 +617,7 @@ void GameControllerClass::gameLoop() {
             if (std::find(updatedOptions.begin(), updatedOptions.end(), "KITCHEN") == updatedOptions.end()) {
                 updatedOptions.push_back("KITCHEN");
 
-                // Remove "KITCHEN DOOR" if it�s already in the options
+                // Remove "KITCHEN DOOR" if its already in the options
                 updatedOptions.remove("KITCHEN DOOR");
 
                 // Update the options in the foyer
@@ -636,6 +636,7 @@ void GameControllerClass::gameLoop() {
             if (kitchenDoorOpen) {
                 UI.displayPrompt("\nYou pass through the open door to the kitchen.\n");
                 userPlayer.setRoom(rooms["KITCHEN"]);  // Move player back to the kitchen
+                PlaySound(TEXT("DoorUnlock.wav"), NULL, SND_FILENAME | SND_ASYNC);
             }
             else {
                 UI.displayPrompt("\nThe door to the kitchen is locked from this side.\n");
@@ -652,6 +653,7 @@ void GameControllerClass::gameLoop() {
                 system("cls");
                 UI.displayPrompt("\nYou open the door to the lounge.\n");
                 diningHallDoorOpen = true;  // Door remains open after first use
+
             }
             userPlayer.setRoom(rooms["LOUNGE"]);  // Move player to the lounge
 
@@ -678,6 +680,7 @@ void GameControllerClass::gameLoop() {
                 system("cls");
                 UI.displayPrompt("\nYou pass through the open door to the dining hall.\n");
                 userPlayer.setRoom(rooms["DINING HALL"]);  // Move player back to the dining hall
+                PlaySound(TEXT("DoorOpen.wav"), NULL, SND_FILENAME | SND_ASYNC);
             }
             else {
                 system("cls");
@@ -897,10 +900,24 @@ void GameControllerClass::gameLoop() {
                 TODO: setup hashmap for corresponding rooms, implement functionality to minimize conditional nesting*/
                 if (rooms.find(command) != rooms.end()) {
                     system("cls");
+                    std::string previousRoom = userPlayer.getRoomName(); //to store previous room name
                     userPlayer.setRoom(rooms[command]);
-                    if (!(command == "PORTAL"))
+                    if (!(command == "PORTAL" || command == "BOOKSHELF"))
                     {
-                        PlaySound(TEXT("DoorOpen.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                        if (command == "HIDDEN SECTION") {
+                            PlaySound(TEXT("Walk Down Stairs.wav"), NULL, SND_FILENAME | SND_ASYNC);       
+                        }
+                        else if ((command == "LIBRARY") && (previousRoom == "HIDDEN SECTION")) {
+        
+                             PlaySound(TEXT("Walk Down Stairs.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                        }
+                        else if ((command == "KITCHEN")&& (previousRoom == "RITUAL ROOM") ){
+
+                            PlaySound(TEXT("Walking Through Tunnel.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                        }
+                        else {
+                            PlaySound(TEXT("DoorOpen.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                        }
                     }
                     isInProtectedAction = userPlayer.getRoom().getIsSafe(); //checking to see if user is in a safe room
 
@@ -912,7 +929,7 @@ void GameControllerClass::gameLoop() {
                     system("cls");
                     PlaySound(TEXT("TeleportUpstairs.wav"), NULL, SND_FILENAME | SND_ASYNC);
                     if (userPlayer.getRoom().GetName() == "UPSTAIRS") {
-                        userPlayer.setRoom(rooms["FOYER"]);  // If user is upstairs, return to Room A via the portal
+                        userPlayer.setRoom(rooms["RITUAL ROOM"]);  // If user is upstairs, return to Room A via the portal
                         UI.displayPrompt("You step through the portal and find yourself back in the foyer (Room A).");
                     }
                     else {
@@ -1010,7 +1027,12 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
 
                 if (doors[i].getDoorKeyID() == playerKey && command == doors[i].getDoorName())
                 {
-                    PlaySound(TEXT("DoorUnlock.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                    if (command == "BOOKSHELF") {
+                        PlaySound(TEXT("Bookshelf Open.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                    }
+                    else {
+                        PlaySound(TEXT("DoorUnlock.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                    }
                     std::cout << openMessage;
                     player.useKey(playerKey); //Uses correct key from inventory
                     //UI.displayPrompt("You unlock the door with the key in your pocket, you can now traverse to the " + targetRoom + ".\n");

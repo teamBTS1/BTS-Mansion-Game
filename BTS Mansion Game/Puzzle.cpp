@@ -1,4 +1,5 @@
 #include "Puzzle.h"
+#include <windows.h>
 
 Puzzle::Puzzle()
 {
@@ -48,6 +49,7 @@ void Puzzle::solve()
 {
 	if (!_isSolved)
 	{
+		
 		_isSolved = true;
 	}
 	else
@@ -62,6 +64,7 @@ void Puzzle::solve(std::vector<ItemClass>* inventory)
 {
 	if (!_isSolved)
 	{
+		
 		_isSolved = true;
 		if (_reward != nullptr)
 		{
