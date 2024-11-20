@@ -296,7 +296,7 @@ void GameControllerClass::gameLoop() {
     //defining Gallery puzzle
     GalleryPuzzle galleryPuzzle = GalleryPuzzle(portraits, { lordPainting, lordSonPainting, servantPainting }, "Perhaps something left behind by a long dead storyteller could help you here.");
     //defining mirror puzzle
-    MirrorPuzzle mirrorPuzzle = MirrorPuzzle(mirrorSolution);
+    MirrorPuzzle mirrorPuzzle = MirrorPuzzle(mirrorSolution, "You notice that the combination lock has a small mirror engraved at the bottom.");
     //defining fountain puzzle
     FountainPuzzle fountainPuzzle = FountainPuzzle("FEAR", "MEMORY", "CLOCK", "GRAVE", 
         {"You find a pictograph on the side of the fountain, worn away by time. You can't quite tell what it depicts. A chill runs up your spine.",
@@ -548,7 +548,7 @@ void GameControllerClass::gameLoop() {
     bool puzzleSolved = false;
 
     //TODO: reset starting room back to default before remerging with main
-    PlayerClass userPlayer = PlayerClass(rooms["THE LIFT"]);
+    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
    
 
 
