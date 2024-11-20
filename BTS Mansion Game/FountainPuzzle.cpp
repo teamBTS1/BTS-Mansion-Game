@@ -63,6 +63,7 @@ void FountainPuzzle::runPuzzle() //Runs puzzle
 			else if (input == "HINT")
 			{
 				ui.displayPrompt(_hintList.at(correctAnswerCount));
+				answerCount--;//This line is here because we don't want the hint request counting towards the number of attempts at answering
 			}
 			else //Wrong answer
 			{

@@ -548,7 +548,7 @@ void GameControllerClass::gameLoop() {
     bool puzzleSolved = false;
 
     //TODO: reset starting room back to default before remerging with main
-    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
+    PlayerClass userPlayer = PlayerClass(rooms["GARDEN"]);
    
 
 
