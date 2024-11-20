@@ -33,7 +33,7 @@ void MirrorPuzzle::runPuzzle()
 		answers.push_back(input);
 		if (input == "HINT")
 		{
-			giveHint = true;
+			ui.displayPrompt("\nHINT: " + _hint + "\n");
 		}
 	}
 
@@ -41,10 +41,7 @@ void MirrorPuzzle::runPuzzle()
 	{
 		_isSolved = true;
 	}
-	else if(giveHint)
-	{
-		ui.displayPrompt(_hint);
-	}
+
 	
 	for (int i = 0; i < 3; i++)
 	{
