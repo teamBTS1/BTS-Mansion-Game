@@ -45,7 +45,8 @@ GameControllerClass::GameControllerClass() {
         "\n----------------------";
 }
 void GameControllerClass::startGame() {
-    displayBackstory();
+    //TODO: The below line has been commented out for testing purposes. Reinstate before merging.
+    //displayBackstory();
     system("cls");
     gameLoop();
 }
@@ -174,7 +175,7 @@ void GameControllerClass::gameLoop() {
     std::vector<Door> mazeExitDoors = { doors["MAZE EXIT"] }; //Exit of hedge maze
 
     //greater library puzzle
-    GreaterLibraryPuzzle greaterLibraryPuzzle("DODGE");
+    GreaterLibraryPuzzle greaterLibraryPuzzle("DODGE", "Some of the books in this room stand out to you. Perhaps they contain some sort of code?");
 
     //define all ineractions
     InteractClass* userInteractStatueA = new InteractClass("Would you like to INTERACT with the statue?", "You feel a wave of knowledge wash over you, like you've learned something from someone previously here before you."); //Defining statue interaction
@@ -293,11 +294,15 @@ void GameControllerClass::gameLoop() {
     //define puzzle solution/s
     std::vector <std::string> mirrorSolution = { "MOONLIGHT", "FOREST GREEN", "BLACK" };
     //defining Gallery puzzle
-    GalleryPuzzle galleryPuzzle = GalleryPuzzle(portraits, { lordPainting, lordSonPainting, servantPainting });
+    GalleryPuzzle galleryPuzzle = GalleryPuzzle(portraits, { lordPainting, lordSonPainting, servantPainting }, "Perhaps something left behind by a long dead storyteller could help you here.");
     //defining mirror puzzle
     MirrorPuzzle mirrorPuzzle = MirrorPuzzle(mirrorSolution);
     //defining fountain puzzle
-    FountainPuzzle fountainPuzzle = FountainPuzzle("FEAR", "MEMORY", "CLOCK", "GRAVE");
+    FountainPuzzle fountainPuzzle = FountainPuzzle("FEAR", "MEMORY", "CLOCK", "GRAVE", 
+        {"You find a pictograph on the side of the fountain, worn away by time. You can't quite tell what it depicts. A chill runs up your spine.",
+        "You find a pictograph on the side of the fountain, worn away by time. You can't quite tell what it depicts. You swear you've seen it somewhere before.",
+        "You find a pictograph on the side of the fountain, worn away by time. You can't quite tell what it depicts. It feels like you've been here for hours.",
+        "You find a pictograph on the side of the fountain, worn away by time. You can't quite tell what it depicts. You get the sense that your end inexorably approaches."});
     //defining maze puzzle
     MazePuzzle mazePuzzle = MazePuzzle({ "RABBIT", "CROW", "SNAKE", "SCARAB" }, {"BADGER", "GOAT", "CARDINAL", "OWL", "BEAR", "CAT", "COYOTE"});
 
@@ -448,7 +453,7 @@ void GameControllerClass::gameLoop() {
 
 
     InteractClass* gobletInteraction = new InteractClass("Approch the goblet", "You interact with the goblet");//item in THE CONSCIOUS that allows user to put the item playerMemory
-    ItemClass memoryGoblet = ItemClass("MEMORY GOBLET", "A transparent challice called the MEMORY GOBLET, a place where memories can be added", false, gobletInteraction); //interaction for memory goblet
+    ItemClass memoryGoblet = ItemClass("MEMORY GOBLET", "A transparent chalice with the logo of an eye called the MEMORY GOBLET, a place where memories can be added", false, gobletInteraction); //interaction for memory goblet
 
     ItemClass Sight = ItemClass("SIGHT", "Allows you to see the unseen", true, true); //item awarded from putting playermemory into the goblet 
 
@@ -542,18 +547,22 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
+    //TODO: reset starting room back to default before remerging with main
+    PlayerClass userPlayer = PlayerClass(rooms["THE LIFT"]);
    
 
 
     //Defining variables for timer
-    MonsterClass monsterTimer(120, *this, userPlayer);
+    //TODO: Changed for testing purposes. Revert before merging. Original value was 120
+    MonsterClass monsterTimer(99999, *this, userPlayer);
     monsterTimer.start();
 
 
 
     std::atomic<bool> running(true);
-    std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));
+    //Thread that manages the slowly decreasing sanity
+    // TODO: This has been commented out for testing purposes. Reinstate before merging.
+    //std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));
 
     UI.displayPrompt("It's always important to stay sane in such a stressful situation. The lower your sanity gets, the less you'll understand what is going on...\nUnfortunately, it is only a matter of time before you completely lose it. Consume SANITY PILLS to increase your sanity.");
 

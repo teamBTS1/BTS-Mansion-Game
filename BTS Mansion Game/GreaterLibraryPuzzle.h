@@ -17,7 +17,8 @@ private:
 
 public:
 	GreaterLibraryPuzzle(); //Default constructor
-	GreaterLibraryPuzzle(std::string ans); //Default constructor
+	GreaterLibraryPuzzle(std::string solution); //Default constructor
+	GreaterLibraryPuzzle(std::string solution, std::string hint);
 
 	void runPuzzle(); //Runs puzzle
 };

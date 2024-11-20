@@ -8,12 +8,13 @@ GalleryPuzzle::GalleryPuzzle()
 	_isSolved = false;
 }
 
-GalleryPuzzle::GalleryPuzzle(std::vector <ItemClass> ports, std::vector <ItemClass> answer)
+GalleryPuzzle::GalleryPuzzle(std::vector <ItemClass> ports, std::vector <ItemClass> answer, std::string hint)
 {
 	_description = "Gallery Puzzle";
 	_isSolved = false;
 	portraits = ports;
 	answers = answer;
+	_hint = hint;
 }
 
 void GalleryPuzzle::runPuzzle()
@@ -49,8 +50,9 @@ void GalleryPuzzle::runPuzzle()
 					correctAnswerCount++;
 				}
 			}
-			else {
-				//ui.displayPrompt("That is not one of the portraits!");
+			else if(input == "HINT")
+			{
+				ui.displayPrompt(_hint);
 			}
 		}		
 		system("cls"); //Clearing console
