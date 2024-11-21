@@ -46,9 +46,6 @@ GameControllerClass::GameControllerClass() {
 }
 void GameControllerClass::startGame() {
     showMenu();
-    displayBackstory();
-    system("cls");
-    gameLoop();
 }
 
 
@@ -327,7 +324,7 @@ void GameControllerClass::gameLoop() {
     
     rooms["LOUNGE CLOSET"] = RoomClass("You are in the lounge closet. You are safe from any threats.", "LOUNGE CLOSET", std::list<std::string>{"LOUNGE"}, false, true);
     rooms["LOUNGE"] = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER", "DINING HALL DOOR","BATHROOM", "LOUNGE CLOSET"}, roomB_Items);
-    rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE","BALLROOM"}, greaterLibraryItems);
+    rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE","BALLROOM","STUDY DOOR"},greaterLibraryDoors, greaterLibraryItems);
    //created rooms for ballroom , guestroom, and bathroom
     rooms["BALLROOM"] = RoomClass("The grand ballroom is magnificent, with a chandelier hanging overhead and rows of windows draped in heavy, velvet curtains. The polished marble floors reflect the moonlight streaming through the windows, but there’s an eerie silence, as if the ghosts of past parties linger in the shadows.", "BALLROOM", std::list<std::string>{"GREATER LIBRARY"},ballroomItems);
     rooms["GUESTROOM"] = RoomClass("The guestroom is modest yet elegant, with a large bed covered in fine linens, and a single window overlooking the mansion grounds. A wardrobe stands in one corner, and a small desk is positioned near the bed. The air feels slightly colder here, as though the room hasn’t been used in a while.","GUESTROOM",std::list<std::string>{"FOYER",},guestroomItems );
@@ -443,8 +440,7 @@ void GameControllerClass::gameLoop() {
     ChantPuzzle chantPuzzle = ChantPuzzle("Chant Puzzle"); //instance for chant puzzle 
     InteractClass* chantPuzzleStarterInteraction = new InteractClass("A chanting altar", "Test", chantPuzzle); //interaction to run puzzle
     ItemClass chantPuzzleStarter = ItemClass("CHANTING ALTAR", "A CHANTING ALTAR, there appears to be a 4 word phrase ingraved on the altar, but its been scrached away",false, chantPuzzleStarterInteraction); //item you can interact with
-    ItemClass Candle5 = ItemClass("CANDLE", "The 5th and Final Candle", true, true); //declaration for candle
-
+    ItemClass Candle5 = ItemClass("CANDLE", "The 5th and Final Candle",true, true); //declaration for candle
 
 
 
@@ -543,7 +539,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
+    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
    
 
 
@@ -686,7 +682,7 @@ void GameControllerClass::gameLoop() {
             system("cls");
             UI.displayPrompt("The DINING HALL DOOR is locked from this side\n");
         }
-
+        
         if (command == "CANDLE" && userPlayer.getRoomName() == "RITUAL ROOM") {
             if (userPlayer.getInventorySize() != 0) {
                 if (userPlayer.inInventory("CANDLE", "C1")) {
@@ -949,27 +945,33 @@ void GameControllerClass::showMenu() {
 
         if (input == "START") {
             // Start the game
+            system("cls");
             displayBackstory();
             gameLoop();
             // After the game ends, show the menu again
         }
         else if (input == "HELP") {
             // Display instructions
+            system("cls");
             UI.displayPrompt("\n--- Instructions ---");
             UI.displayPrompt("Use keywords in ALL CAPS to perform actions during gameplay.");
             UI.displayPrompt("Examples: INSPECT, PICKUP, GARDEN.");
             UI.displayPrompt("Press Enter to return to the main menu...");
             UI.userInput(); // Wait for user to press Enter
+            system("cls");
         }
         else if (input == "CREDITS") {
             // Display developer credits
+            system("cls");
             UI.displayPrompt("\n--- Credits ---");
             UI.displayPrompt("Game developed by: BTS! ");
             UI.displayPrompt("Press Enter to return to the main menu...");
             UI.userInput(); // Wait for user to press Enter
+            system("cls");
         }
         else if (input == "QUIT") {
             // End the game
+            system("cls");
             endGame();
             return; // Exit the menu loop and terminate the application
         }
