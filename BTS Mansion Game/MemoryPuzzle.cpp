@@ -26,9 +26,7 @@ void MemoryPuzzle::runPuzzle() {
 
 	for (int i = STARTING_LENGTH; i <= FINAL_LENGTH && toContinue; i++) { //going through each length but also checking to make sure displayletters didnt return false
 		std::string sequence = randomLetterString(i); //storing current string
-
 		toContinue = displayLetters(sequence,ui); //passing in the current sequence and the ui to the display letters
-
 
 	}
 

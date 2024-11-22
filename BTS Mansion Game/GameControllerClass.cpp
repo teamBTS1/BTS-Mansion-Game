@@ -440,7 +440,8 @@ void GameControllerClass::gameLoop() {
     ChantPuzzle chantPuzzle = ChantPuzzle("Chant Puzzle"); //instance for chant puzzle 
     InteractClass* chantPuzzleStarterInteraction = new InteractClass("A chanting altar", "Test", chantPuzzle); //interaction to run puzzle
     ItemClass chantPuzzleStarter = ItemClass("CHANTING ALTAR", "A CHANTING ALTAR, there appears to be a 4 word phrase ingraved on the altar, but its been scrached away",false, chantPuzzleStarterInteraction); //item you can interact with
-    ItemClass Candle5 = ItemClass("CANDLE", "The 5th and Final Candle",true, true); //declaration for candle
+    ItemClass Candle5 = ItemClass("CANDLE", "The 5th and Final Candle", "C5", true, true); //declaration for candle
+
 
 
 
@@ -585,14 +586,11 @@ void GameControllerClass::gameLoop() {
 
         std::string command = UI.userInput();
 
-
         // Boolean to track whether the kitchen door is open
         bool kitchenDoorOpen = false;
         
 
         //bool to track if player put memory in memory goblet
-
-
         // Check the command for the kitchen door
         if (command == "KITCHEN DOOR" && userPlayer.getRoomName() == "KITCHEN" && rooms.find("FOYER") != rooms.end()) {
             system("cls");
@@ -682,7 +680,7 @@ void GameControllerClass::gameLoop() {
             system("cls");
             UI.displayPrompt("The DINING HALL DOOR is locked from this side\n");
         }
-        
+        /*--------------------- CANDLE PLACEMENT LOGIC START ----------------------*/
         if (command == "CANDLE" && userPlayer.getRoomName() == "RITUAL ROOM") {
             if (userPlayer.getInventorySize() != 0) {
                 if (userPlayer.inInventory("CANDLE", "C1")) {
@@ -722,11 +720,30 @@ void GameControllerClass::gameLoop() {
                      rooms["RITUAL ROOM"] = currentRoom_temp;
                     continue;
                 }
+                else if (userPlayer.inInventory("CANDLE", "C4")) // candle 4 placed conditon TODO: Add functionality for 4th and possible 5th candle to be printed on screen
+                {
+                    system("cls");
+                    UI.displayPrompt("You place the 4th candle");
+                    std::this_thread::sleep_for(std::chrono::seconds(2)); //DRAMATIC PAUSE
+                    userPlayer.useItem("CANDLE", "C4"); //use the candle
+                    userPlayer.setRoom(rooms["MEMORY OF THE MANSION"]); //set user to teleport to memory of mansion
+                    playTeleportSequence(); // CALL CANDLE STYLIZE SEQUENCE
+                    std::this_thread::sleep_for(std::chrono::seconds(3)); //DRAMATIC PAUSE 2 AFER SEQUENCE
+                    system("cls"); 
+                    continue;
+                }
+                else if (userPlayer.inInventory("CANDLE", "C5")) { //candle 5 placed condition
+                    system("cls");
+                    endingSequence(UI);
+                    std::this_thread::sleep_for(std::chrono::seconds(3)); //pause after ext 
+                    endGame("\nThank you for playing."); 
+                }
                 else
                 {
                     UI.displayPrompt("You do not have a candle");
                     continue;
                 }
+                /*--------------------- CANDLE PLACEMENT LOGIC END ----------------------*/
             }
         }
 
@@ -815,10 +832,6 @@ void GameControllerClass::gameLoop() {
                         std::cout << memoryGobletIsActive;
                        
                     }
- 
-                     
-
-
 
                 }
                 else if (command == "METAL SAFE")
@@ -849,7 +862,15 @@ void GameControllerClass::gameLoop() {
 
                 else if (currentRoom_temp.getRoomItemByName(itemName).getInteraction()->getIsPuzzle() == true) //If interaction is a puzzle, call overloaded runInteraction
                 {
-                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer, studyKey, galleryKey, mirrorKey, masterKey, mazeKey, mazeExitKey, playerMemory, Candle5); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
+                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer, galleryKey, mirrorKey, masterKey, mazeKey, mazeExitKey, playerMemory, Candle5); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
+
+                    if (userPlayer.inInventory("CANDLE", "C5")) { // condition that finds whether user get candle 5, whic specifically occurs right after they complete the chant puzzle sequence
+                        system("cls");
+                        UI.displayPrompt("The monster roars awake.");
+                        std::this_thread::sleep_for(std::chrono::seconds(3));
+                        userPlayer.setRoom(rooms["RITUAL ROOM"]);
+                    }
+
                 }
                 else //Run interact sequence if not pick up able object
                 {
@@ -926,6 +947,7 @@ void GameControllerClass::gameLoop() {
             }
         }
     }
+    UI.displayPrompt("\nGOODBYE."); // temp text here for when the loop exits u
 }
 
 
@@ -1075,6 +1097,54 @@ void GameControllerClass::updateSanityGrabbed(PlayerClass& player) {
 
 bool GameControllerClass::inProtectedState() {
     return isInProtectedAction;
+}
+
+void GameControllerClass::playTeleportSequence()
+{
+    //THIS FUNCTION IS A STYLISTIC FUNCTION FOR THE 4TH CANDLE SEQUENCE
+    for (int i = 0;i < 10000;i++) {
+        std::cout << "WHERE AM I GOING";
+        if (i % 30 == 0 && i < 3000) {
+            std::cout << "HELP ME\n";
+        }
+        if (i > 1500) {
+            std::cout << "THERE IS NO COMING BACK NOW";
+        }
+    }
+    system("cls");
+}
+
+void GameControllerClass::endingSequence(UserInterfaceClass UI) {
+    UI.displayPrompt("I AM...\n");
+    // stylized sequence for demon intro
+    for (int i = 0; i < 2; i++) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        UI.displayPrompt("I AM\n");
+    }
+    bool failedSequence = false; // value that indicates whether user has failed the puzzle in any way 
+    for (int i = 0; i < 3; i++) {
+        UI.displayPrompt("SAY MY NAME");
+        std::string command = UI.userInput();
+
+        transform(command.begin(), command.end(), command.begin(),::toupper); //convert input to uppercase , user can input name in any combination of cases
+
+        if (command != "MALUM") {
+            failedSequence = true; // if name was ever wrong in any point, you have failed to excercise the demon
+        }
+    }
+    if (failedSequence) {
+        //good ending
+        UI.displayPrompt("GOOD ENDING"); // temp ending
+    }
+    else {
+        UI.displayPrompt("BAD ENDING"); // temp ending
+    }
+}
+
+void GameControllerClass::endGame(std::string flavorText) {
+    system("cls");
+    UI.displayPrompt(flavorText); //
+    exit(0);  // Exit the game
 }
 
 

@@ -31,7 +31,7 @@ public:
 	void displayBackstory();
 	//function to display backstory to user
 	void endGame();
-	//mber function which will exit game loop if chosen
+	//default mber function which will exit game loop if chosen
 	void pickUpNoteSequence(PlayerClass& myPlayer); 
 	//function that displays option to pick up note in room A
 	void displayInventory();
@@ -43,6 +43,10 @@ public:
 	void updateSanityGrabbed(PlayerClass& player);
 	void sanitySequence(PlayerClass& userPlayer, std::atomic<bool>& running); // function that handles sanity output
 	void updateSanity(PlayerClass& player, int amount); //Function that changes player sanity by passing an integer to add to the value
+	void playTeleportSequence(); // function that plays the text sequence
+	void endingSequence(UserInterfaceClass UI); //the ending sequence of the game
+
+	void endGame(std::string flavorText); // overloaded endGame function that takes string instead of default text
 	bool inProtectedState(); 
 };
 
