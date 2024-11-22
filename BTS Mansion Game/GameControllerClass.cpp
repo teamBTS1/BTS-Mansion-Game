@@ -540,7 +540,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
+    PlayerClass userPlayer = PlayerClass(rooms["THE CONSCIOUS"]);
    
 
 
@@ -1144,7 +1144,8 @@ void GameControllerClass::endingSequence(UserInterfaceClass UI) {
 void GameControllerClass::endGame(std::string flavorText) {
     system("cls");
     UI.displayPrompt(flavorText); //
-    exit(0);  // Exit the game
+    showMenu();     //After game is completed, it will show the main menu now
+    
 }
 
 
