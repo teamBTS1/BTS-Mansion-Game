@@ -3,11 +3,13 @@
 MemoryPuzzle::MemoryPuzzle() {
 	_description = " ";
 	_isSolved = false;
+	_hint = "Trust in your memory.";
 }
 
 MemoryPuzzle::MemoryPuzzle(std::string puzzleName) {
 	_description = puzzleName;
 	_isSolved = false;
+	_hint = "Trust in your memory.";
 }
 
 
@@ -67,9 +69,13 @@ bool MemoryPuzzle::displayLetters(std::string& sequence, UserInterfaceClass ui) 
 
 	ui.displayPrompt("Recite the memory");
 	input = ui.userInput();
-
 	if (input == sequence) {
 		ui.displayPrompt("The memories react");  //user succeeded
+	}
+	else if (input == "HINT")
+	{
+		ui.displayPrompt(_hint);
+		return false;
 	}
 	else {
 		ui.displayPrompt("eeeeeeeThe memories stop reacting"); //user failed 

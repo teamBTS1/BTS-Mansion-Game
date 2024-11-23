@@ -4,7 +4,8 @@
 Puzzle::Puzzle()
 {
 	_reward = nullptr;
-	_description = "";
+	_description = "Default description.";
+	_hint = "Default hint.";
 	_isSolved = false;
 }
 
@@ -12,12 +13,15 @@ Puzzle::Puzzle(std::string description)
 {
 	_reward = nullptr;
 	_description = description;
+	_hint = "Default hint.";
 	_isSolved = false;
 }
 
 Puzzle::Puzzle(ItemClass *reward)
 {
 	_reward = reward;
+	_description = "Default description.";
+	_hint = "Default hint.";
 	_isSolved = false;
 	
 }
@@ -26,8 +30,17 @@ Puzzle::Puzzle(ItemClass *reward, std::string description)
 {
 	*_reward = *reward;
 	_description = description;
+	_hint = "Default hint.";
 	_isSolved = false;
 	
+}
+
+Puzzle::Puzzle(ItemClass* reward, std::string description, std::string hint)
+{
+	*_reward = *reward;
+	_description = description;
+	_hint = hint;
+	_isSolved = false;
 }
 
 std::string Puzzle::getDescription()
@@ -38,6 +51,11 @@ std::string Puzzle::getDescription()
 ItemClass Puzzle::getReward()
 {
 	return *_reward;
+}
+
+std::string Puzzle::getHint()
+{
+	return _hint;
 }
 
 bool Puzzle::isSolved()

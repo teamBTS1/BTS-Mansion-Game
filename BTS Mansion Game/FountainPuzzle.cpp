@@ -10,7 +10,7 @@ FountainPuzzle::FountainPuzzle()	//Default constructor
 	answer4 = " ";
 }
 
-FountainPuzzle::FountainPuzzle(std::string ans1, std::string ans2, std::string ans3, std::string ans4)
+FountainPuzzle::FountainPuzzle(std::string ans1, std::string ans2, std::string ans3, std::string ans4, std::vector<std::string> hintList)
 {
 	_description = "Fountain Puzzle";
 	_isSolved = false;
@@ -18,6 +18,7 @@ FountainPuzzle::FountainPuzzle(std::string ans1, std::string ans2, std::string a
 	answer2 = ans2;
 	answer3 = ans3;
 	answer4 = ans4;
+	_hintList = hintList; 
 }
 
 void FountainPuzzle::runPuzzle() //Runs puzzle
@@ -39,6 +40,10 @@ void FountainPuzzle::runPuzzle() //Runs puzzle
 				ui.displayPrompt("The fountain panel lights up with a soft blue light, you answered correctly!");
 				correctAnswerCount++;
 			}
+			else if (input == "HINT")
+			{
+				ui.displayPrompt(_hintList.at(correctAnswerCount));
+			}
 			else //Wrong answer
 			{
 				ui.displayPrompt("The fountain panel doesn't respond to your attempt, try again.");
@@ -54,6 +59,11 @@ void FountainPuzzle::runPuzzle() //Runs puzzle
 			{
 				ui.displayPrompt("The fountain panel lights up with a soft blue light, you answered correctly!");
 				correctAnswerCount++;
+			}
+			else if (input == "HINT")
+			{
+				ui.displayPrompt(_hintList.at(correctAnswerCount));
+				answerCount--;//This line is here because we don't want the hint request counting towards the number of attempts at answering
 			}
 			else //Wrong answer
 			{
@@ -71,6 +81,10 @@ void FountainPuzzle::runPuzzle() //Runs puzzle
 				ui.displayPrompt("The fountain panel lights up with a soft blue light, you answered correctly!");
 				correctAnswerCount++;
 			}
+			else if (input == "HINT")
+			{
+				ui.displayPrompt(_hintList.at(correctAnswerCount));
+			}
 			else //Wrong answer
 			{
 				ui.displayPrompt("The fountain panel doesn't respond to your attempt, try again.");
@@ -86,6 +100,10 @@ void FountainPuzzle::runPuzzle() //Runs puzzle
 			{
 				ui.displayPrompt("The fountain panel lights up with a soft blue light, you answered correctly!");
 				correctAnswerCount++;
+			}
+			else if (input == "HINT")
+			{
+				ui.displayPrompt(_hintList.at(correctAnswerCount));
 			}
 			else //Wrong answer
 			{
