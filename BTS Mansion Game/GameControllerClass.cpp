@@ -552,7 +552,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
+    PlayerClass userPlayer = PlayerClass(rooms["HEDGE MAZE EXIT"]);
     
 
     //Defining variables for timer
@@ -828,34 +828,56 @@ void GameControllerClass::gameLoop() {
                     if (command == "PICKUP")
                     {
                         system("cls");
-                        if (currentRoom_temp.getRoomItemByName(itemName).getCanPickUp() == true) //Run pick up sequence
+                        if (currentRoom_temp.getRoomItemByName(itemName).getCanPickUp() == true) // Run pick up sequence
                         {
                             for (int i = 0; i < currentRoom_temp.getItemsLength(); i++)
                             {
-                                ItemClass& itm = currentRoom_temp.getItems().at(i); //Looping through each item in room to check if exists
-                                //std::cout << itm.getName();
+                                ItemClass& itm = currentRoom_temp.getItems().at(i); // Looping through each item in room to check if exists
                                 if (itm.getName() == itemName)
                                 {
-                                    PickUpItemClass pickUp(itm); //Picking up item the user requested to pick up
-                                    std::cout << "Attempting to play sound" << endl; 
+                                    PickUpItemClass pickUp(itm); // Picking up item the user requested to pick up
+                                    std::cout << "Attempting to play sound" << std::endl;
                                     itm.playItemSound();
 
-                                        if (itm.getSoundFileName() == "") {
-                                            PlaySound(TEXT("General Pickup.wav"), NULL, SND_FILENAME | SND_ASYNC);
-                                        }
+                                    if (itm.getSoundFileName() == "")
+                                    {
+                                        PlaySound(TEXT("General Pickup.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                                    }
                                     itm.getSoundFileName();
                                     pickUp.addToInventory(userPlayer);
                                     currentRoom_temp.RemoveItem(itm);
                                     rooms[currentRoom_temp.GetName()] = currentRoom_temp;
                                     userPlayer.setRoom(currentRoom_temp);
-                                    std::cout << endl;
+                                    std::cout << std::endl;
                                     std::cout << "You picked up " << itemName << "." << std::endl << std::endl;
-                                    std::cout << "-----------" << endl;
+                                    std::cout << "-----------" << std::endl;
+
+                                    // Check if the picked-up item is CANDLE C4
+                                    if (itemName == "CANDLE" && currentRoom_temp.GetName() == "HEDGE MAZE EXIT")
+                                    {
+                                        // Portal logic
+                                        system("cls");
+                                        UI.displayPrompt("As you pick up the 4th candle, a surge of energy flows through the room...");
+                                        std::this_thread::sleep_for(std::chrono::seconds(2)); // Dramatic pause
+                                        // Portal opening prompt
+                                        UI.displayPrompt("A mysterious portal materializes before you, shimmering with eldritch energy...");
+                                        std::this_thread::sleep_for(std::chrono::seconds(2)); // Pause to emphasize portal appearance
+
+                                        // Teleport to Ritual Room
+                                        UI.displayPrompt("The portal pulls you in... You are heading to the Ritual Room.");
+                                        userPlayer.setRoom(rooms["RITUAL ROOM"]); // Set destination to the Ritual Room
+
+                                        playTeleportSequence(); // Play teleportation sequence animation
+                                        std::this_thread::sleep_for(std::chrono::seconds(3)); // Pause after teleport sequence
+
+                                        system("cls"); // Clear the screen before transitioning to the new room
+                                    }
                                     break;
                                 }
                             }
                         }
                     }
+
                 }
                 else if (command == "MEMORY GOBLET") {
 
