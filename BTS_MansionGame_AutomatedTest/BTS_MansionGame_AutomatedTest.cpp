@@ -3,11 +3,14 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <unordered_map>
 #include "../BTS Mansion Game/PlayerClass.cpp"
 #include "../BTS Mansion Game/ItemClass.cpp"
 #include "../BTS Mansion Game/RoomClass.cpp"
 #include "../BTS Mansion Game/Door.cpp"
 #include "../BTS Mansion Game/Puzzle.cpp"
+
+
 
 
 /**
@@ -128,7 +131,25 @@ namespace BTSMansionGameAutomatedTest
 			
 			
 		}
+		TEST_METHOD(BTS_RoomNav)
+		{
+			Logger::WriteMessage("Test basic navigation between unlocked rooms");
+
+			std::unordered_map<std::string, RoomClass> rooms; //hashmap for all rooms
+			rooms["FOYER"] = RoomClass("you are in the foyer","FOYER",std::list<std::string>{"LOUNGE"});//foyer declaration
+			rooms["LOUNGE"] = RoomClass("you are in the lounge","LOUNGE",std::list<std::string>{"FOYER"}); //loounge declaration
+			PlayerClass player;
+
+			player.setRoom(rooms["FOYER"]);//setting room to foyer
 
 
+			// Start in Foyer
+			Assert::AreEqual(std::string("FOYER"), player.getRoomName(), L"Player should start in Foyer"); //checking if the room is foyer when it should be foyer
+
+			// Move to Lounge
+			player.setRoom(rooms["LOUNGE"]);//setting room to lounge
+			Assert::AreEqual(std::string("LOUNGE"), player.getRoomName(), L"Player should now be in Lounge"); //checking if room is lounged when it should be lounge
+		}
+		
 	};
 }
