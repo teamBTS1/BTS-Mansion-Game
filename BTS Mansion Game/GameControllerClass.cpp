@@ -552,7 +552,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
+    PlayerClass userPlayer = PlayerClass(rooms["THE LIFT"]);
     
 
     //Defining variables for timer
@@ -950,6 +950,17 @@ void GameControllerClass::gameLoop() {
 
                             PlaySound(TEXT("Walking Through Tunnel.wav"), NULL, SND_FILENAME | SND_ASYNC);
                         }
+                        else if (command == "FOUNTAIN" || command == "GRAVEYARD" || command == "GARDEN")
+                        {
+                            PlaySound(TEXT("Walking Through Tunnel.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                        }
+                        else if (command == "THE LIFT") {
+                            PlaySound(TEXT("Portal Opening.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                        }
+                        else if (command == "MEMORY OF THE MANSION" && previousRoom == "THE LIFT")
+                        {
+                            PlaySound(TEXT("Portal Opening.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                        }
                         else {
                             PlaySound(TEXT("DoorOpen.wav"), NULL, SND_FILENAME | SND_ASYNC);
                         }
@@ -1095,6 +1106,9 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
                 {
                     if (command == "BOOKSHELF") {
                         PlaySound(TEXT("Bookshelf Open.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                    }
+                    else if (command == "BLOCKED HEDGE MAZE" || command == "HEDGE MAZE") {
+                        PlaySound(TEXT("HolyWaterPour.wav"), NULL, SND_FILENAME | SND_ASYNC);
                     }
                     else {
                         PlaySound(TEXT("DoorUnlock.wav"), NULL, SND_FILENAME | SND_ASYNC);
