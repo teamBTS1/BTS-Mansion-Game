@@ -43,7 +43,10 @@ public:
 	void displayPentacle(int candleVal);
 	// prints pentagram with appropriate candle placements for RITUAL ROOM
 
-	void displayPrompt(const std::string& prompt, int sanityLevel) const; //overloaded displlay function that has sanity functionality
+	void displayPrompt(const std::string& prompt, int sanityLevel) const;
+	/*overloaded display function that has sanity functionality.
+	To use line breaks and paragraph indents, pass in " NEWLINE " and " INDENT " respectively as part of the string
+	*/
 
 	//-------------BELOW ARE THE HELPER FUNCTION FOR displayPrompt(string, int) overloaded function-------------------
 	bool is_all_uppercase(const std::string& word) const; 
