@@ -151,6 +151,10 @@ void GameControllerClass::displayBackstory() {
 }
 
 void GameControllerClass::gameLoop() {
+    //Ending sequence call for testing
+    UserInterfaceClass ui;
+    endingSequence(ui);
+    
     /*we initialize the rooms and player class in the beginning. In the future we will probably wrap this in a function or refactor this class to remove clutter from gameLoop*/
 
     std::unordered_map<std::string, RoomClass> rooms; //hashmap for all rooms
@@ -547,12 +551,11 @@ void GameControllerClass::gameLoop() {
         theConsciousDoors,
         theConsciousItems
     );
-
     
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
+    PlayerClass userPlayer = PlayerClass(rooms["HIDDEN SECTION"]);
     
 
     //Defining variables for timer
@@ -1191,23 +1194,39 @@ void GameControllerClass::endingSequence(UserInterfaceClass UI) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
         UI.displayPrompt("I AM\n");
     }
-    bool failedSequence = false; // value that indicates whether user has failed the puzzle in any way 
+    bool neutralSequence = false; // value that indicates whether user has entered MALUM and got the neutral ending
+    bool goodSequence = false; //Indicates the user got the good ending (entered HENRY)
     for (int i = 0; i < 3; i++) {
+        if (goodSequence == true)
+        { 
+            break; //If good ending true, end sequence there
+        }
         UI.displayPrompt("SAY MY NAME");
         std::string command = UI.userInput();
 
         transform(command.begin(), command.end(), command.begin(),::toupper); //convert input to uppercase , user can input name in any combination of cases
 
-        if (command != "MALUM") {
-            failedSequence = true; // if name was ever wrong in any point, you have failed to excercise the demon
+        if (command == "MALUM") {
+            neutralSequence = true; // if name is MALUM flag neutral ending
+        }
+        else if (command == "HENRY")
+        {
+            goodSequence = true; //if name is HENRY flag good ending
         }
     }
-    if (failedSequence) {
-        //good ending
-        UI.displayPrompt("GOOD ENDING"); // temp ending
-    }
-    else {
+    if (neutralSequence == false && goodSequence == false)
+    {
+        //Bad ending
         UI.displayPrompt("BAD ENDING"); // temp ending
+    }
+    else if (neutralSequence == true && goodSequence == false)
+    {
+        //Neutral ending
+        UI.displayPrompt("NEUTRAL ENDING"); //temp ending
+    }
+    else if(goodSequence == true){ 
+        //Good ending
+        UI.displayPrompt("GOOD ENDING"); // temp ending
     }
 }
 
