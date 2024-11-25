@@ -21,6 +21,9 @@ void UserInterfaceClass::displayPrompt(const std::string& prompt, int sanity) co
     std::stringstream ss(prompt);
     std::string word;
     std::vector<std::string> words;
+    
+    std::string newLineString = "\n";
+    std::string indentString = "     ";
 
     // Split sentence into words
     while (ss >> word) {
@@ -35,7 +38,22 @@ void UserInterfaceClass::displayPrompt(const std::string& prompt, int sanity) co
     // Rejoin words into the final jumbled sentence
     std::stringstream result;
     for (const auto& word : words) {
-        result << word << " ";
+        /*Because parsing the stringstream by word sanitizes all whitespace and line breaks, we need to add any indentation
+        or line breaks here. Any string passed into this function should contain NEWLINE with spaces around it
+        where line breaks should go, and INDENT with spaces around it where paragraph indents should go.*/
+        if (word == "NEWLINE")
+        {
+            result << newLineString;
+        }
+        else if (word == "INDENT")
+        {
+            result << indentString;
+        }
+        else
+        {
+            result << word << " ";
+        }
+
     }
 
     // Remove the trailing space
