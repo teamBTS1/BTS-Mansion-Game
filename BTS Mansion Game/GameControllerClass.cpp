@@ -590,6 +590,7 @@ void GameControllerClass::gameLoop() {
         //currentRoom_temp.displayRoomItems(); //Displaying room items, TEMP function until can implement into UI class
         //std::cout << endl;
        // currentRoom_temp.displayAdjacentRooms(); //Displaying adjacent rooms, TEMP function until can implement into UI class
+        std::cout << endl;
         UI.displayPrompt("\nYou cant contain your curiosity and have the urge to INSPECT the items in the room. (type 'INVENTORY' to open inventory. Type 'QUIT' to exit the game)\n"); //user input 
         
 
@@ -837,7 +838,7 @@ void GameControllerClass::gameLoop() {
                                 if (itm.getName() == itemName)
                                 {
                                     PickUpItemClass pickUp(itm); //Picking up item the user requested to pick up
-                                    std::cout << "Attempting to play sound" << endl; 
+                                    //std::cout << "Attempting to play sound" << endl; 
                                     itm.playItemSound();
 
                                         if (itm.getSoundFileName() == "") {
@@ -894,13 +895,15 @@ void GameControllerClass::gameLoop() {
                             rooms["DINING HALL"].RemoveItem(metalSafe);
                             rooms["DINING HALL"].AddItem(diningHallKey);
                             rooms["DINING HALL"].displayRoomItems();
-                            
+
                         }
                         else
-                            UI.displayPrompt("You entered the wrong passcode. Try again");
+                            system("cls");
+                            UI.displayPrompt("You entered the wrong passcode. Try again\n");
                     }
                     catch (const std::invalid_argument& e) {
-                        UI.displayPrompt("You entered the wrong passcode. Try again");
+                        system("cls");
+                        UI.displayPrompt("You entered the wrong passcode. Try again\n");
                     }
                 }
 
@@ -1009,8 +1012,8 @@ void GameControllerClass::gameLoop() {
             }
             else
             { 
-                system("cls");
-                UI.displayPrompt("You did not enter a valid input\n");
+                //system("cls");
+                //UI.displayPrompt("You did not enter a valid input\n");
             }
         }
     }
@@ -1036,6 +1039,7 @@ void GameControllerClass::showMenu() {
             // Start the game
             system("cls");
             displayBackstory();
+            system("cls");
             gameLoop();
             // After the game ends, show the menu again
         }
@@ -1066,7 +1070,8 @@ void GameControllerClass::showMenu() {
         }
         else {
             // Invalid input
-            UI.displayPrompt("Invalid choice. Please try again.");
+            system("cls");
+            UI.displayPrompt("Invalid choice. Please try again.\n");
         }
     }
 }

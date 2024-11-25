@@ -31,7 +31,4 @@ void ChantPuzzle::runPuzzle() {
 		ui.displayPrompt("Nothing happens... "); //if the input if wrong
 	}
 
-
-
-
 }

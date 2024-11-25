@@ -4,6 +4,7 @@
 #include <mmsystem.h>
 #include <iostream>
 #include <conio.h>
+#include <iostream>
 
 #pragma comment(lib, "winmm.lib")
 
@@ -41,7 +42,7 @@ void MonsterClass::onTimerTriggered() //Runs when timer finishes
 	UserInterfaceClass ui;
 	ui.displayPrompt("A shadowy monster with elongated limbs grabs you, as the shadows encapsulating this monster consume you and all you can feel is its cold embrace.");
 	PlaySound(TEXT("jumpscare.wav"), NULL, SND_FILENAME | SND_ASYNC);
-	ui.displayPrompt(R"(
+	std::cout << (R"(
        ___,---.__          /'|`\          __,---,___
     ,-'    \`    `-.____,-'  |  `-.____,-'    //    `-.
   ,'        |           ~'\     /`~           |        `.

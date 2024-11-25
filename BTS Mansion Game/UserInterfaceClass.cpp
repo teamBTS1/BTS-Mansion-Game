@@ -17,18 +17,37 @@ std::string UserInterfaceClass::preventCutoff(const std::string text)const
     std::istringstream words(text);
     std::string word;
     std::string wrappedText;
+    std::vector<std::string> wordds;
+
+    std::string newLineString = "\n \n";
+    std::string indentString = "     ";
 
     int currentWidth = 0;
 
     while (words >> word) {
     /*while loop goes through string and prevents text cutoff*/
-        if (currentWidth + word.length() > 100) {
+        if (currentWidth + word.length() > 115) {
             wrappedText += "\n";
             currentWidth = 0;
         }
-        wrappedText += word + " ";
+        if (word == "NEWLINE")
+        {
+            wrappedText += newLineString;
+        }
+        else if (word == "INDENT")
+        {
+            //wrappedText += indentString;
+        }
+        else
+        {
+            wrappedText += word += " ";
+        }
+
         currentWidth += word.length() + 1;
     }
+
+    std::stringstream result;
+
     return wrappedText;
 }
 
@@ -46,9 +65,6 @@ void UserInterfaceClass::displayPrompt(const std::string& prompt, int sanity) co
     std::string word;
     std::vector<std::string> words;
     
-    std::string newLineString = "\n";
-    std::string indentString = "     ";
-
     // Split sentence into words
     while (ss >> word) {
         words.push_back(word);
@@ -62,22 +78,7 @@ void UserInterfaceClass::displayPrompt(const std::string& prompt, int sanity) co
     // Rejoin words into the final jumbled sentence
     std::stringstream result;
     for (const auto& word : words) {
-        /*Because parsing the stringstream by word sanitizes all whitespace and line breaks, we need to add any indentation
-        or line breaks here. Any string passed into this function should contain NEWLINE with spaces around it
-        where line breaks should go, and INDENT with spaces around it where paragraph indents should go.*/
-        if (word == "NEWLINE")
-        {
-            result << newLineString;
-        }
-        else if (word == "INDENT")
-        {
-            result << indentString;
-        }
-        else
-        {
-            result << word << " ";
-        }
-
+        result << word << " ";
     }
 
     // Remove the trailing space
@@ -86,7 +87,7 @@ void UserInterfaceClass::displayPrompt(const std::string& prompt, int sanity) co
         result_str.pop_back();
     }
 
-    std::string dressString = preventCutoff(result_str);// run string through wrapper helper function
+    std::string dressString = preventCutoff(prompt);// run string through wrapper helper function
 
     std::cout << dressString << std::endl;
 }
@@ -225,8 +226,7 @@ bool UserInterfaceClass::isValidInput(const std::string[]) const
 
 void UserInterfaceClass::displayPentacle(int candleVal)
 {
-    if (candleVal == 0) {
-        std::cout << R"(   
+   std::cout << R"(   
        ".d$$$******$$$$c."        
     ".d$P'            '$$c"      
    "$$$$$.           .$$$*$."    
@@ -243,88 +243,5 @@ void UserInterfaceClass::displayPentacle(int candleVal)
     "'$$c.   `$b$F    .d$P'"     
       "`4$$$c.$$$..e$$P'"        
           "`^^^^^^^`';")" << std::endl;
-
-    }
-    else if (candleVal == 1) {
-        std::cout << R"(   
-       ".d$$$******$$$$c."        
-    ".d$P'            '$$c"      
-   "$$$$$.           .$$$*$."    
- ".$$ 4$L*$$.     .$$Pd$  '$b"   
- "$F   *$. '$$e.e$$' 4$F   ^$b"  
-"d$     $$   z$$$e   $$     '$." 
-"$P     `$L$$P` `'$$d$'      $$" 
-"$$     e$$F       4$$b.     $$" 
-"$b  .$$' $$      .$$ '4$b.  $$" 
-"$$e$P    $b     d$`    $$c$F" 
-"$P$$$$$$$$$$$$$$$$$$$$$$$$$$"  
- "'$c.      4$.  $$       .$$"   
-  "^$$.      $$ d$'      d$P"    
-    "'$$c.   `$b$F    .d$P'"     
-      "`4$$$c/||||\e$$P'"        
-          "`^\||||/`';")" << std::endl;
-
-    }
-    else if (candleVal == 2) {
-        std::cout << R"(   
-       ".d$$$******$$$$c."        
-    ".d$P'            '$$c"      
-   "$$$$$.           .$$$*$."    
- ".$$ 4$L*$$.     .$$Pd$  '$b"   
- "$F   *$. '$$e.e$$' 4$F   ^$b"  
-"d$     $$   z$$$e   $$     '$." 
-"$P     `$L$$P` `'$$d$'      $$" 
-"$$     e$$F       4$$b.     $$" 
-"$b  .$$' $$      .$$ '4$b.  $$" 
-"$$e$P    $b     d$`    $$c$/||\
-"$P$$$$$$$$$$$$$$$$$$$$$$$$$\||/  
- "'$c.      4$.  $$       .$$"   
-  "^$$.      $$ d$'      d$P"    
-    "'$$c.   `$b$F    .d$P'"     
-      "`4$$$c/||||\e$$P'"        
-          "`^\||||/`';")" << std::endl;
-
-    }
-    else if (candleVal == 3) {
-        std::cout << R"(   
-       ".d$$$******$$$$c."        
-    ".d$P'            '$$c"      
-   "$$$$$.           .$$$*$."    
- ".$$ 4$L*$$.     .$$Pd$  '$b"   
- "$F   *$. '$$e.e$$' 4$F   ^$b"  
-"d$     $$   z$$$e   $$     '$." 
-"$P     `$L$$P` `'$$d$'      $$" 
-"$$     e$$F       4$$b.     $$" 
-"$b  .$$' $$      .$$ '4$b.  $$" 
-/||\-$P    $b     d$`    $$c/||\
-\||/$$$$$$$$$$$$$$$$$$$$$$$$\||/  
- "'$c.      4$.  $$       .$$"   
-  "^$$.      $$ d$'      d$P"    
-    "'$$c.   `$b$F    .d$P'"     
-      "`4$$$c/||||\e$$P'"        
-          "`^\||||/`';")" << std::endl;
-
-    }
-    else {
-        /* place holder for when we add the last 2 candles*/
-        std::cout << R"(bruh   
-       ".d$$$******$$$$c."        
-    ".d$P'            '$$c"      
-   "$$$$$.           .$$$*$."    
- ".$$ 4$L*$$.     .$$Pd$  '$b"   
- "$F   *$. '$$e.e$$' 4$F   ^$b"  
-"d$     $$   z$$$e   $$     '$." 
-"$P     `$L$$P` `'$$d$'      $$" 
-"$$     e$$F       4$$b.     $$" 
-"$b  .$$' $$      .$$ '4$b.  $$" 
-"$$e$P    $b     d$`    $$c$F" 
-"$P$$$$$$$$$$$$$$$$$$$$$$$$$$"  
- "'$c.      4$.  $$       .$$"   
-  "^$$.      $$ d$'      d$P"    
-    "'$$c.   `$b$F    .d$P'"     
-      "`4$$$c.$$$..e$$P'"        
-          "`^^^^^^^`';")" << std::endl;
-
-    }
 
 }

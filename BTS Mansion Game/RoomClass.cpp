@@ -191,7 +191,7 @@ std::string RoomClass::AmendDescription()
 	std::string indent = " INDENT ";
 	std::string newLine = " NEWLINE ";
 	
-	std::string returnMeString = indent + this->roomDescription; //string to be returned as "full" description
+	std::string returnMeString = this->roomDescription; //string to be returned as "full" description
 
 	returnMeString += newLine + indent;//Line break
 
@@ -245,7 +245,7 @@ std::string RoomClass::AmendDescription()
 
 	}
 	//return returnMeString;
-	return preventCutoff(returnMeString);
+	return returnMeString;
 
 	/*
 	std::string puzzleDesc = roomPuzzle.getDescription();
