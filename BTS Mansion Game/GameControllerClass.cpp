@@ -1142,7 +1142,7 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
 void GameControllerClass::sanitySequence(PlayerClass& userPlayer, std::atomic<bool>& running) {
     while (running) {
         int sanity = userPlayer.getSanity();
-        userPlayer.setSanity(sanity - 1);
+        updateSanity(userPlayer, sanity - 1);
 
         std::this_thread::sleep_for(std::chrono::seconds(9));
 
@@ -1155,7 +1155,9 @@ void GameControllerClass::sanitySequence(PlayerClass& userPlayer, std::atomic<bo
  
 void GameControllerClass::updateSanity(PlayerClass& player, int amount)
 {
-    player.setSanity(std::max(0, std::min(100, player.getSanity() + amount)));
+    int lowerBound = 0;
+    int upperBound = 100;
+    player.setSanity(std::max(lowerBound, std::min(upperBound, player.getSanity() + amount)));
 }
 
 void GameControllerClass::updateSanityGrabbed(PlayerClass& player) {

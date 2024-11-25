@@ -108,7 +108,7 @@ void UserInterfaceClass::displayMenu() const
     std::cout << "START Game" << std::endl;
     std::cout << "QUIT" << std::endl;
     std::cout << "=====================" << std::endl;
-    std::cout << "Words in all caps will be input options for this game, please enter an option: ";
+    std::cout << "Words in all caps will be input options for this game; please enter an option: ";
 }
 
 static inline std::string ltrim(std::string s) {

@@ -188,9 +188,11 @@ std::string preventCutoff(const std::string& text)
 
 std::string RoomClass::AmendDescription()
 {
-	std::string returnMeString = this->roomDescription; //string to be returned as "full" description
+	std::string indent = "     ";
+	
+	std::string returnMeString = indent + this->roomDescription; //string to be returned as "full" description
 
-	returnMeString += "\n";//Line break
+	returnMeString += "\n" + indent;//Line break
 
 	for (int i = 0; i < itemsLength; i++)
 	{
@@ -215,7 +217,7 @@ std::string RoomClass::AmendDescription()
 	
 	}
 
-	returnMeString += "\n";//Line break
+	returnMeString += "\n\n" + indent;//Line break
 
 	auto j = 0;
 	for (const std::string& room : RoomOptions)
@@ -241,6 +243,7 @@ std::string RoomClass::AmendDescription()
 		j++;
 
 	}
+	//return returnMeString;
 	return preventCutoff(returnMeString);
 
 	/*
