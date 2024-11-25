@@ -17,6 +17,9 @@ class GameControllerClass
 	private: 
 	UserInterfaceClass UI;
 	std::string backstory;
+	std::string goodEnding;
+	std::string badEnding;
+	std::string neutralEnding;
 	bool isInProtectedAction = false; 
 
 public:
