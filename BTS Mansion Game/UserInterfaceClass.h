@@ -11,6 +11,8 @@ private:
 	std::string current_input;
 public:
 	UserInterfaceClass();
+	//Helper function for preventing cutoff
+	std::string preventCutoff(const std::string text) const;
 	//Constructor for user interface class
 	void displayPrompt(const std::string& prompt) const; 
 	//display prompt will display any stinrg "prompt" given to the function

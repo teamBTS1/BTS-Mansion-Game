@@ -1009,6 +1009,8 @@ void GameControllerClass::gameLoop() {
             }
             else
             { 
+                system("cls");
+                UI.displayPrompt("You did not enter a valid input\n");
             }
         }
     }

@@ -11,10 +11,34 @@ UserInterfaceClass::UserInterfaceClass()
 {
     current_input = "";
 }
+
+std::string UserInterfaceClass::preventCutoff(const std::string text)const
+{
+    std::istringstream words(text);
+    std::string word;
+    std::string wrappedText;
+
+    int currentWidth = 0;
+
+    while (words >> word) {
+    /*while loop goes through string and prevents text cutoff*/
+        if (currentWidth + word.length() > 100) {
+            wrappedText += "\n";
+            currentWidth = 0;
+        }
+        wrappedText += word + " ";
+        currentWidth += word.length() + 1;
+    }
+    return wrappedText;
+}
+
 void UserInterfaceClass::displayPrompt(const std::string& prompt) const
 {
-	std::cout << prompt << std::endl; //prints strng passed
+    std::string dressString = preventCutoff(prompt); // run string through wrapper helper function
+	std::cout << dressString << std::endl; //prints strng passed
 }
+
+
 
 void UserInterfaceClass::displayPrompt(const std::string& prompt, int sanity) const
 {
@@ -44,7 +68,9 @@ void UserInterfaceClass::displayPrompt(const std::string& prompt, int sanity) co
         result_str.pop_back();
     }
 
-    std::cout << result_str << std::endl;
+    std::string dressString = preventCutoff(result_str);// run string through wrapper helper function
+
+    std::cout << dressString << std::endl;
 }
 
 bool UserInterfaceClass::is_all_uppercase(const std::string& word) const
