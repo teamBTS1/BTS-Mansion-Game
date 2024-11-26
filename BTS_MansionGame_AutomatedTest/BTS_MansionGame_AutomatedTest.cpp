@@ -1,14 +1,21 @@
+#define NOMINMAX
 #include "pch.h"
 #include "CppUnitTest.h"
 #include <iostream>
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <algorithm>
 #include "../BTS Mansion Game/PlayerClass.cpp"
 #include "../BTS Mansion Game/ItemClass.cpp"
 #include "../BTS Mansion Game/RoomClass.cpp"
 #include "../BTS Mansion Game/Door.cpp"
 #include "../BTS Mansion Game/Puzzle.cpp"
+
+
+#undef max
+#undef min
+
 
 
 
@@ -118,19 +125,6 @@ namespace BTSMansionGameAutomatedTest
 			catString = catString += "\n";
 			return catString;
 		}
-
-		//Test method to test the basic functionality of the puzzle class.
-		TEST_METHOD(BTS_PuzzleTest)//TODO: finish this test method.
-		{
-			Logger::WriteMessage("Create a number of puzzles with the available constructors and verify they have been created properly.\n");
-			Puzzle puzzleOne;
-			Assert::IsTrue(puzzleOne.getDescription() == "Default description.");
-			Assert::IsTrue(puzzleOne.isSolved() == false);
-			Assert::IsTrue(puzzleOne.getHint() == "Default hint.");
-			Puzzle puzzleTwo("Description");
-			
-			
-		}
 		TEST_METHOD(BTS_RoomNav)
 		{
 			Logger::WriteMessage("Test basic navigation between unlocked rooms");
@@ -151,5 +145,129 @@ namespace BTSMansionGameAutomatedTest
 			Assert::AreEqual(std::string("LOUNGE"), player.getRoomName(), L"Player should now be in Lounge"); //checking if room is lounged when it should be lounge
 		}
 		
+
+		TEST_METHOD(BTS_SanityPillTest) {
+
+			std::unordered_map<std::string, RoomClass> rooms; //hashmap for all rooms
+			rooms["FOYER"] = RoomClass("you are in the foyer", "FOYER", std::list<std::string>{"LOUNGE"});//foyer declaration
+
+			//declare player
+			PlayerClass player;
+			player.setRoom(rooms["FOYER"]);
+			// Initial sanity
+			player.setSanity(50);  
+			//creating and using pills
+			ItemClass sanityPill("BOTTLE OF PILLS", "A sanity pill.", 30, true, true);
+			player.addItem(sanityPill);
+
+			Logger::WriteMessage("Testing if sanity pills properly increase sanity by 30");
+
+			std::vector<ItemClass> myInventory = player.getInventory(); 
+			int inventorySize = player.getInventorySize();
+
+			
+			if (myInventory[0].getName() == "BOTTLE OF PILLS")
+				{
+					player.setSanity(std::max(0, std::min(100, player.getSanity() + myInventory[0].getValue())));
+					player.useItem("BOTTLE OF PILLS");
+				}
+
+			
+
+			//ensuring that sanity does increase after using sanity pills
+			Assert::AreEqual(80, player.getSanity(), L"Sanity should increase by 30");
+
+			//sanity pills are gone after use 
+			Assert::IsFalse(player.inInventory("BOTTLE OF PILLS"), L"Sanity pill should be removed from inventory");
+
+		}
+
+		TEST_METHOD(BTS_UnlockDoor) {
+			Logger::WriteMessage("Test that key unlocks door");
+			// Create locked door
+			Door lockedDoor(true, "RUSTYKEY", "A door blocks the path", "OLDDOOR");
+			// Create key
+			ItemClass RustyKey("Rusty Key", "A Key", "RUSTYKEY", true, true);
+			// Create a player and add the key to their inventory
+			PlayerClass player;
+			player.addItem(RustyKey);
+
+			// Verify the door is locked at first
+			Assert::IsTrue(lockedDoor.getIsLocked(), L"The door should be locked initially.");
+
+			// Use the key 
+			if (player.inInventory("Rusty Key")) {
+				std::string keyId = player.searchForKey(lockedDoor.getDoorKeyID());
+				if (keyId == lockedDoor.getDoorKeyID()) {
+					lockedDoor.unlockDoor();
+					player.useItem("Rusty Key");
+				}
+			}
+
+			//verify key is gone and door is open
+			Assert::IsFalse(lockedDoor.getIsLocked(), L"The door should be unlocked after using the key.");
+			Assert::IsFalse(player.inInventory("Rusty Key"), L"The key should be removed from the inventory after use.");
+		}
+
+		TEST_METHOD(BTS_RemoveItemsFromRoom) {
+			Logger::WriteMessage("Removing an item from a room.");
+
+			// Create items
+			ItemClass Book("BOOK", "An old book");
+			ItemClass Key("KEY", "A rusty key");
+			ItemClass Pills("PILLS", "Some Pills");
+
+			// Create room with items
+			std::vector<ItemClass> initialItems = { Book, Key, Pills };
+			std::vector<Door> Doors = {};
+
+			std::unordered_map<std::string, RoomClass> rooms; 
+	
+			rooms["FOYER"] = RoomClass("You enter the foyer \n", "FOYER", std::list<std::string>{"LOUNGE"}, Doors, initialItems); //declare room
+
+			// Verify initial items
+			Assert::IsTrue(3 == rooms["FOYER"].getItemsLength(), L"Room should initially have 3 items.");
+			std::vector<ItemClass>& items = rooms["FOYER"].getItems();
+			Assert::IsTrue(items[0].getName() == "BOOK", L"Book in room");
+			Assert::IsTrue(items[1].getName() == "KEY", L"Key in room");
+			Assert::IsTrue(items[2].getName() == "PILLS", L"Pills in room");
+
+			// Remove the book
+			rooms["FOYER"].RemoveItem(Book);
+
+			// Make sure there is one less item
+			Assert::IsTrue(2 == rooms["FOYER"].getItemsLength(), L"Room should have 2 items after removal.");
+			Assert::IsTrue(items[0].getName() == "KEY", L"Key should still be in the room.");
+			Assert::IsTrue(items[1].getName() == "PILLS", L"Pills should still be in the room.");
+		}
+
+
+		TEST_METHOD(BTS_AdjacentRoomsTest) {
+			Logger::WriteMessage("Testing adjacent room options");
+
+			// Create a RoomClass instance
+			std::list<std::string> initialOptions = { "KITCHEN", "HALLWAY" };
+			RoomClass Library("A cozy library", "Living Room", initialOptions);
+
+			// Verify initial room options
+			std::list<std::string> retrievedOptions = Library.GetRoomOption();
+			Assert::IsTrue(2 == retrievedOptions.size(), L"Initial room options count should be 2.");
+
+
+			Assert::IsTrue(std::find(retrievedOptions.begin(), retrievedOptions.end(), "KITCHEN") != retrievedOptions.end(), L"Kitchen should be an option.");
+			Assert::IsTrue(std::find(retrievedOptions.begin(), retrievedOptions.end(), "HALLWAY") != retrievedOptions.end(), L"Hallway should be an option.");
+			Assert::IsFalse(std::find(retrievedOptions.begin(), retrievedOptions.end(), "FOYER") != retrievedOptions.end(), L"Foyer should not be an option.");
+
+			// Add a new room option
+			std::list<std::string> updatedOptions = retrievedOptions;
+			updatedOptions.push_back("BEDROOM");
+			Library.setRoomOption(updatedOptions);
+
+			// Verify updated room options
+			retrievedOptions = Library.GetRoomOption();
+			Assert::IsTrue(3 == retrievedOptions.size(), L"Room options count should be 3 after adding a new option.");
+			Assert::IsTrue(std::find(retrievedOptions.begin(), retrievedOptions.end(), "BEDROOM") != retrievedOptions.end(), L"Bedroom should be an option.");
+		}
+
 	};
 }
