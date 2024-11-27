@@ -33,6 +33,7 @@ std::string UserInterfaceClass::preventCutoff(const std::string text)const
         if (word == "NEWLINE")
         {
             wrappedText += newLineString;
+            currentWidth = 0;
         }
         else if (word == "INDENT")
         {
@@ -43,7 +44,8 @@ std::string UserInterfaceClass::preventCutoff(const std::string text)const
             wrappedText += word += " ";
         }
 
-        currentWidth += word.length() + 1;
+        if(word != "NEWLINE" && word != "INDENT")
+            currentWidth += word.length() + 1;
     }
 
     std::stringstream result;
