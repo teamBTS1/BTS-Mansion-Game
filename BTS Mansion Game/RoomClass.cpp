@@ -284,9 +284,6 @@ std::string RoomClass::conditionalDescription(std::vector<ItemClass>& userInvent
 }
 
 
-
-
-
 std::vector<ItemClass>& RoomClass::getItems()
 {
 	return items;
