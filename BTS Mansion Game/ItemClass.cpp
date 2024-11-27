@@ -194,7 +194,7 @@ looks in their inventory.
 
 	std::string ItemClass::getSoundFileName() {
 		
-		cout << "Getting sound file name" << endl;
+		//cout << "Getting sound file name" << endl;
 		return soundFileName;
 
 	}

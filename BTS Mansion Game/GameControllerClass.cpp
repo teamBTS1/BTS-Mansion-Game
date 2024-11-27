@@ -851,7 +851,8 @@ void GameControllerClass::gameLoop() {
                                     userPlayer.setRoom(currentRoom_temp);
                                     std::cout << endl;
                                     std::cout << "You picked up " << itemName << "." << std::endl << std::endl;
-                                    std::cout << "-----------" << endl;
+                                    std::this_thread::sleep_for(std::chrono::seconds(1));
+                                    system("cls");
                                     break;
                                 }
                             }
