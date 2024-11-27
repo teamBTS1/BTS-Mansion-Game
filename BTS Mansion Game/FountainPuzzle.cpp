@@ -113,6 +113,7 @@ void FountainPuzzle::runPuzzle() //Runs puzzle
 		}
 		else if (correctAnswerCount == 4) //Solved puzzle
 		{
+			system("cls");
 			ui.displayPrompt("All of the panels glow brightly together, as a small flask glows at the bottom of the fountain. You quickly reach into the water and grab the flask as the lights go dim once more.");
 			_isSolved = true;
 		}
@@ -120,6 +121,7 @@ void FountainPuzzle::runPuzzle() //Runs puzzle
 
 	if (correctAnswerCount != 4) //Failed puzzle
 	{
+		system("cls");
 		ui.displayPrompt("All of the panels glow a soft red, it seems you have angered something with your lackluster attempts. Hopefully that didn't alert anything.");
 		_isSolved = false;
 	}

@@ -31,6 +31,7 @@ void GreaterLibraryPuzzle::runPuzzle()
 
 	if (input == answer)
 	{
+		system("cls");
 		ui.displayPrompt("You input the correct word, finding a key inside which you grab before seeing a poison dart ready to fire at you which you narrowly dodge. You obtained the STUDY KEY!");
 		_isSolved = true; //Puzzle is solved
 	}
@@ -40,6 +41,7 @@ void GreaterLibraryPuzzle::runPuzzle()
 	}
 	else
 	{
+		system("cls");
 		ui.displayPrompt("That word doesn't seem to unlock the lock.");
 		//Puzzle is not solved
 	}

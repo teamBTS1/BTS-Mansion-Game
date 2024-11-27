@@ -552,7 +552,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["RITUAL ROOM"]);
+    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
     
 
     //Defining variables for timer
