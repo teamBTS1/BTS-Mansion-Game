@@ -554,6 +554,7 @@ void GameControllerClass::gameLoop() {
 
     PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
     
+    bool inputVal = false;
 
     //Defining variables for timer
     MonsterClass monsterTimer(120, *this, userPlayer);
@@ -580,9 +581,17 @@ void GameControllerClass::gameLoop() {
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
 
         if (currentRoom_temp.getHasConditionalDescription()) { //cond to check if the room has a specific conditonal rendering property
+            if (inputVal == true) {
+                system("cls");
+                inputVal = false;
+            }
             UI.displayPrompt(currentRoom_temp.conditionalDescription(userPlayer.getInventory(), Sight)); //display special condition
         }
         else {
+            if (inputVal == true) {
+                system("cls");
+                inputVal = false;
+            }
             UI.displayPrompt(currentRoom_temp.AmendDescription(), userPlayer.getSanity()); //display for rest of the rooms 
         }
         
@@ -1022,6 +1031,7 @@ void GameControllerClass::gameLoop() {
             }
             else
             { 
+                inputVal = true;
             }
         }
     }
