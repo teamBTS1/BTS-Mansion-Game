@@ -552,7 +552,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
+    PlayerClass userPlayer = PlayerClass(rooms["RITUAL ROOM"]);
     
 
     //Defining variables for timer
@@ -808,126 +808,135 @@ void GameControllerClass::gameLoop() {
         }
         else if (command == "INSPECT") //If user wants to pick up item
         {
-            isInProtectedAction = true;
-            system("cls");
-            currentRoom_temp.displayRoomItems();
-            UI.displayPrompt("What item would you like to inspect?\n");
-            command = UI.userInput(); //Getting item to be picked up 
+            if (currentRoom_temp.getItems().empty()) {
+                system("cls");
+                UI.displayPrompt("This room contains no items");
+            }
 
-            if (currentRoom_temp.getRoomItemByName(command).getName() == command) //Checks if there is an item in the room same as item user wants to inspect
-            {
-                std::string itemName = command;
-                std::cout << endl;
-                UI.displayPrompt(currentRoom_temp.getRoomItemByName(itemName).getDescription());
-                std::cout << endl;
+            else {
+                /*------------START INSPSECT SEQUENCE----------------*/
+                isInProtectedAction = true;
+                system("cls");
+                currentRoom_temp.displayRoomItems();
+                UI.displayPrompt("What item would you like to inspect?\n");
+                command = UI.userInput(); //Getting item to be picked up 
 
-                if (currentRoom_temp.getRoomItemByName(itemName).getCanPickUp() == true) //Run Pick up sequence
+                if (currentRoom_temp.getRoomItemByName(command).getName() == command) //Checks if there is an item in the room same as item user wants to inspect
                 {
-                    UI.displayPrompt("Type PICKUP to pick up the item");
-                    command = UI.userInput();
+                    std::string itemName = command;
+                    std::cout << endl;
+                    UI.displayPrompt(currentRoom_temp.getRoomItemByName(itemName).getDescription());
+                    std::cout << endl;
 
-                    if (command == "PICKUP")
+                    if (currentRoom_temp.getRoomItemByName(itemName).getCanPickUp() == true) //Run Pick up sequence
                     {
-                        system("cls");
-                        if (currentRoom_temp.getRoomItemByName(itemName).getCanPickUp() == true) //Run pick up sequence
+                        UI.displayPrompt("Type PICKUP to pick up the item");
+                        command = UI.userInput();
+
+                        if (command == "PICKUP")
                         {
-                            for (int i = 0; i < currentRoom_temp.getItemsLength(); i++)
+                            system("cls");
+                            if (currentRoom_temp.getRoomItemByName(itemName).getCanPickUp() == true) //Run pick up sequence
                             {
-                                ItemClass& itm = currentRoom_temp.getItems().at(i); //Looping through each item in room to check if exists
-                                //std::cout << itm.getName();
-                                if (itm.getName() == itemName)
+                                for (int i = 0; i < currentRoom_temp.getItemsLength(); i++)
                                 {
-                                    PickUpItemClass pickUp(itm); //Picking up item the user requested to pick up
-                                    //std::cout << "Attempting to play sound" << endl; 
-                                    itm.playItemSound();
+                                    ItemClass& itm = currentRoom_temp.getItems().at(i); //Looping through each item in room to check if exists
+                                    //std::cout << itm.getName();
+                                    if (itm.getName() == itemName)
+                                    {
+                                        PickUpItemClass pickUp(itm); //Picking up item the user requested to pick up
+                                        //std::cout << "Attempting to play sound" << endl; 
+                                        itm.playItemSound();
 
                                         if (itm.getSoundFileName() == "") {
                                             PlaySound(TEXT("General Pickup.wav"), NULL, SND_FILENAME | SND_ASYNC);
                                         }
-                                    itm.getSoundFileName();
-                                    pickUp.addToInventory(userPlayer);
-                                    currentRoom_temp.RemoveItem(itm);
-                                    rooms[currentRoom_temp.GetName()] = currentRoom_temp;
-                                    userPlayer.setRoom(currentRoom_temp);
-                                    std::cout << endl;
-                                    std::cout << "You picked up " << itemName << "." << std::endl << std::endl;
-                                    std::this_thread::sleep_for(std::chrono::seconds(1));
-                                    system("cls");
-                                    break;
+                                        itm.getSoundFileName();
+                                        pickUp.addToInventory(userPlayer);
+                                        currentRoom_temp.RemoveItem(itm);
+                                        rooms[currentRoom_temp.GetName()] = currentRoom_temp;
+                                        userPlayer.setRoom(currentRoom_temp);
+                                        std::cout << endl;
+                                        std::cout << "You picked up " << itemName << "." << std::endl << std::endl;
+                                        std::this_thread::sleep_for(std::chrono::seconds(1));
+                                        system("cls");
+                                        break;
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                else if (command == "MEMORY GOBLET") {
+                    else if (command == "MEMORY GOBLET") {
 
-                    if (memoryGobletIsActive) {
-                        UI.displayPrompt("You dunk your head into the goblet you are granted SIGHT");
-                        userPlayer.addItem(Sight);
-                        UI.userInput();
-
-                    }
-                    else if (userPlayer.inInventory("YOUR MEMORY")) {
-                        UI.displayPrompt("You place YOUR MEMORY into the MEMORY GOBLET and it unleashes a blue flame as it roars to life");
-                        userPlayer.useItem(playerMemory);
-                        memoryGobletIsActive = true;
-                        UI.userInput();
-                    }
-                    else {
-                        UI.displayPrompt("You approch the tank of memories, however you lack the item that must go here... you walk away.");
-                        UI.userInput();
-                        std::cout << memoryGobletIsActive;
-                       
-                    }
-
-                }
-                else if (command == "METAL SAFE")
-                {
-                    UI.displayPrompt("Enter the 4 digit code");
-                    string safeInput = UI.userInput();
-
-                    try {
-                        int safeInputNum = std::stoi(safeInput);
-
-                        if (safeInputNum == 8691)
-                        {
-                            UI.displayPrompt("You entered the correct passcode! Safe is now open and there's a key");
-                            PlaySound(TEXT("SafeOpening.wav"), NULL, SND_FILENAME | SND_ASYNC);
-                            rooms["DINING HALL"].RemoveItem(metalSafe);
-                            rooms["DINING HALL"].AddItem(diningHallKey);
-                            rooms["DINING HALL"].displayRoomItems();
+                        if (memoryGobletIsActive) {
+                            UI.displayPrompt("You dunk your head into the goblet you are granted SIGHT");
+                            userPlayer.addItem(Sight);
+                            UI.userInput();
 
                         }
-                        else
+                        else if (userPlayer.inInventory("YOUR MEMORY")) {
+                            UI.displayPrompt("You place YOUR MEMORY into the MEMORY GOBLET and it unleashes a blue flame as it roars to life");
+                            userPlayer.useItem(playerMemory);
+                            memoryGobletIsActive = true;
+                            UI.userInput();
+                        }
+                        else {
+                            UI.displayPrompt("You approch the tank of memories, however you lack the item that must go here... you walk away.");
+                            UI.userInput();
+                            std::cout << memoryGobletIsActive;
+
+                        }
+
+                    }
+                    else if (command == "METAL SAFE")
+                    {
+                        UI.displayPrompt("Enter the 4 digit code");
+                        string safeInput = UI.userInput();
+
+                        try {
+                            int safeInputNum = std::stoi(safeInput);
+
+                            if (safeInputNum == 8691)
+                            {
+                                UI.displayPrompt("You entered the correct passcode! Safe is now open and there's a key");
+                                PlaySound(TEXT("SafeOpening.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                                rooms["DINING HALL"].RemoveItem(metalSafe);
+                                rooms["DINING HALL"].AddItem(diningHallKey);
+                                rooms["DINING HALL"].displayRoomItems();
+
+                            }
+                            else
+                                system("cls");
+                            UI.displayPrompt("You entered the wrong passcode. Try again\n");
+                        }
+                        catch (const std::invalid_argument& e) {
                             system("cls");
                             UI.displayPrompt("You entered the wrong passcode. Try again\n");
+                        }
                     }
-                    catch (const std::invalid_argument& e) {
-                        system("cls");
-                        UI.displayPrompt("You entered the wrong passcode. Try again\n");
+
+
+                    else if (currentRoom_temp.getRoomItemByName(itemName).getInteraction()->getIsPuzzle() == true) //If interaction is a puzzle, call overloaded runInteraction
+                    {
+                        currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer, studyKey, galleryKey, mirrorKey, masterKey, mazeKey, mazeExitKey, playerMemory, Candle5); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
+
+                        if (userPlayer.inInventory("CANDLE", "C5")) { // condition that finds whether user get candle 5, whic specifically occurs right after they complete the chant puzzle sequence
+                            system("cls");
+                            UI.displayPrompt("The monster roars awake.");
+                            std::this_thread::sleep_for(std::chrono::seconds(3));
+                            userPlayer.setRoom(rooms["RITUAL ROOM"]);
+                        }
+
+                    }
+                    else //Run interact sequence if not pick up able object
+                    {
+                        currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction();
                     }
                 }
 
-
-                else if (currentRoom_temp.getRoomItemByName(itemName).getInteraction()->getIsPuzzle() == true) //If interaction is a puzzle, call overloaded runInteraction
-                {
-                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer,studyKey, galleryKey, mirrorKey, masterKey, mazeKey, mazeExitKey, playerMemory, Candle5); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
-
-                    if (userPlayer.inInventory("CANDLE", "C5")) { // condition that finds whether user get candle 5, whic specifically occurs right after they complete the chant puzzle sequence
-                        system("cls");
-                        UI.displayPrompt("The monster roars awake.");
-                        std::this_thread::sleep_for(std::chrono::seconds(3));
-                        userPlayer.setRoom(rooms["RITUAL ROOM"]);
-                    }
-
-                }
-                else //Run interact sequence if not pick up able object
-                {
-                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction();
-                }
+                isInProtectedAction = false;
             }
-
-            isInProtectedAction = false;
+            /*-----------------END INSPSECT SEQUENCE------------------*/
         }
         else {
             //std::string current_room = userPlayer.getRoomName();
@@ -1013,8 +1022,6 @@ void GameControllerClass::gameLoop() {
             }
             else
             { 
-                //system("cls");
-                //UI.displayPrompt("You did not enter a valid input\n");
             }
         }
     }
