@@ -47,7 +47,9 @@ GameControllerClass::GameControllerClass() {
         "\n----------------------";
 }
 void GameControllerClass::startGame() {
-    displayBackstory();
+    showMenu();
+    //TODO: The below line has been commented out for testing purposes. Reinstate before merging.
+    //displayBackstory();
     system("cls");
     gameLoop();
 }
@@ -178,7 +180,7 @@ void GameControllerClass::gameLoop() {
     std::vector<Door> mazeExitDoors = { doors["MAZE EXIT"] }; //Exit of hedge maze
 
     //greater library puzzle
-    GreaterLibraryPuzzle greaterLibraryPuzzle("DODGE");
+    GreaterLibraryPuzzle greaterLibraryPuzzle("DODGE", "Some of the books in this room stand out to you. Perhaps they contain some sort of code?");
 
     //define all ineractions
     InteractClass* userInteractStatueA = new InteractClass("Would you like to INTERACT with the statue?", "You feel a wave of knowledge wash over you, like you've learned something from someone previously here before you."); //Defining statue interaction
@@ -297,11 +299,15 @@ void GameControllerClass::gameLoop() {
     //define puzzle solution/s
     std::vector <std::string> mirrorSolution = { "MOONLIGHT", "FOREST GREEN", "BLACK" };
     //defining Gallery puzzle
-    GalleryPuzzle galleryPuzzle = GalleryPuzzle(portraits, { lordPainting, lordSonPainting, servantPainting });
+    GalleryPuzzle galleryPuzzle = GalleryPuzzle(portraits, { lordPainting, lordSonPainting, servantPainting }, "If you are stuck, perhaps something left behind by a long dead storyteller could help you here....");
     //defining mirror puzzle
-    MirrorPuzzle mirrorPuzzle = MirrorPuzzle(mirrorSolution);
+    MirrorPuzzle mirrorPuzzle = MirrorPuzzle(mirrorSolution, "You notice that the combination lock has a small mirror engraved at the bottom....");
     //defining fountain puzzle
-    FountainPuzzle fountainPuzzle = FountainPuzzle("FEAR", "MEMORY", "CLOCK", "GRAVE");
+    FountainPuzzle fountainPuzzle = FountainPuzzle("FEAR", "MEMORY", "CLOCK", "GRAVE", 
+        {"You find a pictograph on the side of the fountain, worn away by time. You can't quite tell what it depicts. A chill runs up your spine.",
+        "You find a pictograph on the side of the fountain, worn away by time. You can't quite tell what it depicts. You swear you've seen it somewhere before.",
+        "You find a pictograph on the side of the fountain, worn away by time. You can't quite tell what it depicts. It feels like you've been here for hours.",
+        "You find a pictograph on the side of the fountain, worn away by time. You can't quite tell what it depicts. You get the sense that your end inexorably approaches."});
     //defining maze puzzle
     MazePuzzle mazePuzzle = MazePuzzle({ "RABBIT", "CROW", "SNAKE", "SCARAB" }, {"BADGER", "GOAT", "CARDINAL", "OWL", "BEAR", "CAT", "COYOTE"});
 
@@ -330,7 +336,7 @@ void GameControllerClass::gameLoop() {
     
     rooms["LOUNGE CLOSET"] = RoomClass("You are in the lounge closet. You are safe from any threats.", "LOUNGE CLOSET", std::list<std::string>{"LOUNGE"}, false, true);
     rooms["LOUNGE"] = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER", "DINING HALL DOOR","BATHROOM", "LOUNGE CLOSET"}, roomB_Items);
-    rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE","BALLROOM"}, greaterLibraryItems);
+    rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE","BALLROOM","STUDY DOOR"},greaterLibraryDoors, greaterLibraryItems);
    //created rooms for ballroom , guestroom, and bathroom
     rooms["BALLROOM"] = RoomClass("The grand ballroom is magnificent, with a chandelier hanging overhead and rows of windows draped in heavy, velvet curtains. The polished marble floors reflect the moonlight streaming through the windows, but there’s an eerie silence, as if the ghosts of past parties linger in the shadows.", "BALLROOM", std::list<std::string>{"GREATER LIBRARY"},ballroomItems);
     rooms["GUESTROOM"] = RoomClass("The guestroom is modest yet elegant, with a large bed covered in fine linens, and a single window overlooking the mansion grounds. A wardrobe stands in one corner, and a small desk is positioned near the bed. The air feels slightly colder here, as though the room hasn’t been used in a while.","GUESTROOM",std::list<std::string>{"FOYER",},guestroomItems );
@@ -446,13 +452,13 @@ void GameControllerClass::gameLoop() {
     ChantPuzzle chantPuzzle = ChantPuzzle("Chant Puzzle"); //instance for chant puzzle 
     InteractClass* chantPuzzleStarterInteraction = new InteractClass("A chanting altar", "Test", chantPuzzle); //interaction to run puzzle
     ItemClass chantPuzzleStarter = ItemClass("CHANTING ALTAR", "A CHANTING ALTAR, there appears to be a 4 word phrase ingraved on the altar, but its been scrached away",false, chantPuzzleStarterInteraction); //item you can interact with
-    ItemClass Candle5 = ItemClass("CANDLE", "The 5th and Final Candle", true, true); //declaration for candle
+    ItemClass Candle5 = ItemClass("CANDLE", "The 5th and Final Candle", "C5", true, true); //declaration for candle
 
 
 
 
     InteractClass* gobletInteraction = new InteractClass("Approch the goblet", "You interact with the goblet");//item in THE CONSCIOUS that allows user to put the item playerMemory
-    ItemClass memoryGoblet = ItemClass("MEMORY GOBLET", "A transparent challice called the MEMORY GOBLET, a place where memories can be added", false, gobletInteraction); //interaction for memory goblet
+    ItemClass memoryGoblet = ItemClass("MEMORY GOBLET", "A transparent chalice with the logo of an eye called the MEMORY GOBLET, a place where memories can be added", false, gobletInteraction); //interaction for memory goblet
 
     ItemClass Sight = ItemClass("SIGHT", "Allows you to see the unseen", true, true); //item awarded from putting playermemory into the goblet 
 
@@ -554,10 +560,12 @@ void GameControllerClass::gameLoop() {
     MonsterClass monsterTimer(120, *this, userPlayer);
     monsterTimer.start();
 
-
+    //Userplayer.setSanity(30);
 
     std::atomic<bool> running(true);
-    std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));
+    //Thread that manages the slowly decreasing sanity
+    // TODO: This has been commented out for testing purposes. Reinstate before merging.
+    //std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));
 
     UI.displayPrompt("It's always important to stay sane in such a stressful situation. The lower your sanity gets, the less you'll understand what is going on...\nUnfortunately, it is only a matter of time before you completely lose it. Consume SANITY PILLS to increase your sanity.");
 
@@ -569,18 +577,14 @@ void GameControllerClass::gameLoop() {
         }
   
 
-       
-
         UI.displayPrompt("\n"); //Giving space for text
-        
-        UI.displayPrompt("Sanity Level: " + std::to_string(userPlayer.getSanity()) + "\n");
         RoomClass& currentRoom_temp = userPlayer.getRoom(); //temp current room instance of roomClass to access room data
 
         if (currentRoom_temp.getHasConditionalDescription()) { //cond to check if the room has a specific conditonal rendering property
             UI.displayPrompt(currentRoom_temp.conditionalDescription(userPlayer.getInventory(), Sight)); //display special condition
         }
         else {
-            UI.displayPrompt(currentRoom_temp.AmendDescription()); //display for rest of the rooms 
+            UI.displayPrompt(currentRoom_temp.AmendDescription(), userPlayer.getSanity()); //display for rest of the rooms 
         }
         
         //UI.displayPrompt(userPlayer.getRoomDescription());
@@ -592,12 +596,12 @@ void GameControllerClass::gameLoop() {
 
         std::string command = UI.userInput();
 
-
         // Boolean to track whether the kitchen door is open
         bool kitchenDoorOpen = false;
         
 
         //bool to track if player put memory in memory goblet
+
 
 
         // Check the command for the kitchen door
@@ -692,7 +696,7 @@ void GameControllerClass::gameLoop() {
             system("cls");
             UI.displayPrompt("The DINING HALL DOOR is locked from this side\n");
         }
-
+        /*--------------------- CANDLE PLACEMENT LOGIC START ----------------------*/
         if (command == "CANDLE" && userPlayer.getRoomName() == "RITUAL ROOM") {
             if (userPlayer.getInventorySize() != 0) {
                 if (userPlayer.inInventory("CANDLE", "C1")) {
@@ -747,11 +751,30 @@ void GameControllerClass::gameLoop() {
                      rooms["RITUAL ROOM"] = currentRoom_temp;
                     continue;
                 }
+                else if (userPlayer.inInventory("CANDLE", "C4")) // candle 4 placed conditon TODO: Add functionality for 4th and possible 5th candle to be printed on screen
+                {
+                    system("cls");
+                    UI.displayPrompt("You place the 4th candle");
+                    std::this_thread::sleep_for(std::chrono::seconds(2)); //DRAMATIC PAUSE
+                    userPlayer.useItem("CANDLE", "C4"); //use the candle
+                    userPlayer.setRoom(rooms["MEMORY OF THE MANSION"]); //set user to teleport to memory of mansion
+                    playTeleportSequence(); // CALL CANDLE STYLIZE SEQUENCE
+                    std::this_thread::sleep_for(std::chrono::seconds(3)); //DRAMATIC PAUSE 2 AFER SEQUENCE
+                    system("cls"); 
+                    continue;
+                }
+                else if (userPlayer.inInventory("CANDLE", "C5")) { //candle 5 placed condition
+                    system("cls");
+                    endingSequence(UI);
+                    std::this_thread::sleep_for(std::chrono::seconds(3)); //pause after ext 
+                    endGame("\nThank you for playing."); 
+                }
                 else
                 {
                     UI.displayPrompt("You do not have a candle");
                     continue;
                 }
+                /*--------------------- CANDLE PLACEMENT LOGIC END ----------------------*/
             }
         }
 
@@ -760,6 +783,14 @@ void GameControllerClass::gameLoop() {
             monsterTimer.join(); //Destory monster timer
             endGame();  // Call endGame method
             return;  // Exit the game loop
+        }
+
+        if (command == "SANITY") {
+            system("cls");
+            UI.displayPrompt("SANITY: " + std::to_string(userPlayer.getSanity()));
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            system("cls");
+            continue;
         }
         
         else if (command == "ESCAPE") //Handles when monster grabs player
@@ -846,10 +877,6 @@ void GameControllerClass::gameLoop() {
                         std::cout << memoryGobletIsActive;
                        
                     }
- 
-                     
-
-
 
                 }
                 else if (command == "METAL SAFE")
@@ -880,7 +907,15 @@ void GameControllerClass::gameLoop() {
 
                 else if (currentRoom_temp.getRoomItemByName(itemName).getInteraction()->getIsPuzzle() == true) //If interaction is a puzzle, call overloaded runInteraction
                 {
-                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer, studyKey, galleryKey, mirrorKey, masterKey, mazeKey, mazeExitKey, playerMemory, Candle5); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
+                    currentRoom_temp.getRoomItemByName(itemName).getInteraction()->runInteraction(userPlayer,studyKey, galleryKey, mirrorKey, masterKey, mazeKey, mazeExitKey, playerMemory, Candle5); //Clunky solution right now, considering using an extra if statement to confirm player is in upstairs or gallery to call this puzzle
+
+                    if (userPlayer.inInventory("CANDLE", "C5")) { // condition that finds whether user get candle 5, whic specifically occurs right after they complete the chant puzzle sequence
+                        system("cls");
+                        UI.displayPrompt("The monster roars awake.");
+                        std::this_thread::sleep_for(std::chrono::seconds(3));
+                        userPlayer.setRoom(rooms["RITUAL ROOM"]);
+                    }
+
                 }
                 else //Run interact sequence if not pick up able object
                 {
@@ -918,6 +953,17 @@ void GameControllerClass::gameLoop() {
                         else if ((command == "HEDGE MAZE EXIT") || (command == "HEDGE MAZE" && previousRoom == "HEDGE MAZE EXIT"))
                         {
                             PlaySound(TEXT("Walking Through Tunnel.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                        }
+                        else if (command == "FOUNTAIN" || command == "GRAVEYARD" || command == "GARDEN")
+                        {
+                            PlaySound(TEXT("Walking Through Tunnel.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                        }
+                        else if (command == "THE LIFT") {
+                            PlaySound(TEXT("Portal Opening.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                        }
+                        else if (command == "MEMORY OF THE MANSION" && previousRoom == "THE LIFT")
+                        {
+                            PlaySound(TEXT("Portal Opening.wav"), NULL, SND_FILENAME | SND_ASYNC);
                         }
                         else {
                             PlaySound(TEXT("DoorOpen.wav"), NULL, SND_FILENAME | SND_ASYNC);
@@ -981,27 +1027,58 @@ void GameControllerClass::gameLoop() {
             }
         }
     }
+    UI.displayPrompt("\nGOODBYE."); // temp text here for when the loop exits u
 }
 
 
 
 void GameControllerClass::showMenu() {
     while (true) {
-        UI.displayMenu();
+        // Display the main menu
+        UI.displayPrompt("\n--- Main Menu ---");
+        UI.displayPrompt("Type one of the following options:");
+        UI.displayPrompt("START - Start the game");
+        UI.displayPrompt("HELP - View instructions");
+        UI.displayPrompt("CREDITS - View developer credits");
+        UI.displayPrompt("QUIT - Exit the game");
+
+        // Get user input
         std::string input = UI.userInput();
 
-        if (input == "START") //conditional for input validation of menu selection
-        {
-            startGame();
-            return;  // Exit the menu after starting the game
+        if (input == "START") {
+            // Start the game
+            system("cls");
+            displayBackstory();
+            gameLoop();
+            // After the game ends, show the menu again
         }
-        else if (input == "QUIT")
-        {
-            endGame();  // Call endGame method to exit
-            return;  // Exit the menu
+        else if (input == "HELP") {
+            // Display instructions
+            system("cls");
+            UI.displayPrompt("\n--- Instructions ---");
+            UI.displayPrompt("Use keywords in ALL CAPS to perform actions during gameplay.");
+            UI.displayPrompt("Examples: INSPECT, PICKUP, GARDEN.");
+            UI.displayPrompt("Press Enter to return to the main menu...");
+            UI.userInput(); // Wait for user to press Enter
+            system("cls");
         }
-        else
-        {
+        else if (input == "CREDITS") {
+            // Display developer credits
+            system("cls");
+            UI.displayPrompt("\n--- Credits ---");
+            UI.displayPrompt("Game developed by: BTS! ");
+            UI.displayPrompt("Press Enter to return to the main menu...");
+            UI.userInput(); // Wait for user to press Enter
+            system("cls");
+        }
+        else if (input == "QUIT") {
+            // End the game
+            system("cls");
+            endGame();
+            return; // Exit the menu loop and terminate the application
+        }
+        else {
+            // Invalid input
             UI.displayPrompt("Invalid choice. Please try again.");
         }
     }
@@ -1033,6 +1110,9 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
                 {
                     if (command == "BOOKSHELF") {
                         PlaySound(TEXT("Bookshelf Open.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                    }
+                    else if (command == "BLOCKED HEDGE MAZE" || command == "HEDGE MAZE") {
+                        PlaySound(TEXT("HolyWaterPour.wav"), NULL, SND_FILENAME | SND_ASYNC);
                     }
                     else if (command == "MAZE EXIT") {
 
@@ -1110,6 +1190,55 @@ void GameControllerClass::updateSanityGrabbed(PlayerClass& player) {
 
 bool GameControllerClass::inProtectedState() {
     return isInProtectedAction;
+}
+
+void GameControllerClass::playTeleportSequence()
+{
+    //THIS FUNCTION IS A STYLISTIC FUNCTION FOR THE 4TH CANDLE SEQUENCE
+    for (int i = 0;i < 10000;i++) {
+        std::cout << "WHERE AM I GOING";
+        if (i % 30 == 0 && i < 3000) {
+            std::cout << "HELP ME\n";
+        }
+        if (i > 1500) {
+            std::cout << "THERE IS NO COMING BACK NOW";
+        }
+    }
+    system("cls");
+}
+
+void GameControllerClass::endingSequence(UserInterfaceClass UI) {
+    UI.displayPrompt("I AM...\n");
+    // stylized sequence for demon intro
+    for (int i = 0; i < 2; i++) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        UI.displayPrompt("I AM\n");
+    }
+    bool failedSequence = false; // value that indicates whether user has failed the puzzle in any way 
+    for (int i = 0; i < 3; i++) {
+        UI.displayPrompt("SAY MY NAME");
+        std::string command = UI.userInput();
+
+        transform(command.begin(), command.end(), command.begin(),::toupper); //convert input to uppercase , user can input name in any combination of cases
+
+        if (command != "MALUM") {
+            failedSequence = true; // if name was ever wrong in any point, you have failed to excercise the demon
+        }
+    }
+    if (failedSequence) {
+        //good ending
+        UI.displayPrompt("GOOD ENDING"); // temp ending
+    }
+    else {
+        UI.displayPrompt("BAD ENDING"); // temp ending
+    }
+}
+
+void GameControllerClass::endGame(std::string flavorText) {
+    system("cls");
+    UI.displayPrompt(flavorText); //
+    showMenu();     //After game is completed, it will show the main menu now
+    
 }
 
 

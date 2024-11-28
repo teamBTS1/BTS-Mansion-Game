@@ -9,10 +9,17 @@ GreaterLibraryPuzzle::GreaterLibraryPuzzle()
 
 GreaterLibraryPuzzle::GreaterLibraryPuzzle(std::string solution)
 {
+	GreaterLibraryPuzzle(solution, "Default hint.");
+}
+
+GreaterLibraryPuzzle::GreaterLibraryPuzzle(std::string solution, std::string hint)
+{
 	_description = "Greater Library Puzzle";
 	_isSolved = false;
 	answer = solution;
+	_hint = hint;
 }
+
 
 void GreaterLibraryPuzzle::runPuzzle()
 {
@@ -26,6 +33,10 @@ void GreaterLibraryPuzzle::runPuzzle()
 	{
 		ui.displayPrompt("You input the correct word, finding a key inside which you grab before seeing a poison dart ready to fire at you which you narrowly dodge. You obtained the STUDY KEY!");
 		_isSolved = true; //Puzzle is solved
+	}
+	else if (input == "HINT")
+	{
+		ui.displayPrompt(_hint);
 	}
 	else
 	{

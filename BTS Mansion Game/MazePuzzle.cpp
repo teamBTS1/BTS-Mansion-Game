@@ -5,6 +5,7 @@ MazePuzzle::MazePuzzle()
 	_description = " ";
 	_isSolved = false;
 	symbolKey = { " " };
+	_hint = "That lantern... it seemed important.";
 }
 
 MazePuzzle::MazePuzzle(std::vector<std::string> key, std::vector<std::string> inc)
@@ -12,6 +13,7 @@ MazePuzzle::MazePuzzle(std::vector<std::string> key, std::vector<std::string> in
 	_description = "Maze Puzzle";
 	symbolKey = key;
 	incorrectSymbols = inc;
+	_hint = "That lantern... it seemed important.";
 }
 
 int MazePuzzle::GenerateRandomNumber(int min, int max)
@@ -94,6 +96,10 @@ void MazePuzzle::runPuzzle()
 			}
 
 			userAnswer = ui.userInput();
+			if (userAnswer == "HINT")
+			{
+				ui.displayPrompt(_hint);
+			}
 			if (userAnswer != correctAnswer) //Check if puzzle was failed
 			{
 				failPuzzle = true;

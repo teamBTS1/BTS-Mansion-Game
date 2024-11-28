@@ -8,12 +8,13 @@ GalleryPuzzle::GalleryPuzzle()
 	_isSolved = false;
 }
 
-GalleryPuzzle::GalleryPuzzle(std::vector <ItemClass> ports, std::vector <ItemClass> answer)
+GalleryPuzzle::GalleryPuzzle(std::vector <ItemClass> ports, std::vector <ItemClass> answer, std::string hint)
 {
 	_description = "Gallery Puzzle";
 	_isSolved = false;
 	portraits = ports;
 	answers = answer;
+	_hint = hint;
 }
 
 void GalleryPuzzle::runPuzzle()
@@ -49,11 +50,15 @@ void GalleryPuzzle::runPuzzle()
 					correctAnswerCount++;
 				}
 			}
-			else {
-				//ui.displayPrompt("That is not one of the portraits!");
-			}
-		}		
+			
+		}
+
 		system("cls"); //Clearing console
+		if (input == "HINT")
+		{
+			ui.displayPrompt(_hint + "\n");
+		}
+
 	}
 
 	if (correctAnswerCount == answers.size()) //Puzzle solved
@@ -62,6 +67,6 @@ void GalleryPuzzle::runPuzzle()
 		_isSolved = true;
 	}
 	else {
-		ui.displayPrompt("The blood continues bubbling, dissapointed in your order of selections, maybe you need to go back and look for more clues.");
+		ui.displayPrompt("The blood continues bubbling, dissapointed in your order of selections; maybe you need to go back and look for more clues.\n");
 	}
 }
