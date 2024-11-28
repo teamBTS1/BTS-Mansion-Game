@@ -552,7 +552,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["GARDEN"]);
+    PlayerClass userPlayer = PlayerClass(rooms["HEDGE MAZE"]);
    
 
 
@@ -1116,7 +1116,7 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
                     }
                     else if (command == "MAZE EXIT") {
 
-                        PlaySound(TEXT("Walking Through Tunnel.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                        PlaySound(TEXT("HolyWaterPour.wav"), NULL, SND_FILENAME | SND_ASYNC);
                     }
                      
                     else {
