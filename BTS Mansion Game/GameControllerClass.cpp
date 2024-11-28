@@ -546,8 +546,9 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
-    
+    PlayerClass userPlayer = PlayerClass(rooms["HEDGE MAZE EXIT"]);
+   
+
 
     //Defining variables for timer
     MonsterClass monsterTimer(120, *this, userPlayer);
