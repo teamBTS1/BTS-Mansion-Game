@@ -256,7 +256,7 @@ void GameControllerClass::gameLoop() {
     ItemClass mobPainting = ItemClass("MOB PORTRAIT", "MOB PORTRAIT of a group of people with pitchforks and torches approaching a building.", false, mobPaintingInteraction);
 
     //Upstairs items
-    ItemClass noteUpA = ItemClass("SCRIBBLED NOTE", "SCRIBBLED NOTE that looks like a child's drawing of two kids side by side, both looking almost exactly similair, but one of the children seems to have jagged teeth instead of normal teeth.", true, "PaperPickup.wav"); //Note for clue to mirror puzzle
+    ItemClass noteUpA = ItemClass("SCRIBBLED NOTE", "SCRIBBLED NOTE that looks like a child's drawing of two kids side by side, both looking almost exactly similair, but one of the children seems to have jagged teeth instead of normal teeth.", true, std::string("PaperPickup.wav")); //Note for clue to mirror puzzle
     ItemClass storyBook = ItemClass("STORYBOOK", "A giant STORYBOOK made of tough leather and weathered pages, indicating many stories have been told from this book. It is open to a page with a poem on it.", false, storyBookInteraction);
     ItemClass masterKey = ItemClass("MASTER KEY", "Fully completed MASTER KEY to the master bedroom", "idMaster", true, true); //Adding master bedroom key
     ItemClass bedroomBottle = ItemClass("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
@@ -546,7 +546,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["HEDGE MAZE EXIT"]);
+    PlayerClass userPlayer = PlayerClass(rooms["GARDEN"]);
    
 
 
@@ -807,7 +807,6 @@ void GameControllerClass::gameLoop() {
                                 if (itm.getName() == itemName)
                                 {
                                     PickUpItemClass pickUp(itm); //Picking up item the user requested to pick up
-                                    std::cout << "Attempting to play sound" << endl; 
                                     itm.playItemSound();
 
                                         if (itm.getSoundFileName() == "") {
@@ -914,6 +913,10 @@ void GameControllerClass::gameLoop() {
                         }
                         else if ((command == "KITCHEN")&& (previousRoom == "RITUAL ROOM") ){
 
+                            PlaySound(TEXT("Walking Through Tunnel.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                        }
+                        else if ((command == "HEDGE MAZE EXIT") || (command == "HEDGE MAZE" && previousRoom == "HEDGE MAZE EXIT"))
+                        {
                             PlaySound(TEXT("Walking Through Tunnel.wav"), NULL, SND_FILENAME | SND_ASYNC);
                         }
                         else {
@@ -1031,6 +1034,11 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
                     if (command == "BOOKSHELF") {
                         PlaySound(TEXT("Bookshelf Open.wav"), NULL, SND_FILENAME | SND_ASYNC);
                     }
+                    else if (command == "MAZE EXIT") {
+
+                        PlaySound(TEXT("Walking Through Tunnel.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                    }
+                     
                     else {
                         PlaySound(TEXT("DoorUnlock.wav"), NULL, SND_FILENAME | SND_ASYNC);
                     }
