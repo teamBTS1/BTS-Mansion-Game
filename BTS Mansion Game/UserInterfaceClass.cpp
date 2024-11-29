@@ -11,17 +11,62 @@ UserInterfaceClass::UserInterfaceClass()
 {
     current_input = "";
 }
+
+std::string UserInterfaceClass::preventCutoff(const std::string text)const
+{
+    std::istringstream words(text);
+    std::string word;
+    std::string wrappedText;
+    std::vector<std::string> wordds;
+
+    std::string newLineString = "\n \n";
+    std::string indentString = "     ";
+
+    int currentWidth = 0;
+
+    while (words >> word) {
+    /*while loop goes through string and prevents text cutoff*/
+        if (currentWidth + word.length() > 115) {
+            wrappedText += "\n";
+            currentWidth = 0;
+        }
+        if (word == "NEWLINE")
+        {
+            wrappedText += newLineString;
+            currentWidth = 0;
+        }
+        else if (word == "INDENT")
+        {
+            //wrappedText += indentString;
+        }
+        else
+        {
+            wrappedText += word += " ";
+        }
+
+        if(word != "NEWLINE" && word != "INDENT")
+            currentWidth += word.length() + 1;
+    }
+
+    std::stringstream result;
+
+    return wrappedText;
+}
+
 void UserInterfaceClass::displayPrompt(const std::string& prompt) const
 {
-	std::cout << prompt << std::endl; //prints strng passed
+    std::string dressString = preventCutoff(prompt); // run string through wrapper helper function
+	std::cout << dressString << std::endl; //prints strng passed
 }
+
+
 
 void UserInterfaceClass::displayPrompt(const std::string& prompt, int sanity) const
 {
     std::stringstream ss(prompt);
     std::string word;
     std::vector<std::string> words;
-
+    
     // Split sentence into words
     while (ss >> word) {
         words.push_back(word);
@@ -44,7 +89,9 @@ void UserInterfaceClass::displayPrompt(const std::string& prompt, int sanity) co
         result_str.pop_back();
     }
 
-    std::cout << result_str << std::endl;
+    std::string dressString = preventCutoff(prompt);// run string through wrapper helper function
+
+    std::cout << dressString << std::endl;
 }
 
 bool UserInterfaceClass::is_all_uppercase(const std::string& word) const
@@ -108,7 +155,7 @@ void UserInterfaceClass::displayMenu() const
     std::cout << "START Game" << std::endl;
     std::cout << "QUIT" << std::endl;
     std::cout << "=====================" << std::endl;
-    std::cout << "Words in all caps will be input options for this game, please enter an option: ";
+    std::cout << "Words in all caps will be input options for this game; please enter an option: ";
 }
 
 static inline std::string ltrim(std::string s) {
@@ -181,8 +228,7 @@ bool UserInterfaceClass::isValidInput(const std::string[]) const
 
 void UserInterfaceClass::displayPentacle(int candleVal)
 {
-    if (candleVal == 0) {
-        std::cout << R"(   
+   std::cout << R"(   
        ".d$$$******$$$$c."        
     ".d$P'            '$$c"      
    "$$$$$.           .$$$*$."    
@@ -199,88 +245,5 @@ void UserInterfaceClass::displayPentacle(int candleVal)
     "'$$c.   `$b$F    .d$P'"     
       "`4$$$c.$$$..e$$P'"        
           "`^^^^^^^`';")" << std::endl;
-
-    }
-    else if (candleVal == 1) {
-        std::cout << R"(   
-       ".d$$$******$$$$c."        
-    ".d$P'            '$$c"      
-   "$$$$$.           .$$$*$."    
- ".$$ 4$L*$$.     .$$Pd$  '$b"   
- "$F   *$. '$$e.e$$' 4$F   ^$b"  
-"d$     $$   z$$$e   $$     '$." 
-"$P     `$L$$P` `'$$d$'      $$" 
-"$$     e$$F       4$$b.     $$" 
-"$b  .$$' $$      .$$ '4$b.  $$" 
-"$$e$P    $b     d$`    $$c$F" 
-"$P$$$$$$$$$$$$$$$$$$$$$$$$$$"  
- "'$c.      4$.  $$       .$$"   
-  "^$$.      $$ d$'      d$P"    
-    "'$$c.   `$b$F    .d$P'"     
-      "`4$$$c/||||\e$$P'"        
-          "`^\||||/`';")" << std::endl;
-
-    }
-    else if (candleVal == 2) {
-        std::cout << R"(   
-       ".d$$$******$$$$c."        
-    ".d$P'            '$$c"      
-   "$$$$$.           .$$$*$."    
- ".$$ 4$L*$$.     .$$Pd$  '$b"   
- "$F   *$. '$$e.e$$' 4$F   ^$b"  
-"d$     $$   z$$$e   $$     '$." 
-"$P     `$L$$P` `'$$d$'      $$" 
-"$$     e$$F       4$$b.     $$" 
-"$b  .$$' $$      .$$ '4$b.  $$" 
-"$$e$P    $b     d$`    $$c$/||\
-"$P$$$$$$$$$$$$$$$$$$$$$$$$$\||/  
- "'$c.      4$.  $$       .$$"   
-  "^$$.      $$ d$'      d$P"    
-    "'$$c.   `$b$F    .d$P'"     
-      "`4$$$c/||||\e$$P'"        
-          "`^\||||/`';")" << std::endl;
-
-    }
-    else if (candleVal == 3) {
-        std::cout << R"(   
-       ".d$$$******$$$$c."        
-    ".d$P'            '$$c"      
-   "$$$$$.           .$$$*$."    
- ".$$ 4$L*$$.     .$$Pd$  '$b"   
- "$F   *$. '$$e.e$$' 4$F   ^$b"  
-"d$     $$   z$$$e   $$     '$." 
-"$P     `$L$$P` `'$$d$'      $$" 
-"$$     e$$F       4$$b.     $$" 
-"$b  .$$' $$      .$$ '4$b.  $$" 
-/||\-$P    $b     d$`    $$c/||\
-\||/$$$$$$$$$$$$$$$$$$$$$$$$\||/  
- "'$c.      4$.  $$       .$$"   
-  "^$$.      $$ d$'      d$P"    
-    "'$$c.   `$b$F    .d$P'"     
-      "`4$$$c/||||\e$$P'"        
-          "`^\||||/`';")" << std::endl;
-
-    }
-    else {
-        /* place holder for when we add the last 2 candles*/
-        std::cout << R"(bruh   
-       ".d$$$******$$$$c."        
-    ".d$P'            '$$c"      
-   "$$$$$.           .$$$*$."    
- ".$$ 4$L*$$.     .$$Pd$  '$b"   
- "$F   *$. '$$e.e$$' 4$F   ^$b"  
-"d$     $$   z$$$e   $$     '$." 
-"$P     `$L$$P` `'$$d$'      $$" 
-"$$     e$$F       4$$b.     $$" 
-"$b  .$$' $$      .$$ '4$b.  $$" 
-"$$e$P    $b     d$`    $$c$F" 
-"$P$$$$$$$$$$$$$$$$$$$$$$$$$$"  
- "'$c.      4$.  $$       .$$"   
-  "^$$.      $$ d$'      d$P"    
-    "'$$c.   `$b$F    .d$P'"     
-      "`4$$$c.$$$..e$$P'"        
-          "`^^^^^^^`';")" << std::endl;
-
-    }
 
 }

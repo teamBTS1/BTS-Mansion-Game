@@ -188,7 +188,12 @@ std::string preventCutoff(const std::string& text)
 
 std::string RoomClass::AmendDescription()
 {
+	std::string indent = " INDENT ";
+	std::string newLine = " NEWLINE ";
+	
 	std::string returnMeString = this->roomDescription; //string to be returned as "full" description
+
+	returnMeString += newLine + indent;//Line break
 
 	for (int i = 0; i < itemsLength; i++)
 	{
@@ -213,7 +218,9 @@ std::string RoomClass::AmendDescription()
 	
 	}
 
-	auto i = 0;
+	returnMeString += newLine + indent;//Line break
+
+	auto j = 0;
 	for (const std::string& room : RoomOptions)
 	{
 		/* Second for loop to iterate through all item descriptions to add to string
@@ -222,22 +229,23 @@ std::string RoomClass::AmendDescription()
 			break;
 		}
 		if (RoomOptions.size() == 1) {
-			returnMeString += " Adjacent to these rooms are " + room + ". ";
+			returnMeString += " Adjacent to this room is " + room + ". ";
 			break;
 		}
-		if (i == 0) {
-			returnMeString += " Adjacent to these rooms are " + room + " ";
+		if (j == 0) {
+			returnMeString += " Adjacent to this room are " + room + " ";
 		}
-		else if (i != RoomOptions.size()-1) {
+		else if (j != RoomOptions.size()-1) {
 			returnMeString += ", " + room ;
 		}
 		else {
 			returnMeString += " and " + room + ". ";
 		}
-		i += 1;
+		j++;
 
 	}
-	return preventCutoff(returnMeString);
+	//return returnMeString;
+	return returnMeString;
 
 	/*
 	std::string puzzleDesc = roomPuzzle.getDescription();
@@ -274,9 +282,6 @@ std::string RoomClass::conditionalDescription(std::vector<ItemClass>& userInvent
 
 	}
 }
-
-
-
 
 
 std::vector<ItemClass>& RoomClass::getItems()

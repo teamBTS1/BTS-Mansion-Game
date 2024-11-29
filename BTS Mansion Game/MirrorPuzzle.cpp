@@ -39,7 +39,11 @@ void MirrorPuzzle::runPuzzle()
 
 	if (answers == correctAnswers)
 	{
+		system("cls");
 		_isSolved = true;
+	}
+	else {
+		system("cls");
 	}
 
 	

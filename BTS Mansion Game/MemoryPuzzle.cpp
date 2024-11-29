@@ -33,6 +33,7 @@ void MemoryPuzzle::runPuzzle() {
 	}
 
 	if (toContinue) { //if the code makes it to this point, that means the user succeeded and the puzzle is solved
+		system("cls");
 		_isSolved = true; 
 	}
 
