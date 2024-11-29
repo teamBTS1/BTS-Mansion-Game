@@ -47,6 +47,59 @@ GameControllerClass::GameControllerClass() {
         "\n----------------------"
         "\n INSTRUCTIONS: Any word that is in all caps, such as INSPECT, PICKUP or GARDEN, is a keyword and can be inputted for an action"
         "\n----------------------";
+
+    // Initialize endings
+    //Good ending
+    goodEnding = "You instantly fall unconcious, and begin to see the origin story of this mansion..."
+        "\nHenry and Crane were best friends since childhood, both living quiet lives as neighbors in the 1800s"
+        "\nOne day Crane reconnected with distant family from England, who were very wealthy."
+        "\nCrane and his wife were showered with gifts from these relatives."
+        "\nCrane was also offered a position to work for these relatives, receiving a significant pay bump."
+        "\nWith two children, and all of these new riches, Cranes life was changing for the better. Or so he thought."
+        "\nDuring this time, Henry and Crane began drifing apart, sparking jealousy and anger from Henry."
+        "\nHenry would lose his job, his wife, and no custody of the kids, becoming a resentful and angry man"
+        "\nTurning to the bottle, Henry stewed, why did Crane receive all the riches, wait what is that, a newspapr headlined |Crane Mansion Finished|"
+        "\nThis was the final straw, Henry went home grabbing his rifle and rusty knife, then drunkenly stumbled toward this new mansion."
+        "\nHenry kicked the doors open to the Foyer, shooting the startled butler in the gut twice. Then he turned toward the lounge."
+        "\nCrane's wife yells in panic, begging Henry to explain himself, too loud, Henry thinks, and shoots the woman in the head."
+        "\nThe child she was taking care of was next, putting it down with one round. Crane rushed down to see what was going on, and froze in terror."
+        "\nSeeing his best friend become a monster, he takes out his small pistol, shooting Henry in the leg, Henry charges Crane," 
+        "\nHis leg wound no longer bleeding red but now a black sludge."
+        "\nAs the two began grappling, Henry felt a hint of remorse, but it was quickly consumed by a cold emptiness."
+        "\nHenry said, |Even if you kill me Crane I swear that my bloodline will hunt yours for the rest of eternity!|"
+        "\nCrane uses this distraction to push Henry to the wall, getting slashed across the chest with Henry's rusty knife in the process."
+        "\nCrane gets his pistol underneath Henrys chin, pulling the trigger. Guts and black blood fly everywhere coating Crane and the wall."
+        "\nSlumping down next to the corpse of his once friend, Crane can not help but think of Henrys last dying words."
+        "\nYou wake up, and you see the mansion slowly melting away turning into black sludge, along with Crane and his family in spectral forms."
+        "\nCrane nods to you in thanks, as your friend is laying next to you, injured but alive, and looks to you."
+        "\n|What just happened| he says."
+        "\n|It's a long story, you tried to kill me and then I exercised some evil multi generational curse.|"
+        "\n|That's pretty cool I guess. After this you down for fast food on the way back?|"
+        "\n|Yeah sure let's go|"
+        "\nYou and your friend venture back to the car, and can now breathe easy knowing the curse is broken, or you hope so.";
+
+    //Neutral ending
+    neutralEnding = "The room sudders, all of the candles light up at once, bright light filling the room with you."
+        "\nThe monster bursts into the ritual room and lunges for you."
+        "\nThe light from each candle shoot out one by one, wrapping around and restraining it like chains."
+        "\nThe monster lets out a high pitched screech, and its jet black flesh begins to sizzle and melt."
+        "\nMelting away, revealing your friend, lifeless and pale lying on the floor, eyes staring at you in shame."
+        "\nThe light blinds you, and you suddenly find yourself outside of the manion back in the woods."
+        "\nBefore any more horrific events can pull you back in, you run as fast as you can."
+        "\nYou do not know if it is toward civilization, all you know is that it is far away from this Big Terrible Shitty mansion.";
+
+    //Bad ending
+    badEnding = "The room goes silent, you stand there, waiting for something,"
+        "\nno candles appear, no keys are given to you. All you hear is the monster approaching."
+        "\nNowhere to hide your heart races, staking your life that whatever this ritual did worked."
+        "\nThe monster enters, and seems to realize the ritual you performed, or at least, tried to perform."
+        "\nIt looks at you and raises its elongated hand and fingers up, slowly beginning to count down."
+        "\n5, a candle goes out"
+        "\n4, another candle goes out"
+        "\n3, the room grows darker"
+        "\n2, only one candle remains"
+        "\n1, darkness"
+        "\nThe last thing you hear is your friend's voice say |He made me| before you die.";
 }
 void GameControllerClass::startGame() {
     showMenu();
@@ -153,6 +206,10 @@ void GameControllerClass::displayBackstory() {
 }
 
 void GameControllerClass::gameLoop() {
+    //Ending sequence call for testing
+    UserInterfaceClass ui;
+    endingSequence(ui);
+    
     /*we initialize the rooms and player class in the beginning. In the future we will probably wrap this in a function or refactor this class to remove clutter from gameLoop*/
 
     std::unordered_map<std::string, RoomClass> rooms; //hashmap for all rooms
@@ -561,7 +618,6 @@ void GameControllerClass::gameLoop() {
         theConsciousDoors,
         theConsciousItems
     );
-
     
     std::string startingRoom = "A";
     bool puzzleSolved = false;
@@ -1205,23 +1261,55 @@ void GameControllerClass::endingSequence(UserInterfaceClass UI) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
         UI.displayPrompt("I AM\n");
     }
-    bool failedSequence = false; // value that indicates whether user has failed the puzzle in any way 
+    bool neutralSequence = false; // value that indicates whether user has entered MALUM and got the neutral ending
+    bool goodSequence = false; //Indicates the user got the good ending (entered HENRY)
     for (int i = 0; i < 3; i++) {
+        if (goodSequence == true)
+        { 
+            break; //If good ending true, end sequence there
+        }
         UI.displayPrompt("SAY MY NAME");
         std::string command = UI.userInput();
 
         transform(command.begin(), command.end(), command.begin(),::toupper); //convert input to uppercase , user can input name in any combination of cases
 
-        if (command != "MALUM") {
-            failedSequence = true; // if name was ever wrong in any point, you have failed to excercise the demon
+        if (command == "MALUM") {
+            neutralSequence = true; // if name is MALUM flag neutral ending
+        }
+        else if (command == "HENRY")
+        {
+            goodSequence = true; //if name is HENRY flag good ending
         }
     }
-    if (failedSequence) {
-        //good ending
-        UI.displayPrompt("GOOD ENDING"); // temp ending
+    if (neutralSequence == false && goodSequence == false)
+    {
+        //Bad ending
+        std::istringstream stream(GameControllerClass::badEnding);
+        std::string line;
+
+        while (std::getline(stream, line)) { //algorithm to display ending line by line, user will press enter via waitForInput() function form UI class
+            UI.displayPrompt(line);
+            UI.waitForInput();
+        }
     }
-    else {
-        UI.displayPrompt("BAD ENDING"); // temp ending
+    else if (neutralSequence == true && goodSequence == false)
+    {
+        std::istringstream stream(GameControllerClass::neutralEnding);
+        std::string line;
+
+        while (std::getline(stream, line)) { //algorithm to display ending line by line, user will press enter via waitForInput() function form UI class
+            UI.displayPrompt(line);
+            UI.waitForInput();
+        }
+    }
+    else if(goodSequence == true){ 
+        std::istringstream stream(GameControllerClass::goodEnding);
+        std::string line;
+
+        while (std::getline(stream, line)) { //algorithm to display ending line by line, user will press enter via waitForInput() function form UI class
+            UI.displayPrompt(line);
+            UI.waitForInput();
+        }
     }
 }
 
