@@ -456,6 +456,7 @@ void GameControllerClass::gameLoop() {
 
     rooms["DINING HALL"] = RoomClass("You are now in the Dining Hall. There is a large table which can be used for hiding from the monster and chairs. From here, you can go to the kitchen.\n", "DINING HALL", std::list<std::string>{"DINING HALL DOOR", "KITCHEN","DINING TABLE"}, diningHallItems);
     
+
     //Hiding closet/Pantry for Kitchen
     rooms["PANTRY"] = RoomClass("You are in the pantry. You are safe from any threats.", "PANTRY", std::list<std::string>{"KITCHEN"}, false, true);
 
@@ -624,12 +625,13 @@ void GameControllerClass::gameLoop() {
     PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
     
     bool inputVal = false;
+    userPlayer.setSanity(25);
 
     //Defining variables for timer
     MonsterClass monsterTimer(120, *this, userPlayer);
     monsterTimer.start();
 
-
+    
     std::atomic<bool> running(true);
 
     std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));
@@ -1279,7 +1281,7 @@ void GameControllerClass::handleDoors(PlayerClass& player, RoomClass& currentRoo
 void GameControllerClass::sanitySequence(PlayerClass& userPlayer, std::atomic<bool>& running) {
     while (running) {
         int sanity = userPlayer.getSanity();
-        updateSanity(userPlayer, sanity - 1);
+        userPlayer.setSanity(sanity - 1);
 
         std::this_thread::sleep_for(std::chrono::seconds(9));
 

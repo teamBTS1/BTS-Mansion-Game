@@ -67,6 +67,10 @@ void UserInterfaceClass::displayPrompt(const std::string& prompt, int sanity) co
     std::string word;
     std::vector<std::string> words;
     
+    if (sanity <= 35){
+        std::stringstream ss(preventCutoff(prompt));
+    }
+
     // Split sentence into words
     while (ss >> word) {
         words.push_back(word);
@@ -89,7 +93,7 @@ void UserInterfaceClass::displayPrompt(const std::string& prompt, int sanity) co
         result_str.pop_back();
     }
 
-    std::string dressString = preventCutoff(prompt);// run string through wrapper helper function
+    std::string dressString = preventCutoff(result_str);// run string through wrapper helper function
 
     std::cout << dressString << std::endl;
 }
