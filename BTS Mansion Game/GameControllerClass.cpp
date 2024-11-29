@@ -625,7 +625,7 @@ void GameControllerClass::gameLoop() {
     PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
     
     bool inputVal = false;
-    userPlayer.setSanity(25);
+    userPlayer.setSanity(100);
 
     //Defining variables for timer
     MonsterClass monsterTimer(120, *this, userPlayer);
