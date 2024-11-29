@@ -32,15 +32,17 @@
 
 GameControllerClass::GameControllerClass() {
     // Initialize backstory in the constructor
-    backstory = "You and your friend seemed in-tune with nature."
-        "\nLet's get out of here! said your friend, the night you both decided to leave for a water-logged cabin in the woods."
-        "\n40 miles removed from civilization, you wake up the following morning to an empty house."
-        "\nYou mumble obscenities under your breath as you set out to find your friend. He is the only one with service. For 3 hours you walked in every direction."
-        "\nAs you started to panic at the disapperance of your friend, you hear a faint, low hum. You turn to your left."
-        "\nI can't believe I'm doing this - you say as you stare down the oppresive opening of a cave face."
-        "\nWith options running thin and desparate to find your friend, you approach the cave with the flashlight of your phone."
-        "\nThe more you walk, the more you notice the detail in the walls of the cave. Fresh granite soon becomes tile."
-        "\nYou reach what seems to be the Foyer of a mansion. You turn around and see the inside of 8 foot double doors."
+    backstory = "You step out of the car arriving at the campsite."
+        "\nIt was a long drive about 40 miles removed from civilization."
+        "\nThe fresh air hits your nose and you feel in tune with nature, as your friend steps up next to you."
+        "\nHe tells you how excited they are to be here, and you recall how you've been friends for so long."
+        "\nTaking the time do spontaneous trips like this is one of the reasons why."
+        "\nAfter you set up for the night, your friend says he's going to take a leak."
+        "\nYou sit by the fire, thinking of all the fun activities planned for this trip..."
+        "\nSuddenly an arm coils around your neck and forces a damp rag onto your face."
+        "\nYou claw and try to scream for your friend, unable to escape the grasp of whoever this is,"
+        "\nYour vision begins to swim and quickly fades to nothingness."
+        "\nWaking up, head fuzzy, you look around to find yourself in an old luxurious building, as big as a mansion."
         "\nWhat the fuck?"
         "\n----------------------"
         "\n INSTRUCTIONS: Any word that is in all caps, such as INSPECT, PICKUP or GARDEN, is a keyword and can be inputted for an action"
@@ -235,8 +237,20 @@ void GameControllerClass::gameLoop() {
     ItemClass ballroomNote("BALLROOM NOTE", "A handwritten note left behind, detailing strange occurrences during the last grand ball.", true, std::string("PaperPickup.wav"));
     ItemClass guestroomJournal("GUESTROOM JOURNAL", "A leather-bound journal filled with notes from a guest. Some entries are scribbled hastily, mentioning strange noises and shadows in the night.", true,true);
     ItemClass bathroomNote("BATHROOM NOTE", "A faded note, scribbled with hurried handwriting. It reads: 'The mirror is the key to the next step. Look closely.'", true, std::string("PaperPickup.wav"));
+    ItemClass ballroomNote("BALLROOM NOTE", "A handwritten note left behind, detailing strange occurrences during the last grand ball.", true,true);
+    ItemClass guestroomJournal("GUESTBOOK", "A leather-bound GUESTBOOK filled with notes from a guest. Some entries are scribbled hastily, mentioning strange noises and shadows in the night.", true,true);
+    ItemClass bathroomNote("BATHROOM NOTE", "A faded note, scribbled with hurried handwriting. It reads: 'The mirror is the key to the next step. Look closely.'", true,true);
     //Library Items
     ItemClass Book("OLD BOOK", "an OLD BOOK which appears to belong to a bookshelf", "BookKey", true, true, "General Pickup.wav");
+
+    //Items for Story
+    //Journals:
+    ItemClass journal1("JOURNAL 1", "Dusty page which reads JOURNAL 1, Henry and Crane went out last night, Crane had a stupendous time and I am glad he has such a reliable friend.", true, true);
+    ItemClass journal2("JOURNAL 2", "Torn page which reads JOURNAL 2, My beloved husband Crane apparently has been related to some wealthy English family and they are coming to America! They already sent some gifts that are extravagant, and they are offering Crane a very wealthy position in their family, this is amazing!", true, true);
+    ItemClass journal3("JOURNAL 3", "Scroll which reads JOURNAL 3, Crane has been so busy with his new work and wealth, I do wish I could spend more time with him like we used to, but he says soon he will nott have to work, I sure hope he’s right I miss him. I wonder how Henrys doing?", true, true);
+    ItemClass journal4("JOURNAL 4", "Liquid stained page which reads JOURNAL 4, Heard about Henry, apparently he lost his job and family, left him after he got fired from his job for some drunken incident. I hope he is doing okay, if Crane has time he should go visit him like the old days.", true, true);
+    ItemClass journal5("JOURNAL 5", "Layla is dead, Henry killed her and my poor son Joseph, I found her journal and felt I shouldn’t leave it without an ending. What did I do to deserve this? Henrys son Lester sent me a letter that he would come visit in light of the events last month. I hope to learn what happened to Henry and get some closure.", true, true);
+    ItemClass newspaperClipping("NEWSPAPER CLIPPING", "A NEWSPAPER CLIPPING with headline Mansion Murder! Crane Smith murdered in his new Mansion two months after his family were murdered. Rumors are the son of the first murderer HENRY Jenkins, Lester Jenkins, was the killer but nothing has been confirmed as of yet.", true, true);
 
     //Greater Library Items
     ItemClass greaterLibraryBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
@@ -285,11 +299,11 @@ void GameControllerClass::gameLoop() {
     std::vector<ItemClass>diningHallItems = { metalSafe, deadBody1,deadBody2,deadBody3,deadBody4 };
     std::vector<ItemClass> greaterLibraryItems = { greaterLibraryBottle, combLock, gBook4, gBook1, gBook2, gBook5, gBook3 };
     std::vector <ItemClass>graveyardItems = { tombstone1, tombstone2,tombstone3,tombstone4 };
-    std::vector <ItemClass> hiddensection_Items = { Candle1 };
-    std::vector <ItemClass> storytellerItems = { storyBook }; //Storyteller's items
-    std::vector <ItemClass> masterBedroomItems = { candle3, bedroomBottle }; //Master bedroom items
+    std::vector <ItemClass> hiddensection_Items = { Candle1, journal2 };
+    std::vector <ItemClass> storytellerItems = { storyBook, journal3 }; //Storyteller's items
+    std::vector <ItemClass> masterBedroomItems = { candle3, bedroomBottle, journal4 }; //Master bedroom items
     std::vector<ItemClass> ballroomItems = { ballroomNote }; //ballroom items
-    std::vector<ItemClass> guestroomItems = { guestroomJournal };//guestroom items
+    std::vector<ItemClass> guestroomItems = { guestroomJournal, journal1 };//guestroom items
     std::vector<ItemClass> bathroomItems = { bathroomNote };//bathroom items
     //InteractClass* userInteractCandle = new InteractClass("Would you like to look at the candle?", "Pickup the candle");
     std::vector<ItemClass>studyItem = { studyCandle };
@@ -321,20 +335,22 @@ void GameControllerClass::gameLoop() {
     ItemClass mazePuzzleStarter = ItemClass("LANTERN", "A LANTERN to help you see while exploring the maze...", false, mazePuzzleStarterInteraction);
     std::vector <ItemClass> upstairsItems = { noteUpA, mirrorPuzzleStarter, upstairsBottle }; //Upstairs items
     std::vector <ItemClass> galleryItems = { galleryPuzzleStarter, lordPainting, barkeepPainting, servantPainting, lordSonPainting, mobPainting, townDrunkPainting, servantSonPainting }; //Gallery items
-    std::vector <ItemClass> shedItems = { shedBottle }; //Shed items
+    std::vector <ItemClass> shedItems = { shedBottle, journal5 }; //Shed items
     std::vector <ItemClass> fountainItems = { fountainPuzzleStarter }; //Fountain items
-    std::vector <ItemClass> mazeExitItems = { candle4 }; //Maze exit items
+    std::vector <ItemClass> mazeExitItems = { candle4, newspaperClipping }; //Maze exit items
     std::vector <ItemClass> hedgeMazeItems = { mazePuzzleStarter }; //Hedge Maze Items
 
 
 
     //Defining downstairs rooms
-    rooms["FOYER"] = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR","KITCHEN DOOR", "GUESTROOM"}, FoyerDoors, roomA_Items);
+    rooms["FOYER"] = RoomClass("You enter the foyer, the walls are lined with faded wallpaper and adorned with massive grim portraits of long forgotten residents whose eyes seem to follow your every move. A dim eeries light illuminates the room, as you stand here in feeling the chill of the cold and heavy air surronding you. On the floor a bloody butler's suit. There also appears to be a ornate wooden DOOR that is locked.\n", "FOYER", std::list<std::string>{"LOUNGE", "DOOR","KITCHEN DOOR", "GUESTROOM"}, FoyerDoors, roomA_Items);
     rooms["LIBRARY TABLE"] = RoomClass("You are under the table. You are safe from any threats.", "LIBRARY TABLE", std::list<std::string>{"LIBRARY"}, false, true);
     
     rooms["LIBRARY"] = RoomClass("You enter the library, filled to the brim with bookshelves.\n", "LIBRARY", std::list<std::string>{"FOYER", "BOOKSHELF", "GREATER LIBRARY DOOR", "LIBRARY TABLE"}, Library_Doors, library_Items);
     
     rooms["LOUNGE CLOSET"] = RoomClass("You are in the lounge closet. You are safe from any threats.", "LOUNGE CLOSET", std::list<std::string>{"LOUNGE"}, false, true);
+    rooms["LOUNGE"] = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way. Two blood stains which look to be from two murder victims stain the carpet.\n", "LOUNGE", std::list<std::string>{"FOYER", "DINING HALL DOOR","BATHROOM", "LOUNGE CLOSET"}, roomB_Items);
+    rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE","BALLROOM"}, greaterLibraryItems);
     rooms["LOUNGE"] = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way\n", "LOUNGE", std::list<std::string>{"FOYER", "DINING HALL DOOR","BATHROOM", "LOUNGE CLOSET"}, roomB_Items);
     rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE","BALLROOM","STUDY DOOR"},greaterLibraryDoors, greaterLibraryItems);
    //created rooms for ballroom , guestroom, and bathroom
@@ -552,8 +568,8 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
-    
+    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
+   
 
     //Defining variables for timer
     MonsterClass monsterTimer(120, *this, userPlayer);
