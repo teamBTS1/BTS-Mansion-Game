@@ -208,7 +208,6 @@ void GameControllerClass::displayBackstory() {
 void GameControllerClass::gameLoop() {
     //Ending sequence call for testing
     UserInterfaceClass ui;
-    endingSequence(ui);
     
     /*we initialize the rooms and player class in the beginning. In the future we will probably wrap this in a function or refactor this class to remove clutter from gameLoop*/
 
@@ -628,14 +627,12 @@ void GameControllerClass::gameLoop() {
 
     //Defining variables for timer
     MonsterClass monsterTimer(120, *this, userPlayer);
-    //monsterTimer.start();
+    monsterTimer.start();
 
-    //Userplayer.setSanity(30);
 
     std::atomic<bool> running(true);
-    //Thread that manages the slowly decreasing sanity
-    // TODO: This has been commented out for testing purposes. Reinstate before merging.
-    //std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));
+
+    std::thread sanityThread(&GameControllerClass::sanitySequence, this, std::ref(userPlayer), std::ref(running));
 
     UI.displayPrompt("It's always important to stay sane in such a stressful situation. The lower your sanity gets, the less you'll understand what is going on...\nUnfortunately, it is only a matter of time before you completely lose it. Consume SANITY PILLS to increase your sanity.");
 
