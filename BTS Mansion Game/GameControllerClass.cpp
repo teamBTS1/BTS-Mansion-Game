@@ -242,7 +242,7 @@ void GameControllerClass::gameLoop() {
 
     //define all ineractions
     InteractClass* userInteractStatueA = new InteractClass("Would you like to INTERACT with the statue?", "You feel a wave of knowledge wash over you, like you've learned something from someone previously here before you."); //Defining statue interaction
-    InteractClass* userInteractKitchenCounter = new InteractClass("Would you like to look at the kitchen counter?", "");
+    InteractClass* userInteractKitchenCounter = new InteractClass("Would you like to look at the kitchen counter?", "The kitchen counter has different colors as its design, it red as its first color, then blue, green, and purple");
     InteractClass* userInteractSafe = new InteractClass("Would you like to look at the safe?", "Please enter a 4 digit code");
     InteractClass* userInterectSafeDiningHall = new InteractClass("Would you like to look at the safe?", "");
     InteractClass* userInteractBody1 = new InteractClass("Would you like to look at dead body 1?", "");
@@ -287,7 +287,7 @@ void GameControllerClass::gameLoop() {
     ItemClass galleryKey = ItemClass("GALLERY HALF KEY", "Half of the key needed to enter the master bedroom.", true, true, "KeySoundNew.wav");
     ItemClass diningHallKey = ItemClass("DINING HALL KEY", "A Shiny DINING HALL KEY with grapes on the handle,it appears to open the greater library","DHKey",true, true,"KeySoundNew.wav");    //Initializing key from safe in dining hall
     ItemClass mirrorKey = ItemClass("MIRROR HALF KEY", "Half of the key needed to enter the master bedroom.",true, true, "KeySoundNew.wav");
-    ItemClass kitchenCounter("KITCHEN COUNTER", "The kitchen counter has different colors as its design, it red as its first color, then blue, green, and purple", false, userInteractKitchenCounter);
+    ItemClass kitchenCounter("KITCHEN COUNTER", "a kithchen counter with multiple colors", false, userInteractKitchenCounter);
     ItemClass kitchenBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
     // added items such as note and journal for the made classes 
     ItemClass guestroomJournal("GUESTROOM JOURNAL", "A leather-bound journal filled with notes from a guest. Some entries are scribbled hastily, mentioning strange noises and shadows in the night.", true,true);
@@ -622,7 +622,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["STORYTELLER'S ROOM"]);
+    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
     
     bool inputVal = false;
     userPlayer.setSanity(100);
