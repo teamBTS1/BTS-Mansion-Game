@@ -307,13 +307,13 @@ void GameControllerClass::gameLoop() {
 
     //Greater Library Items
     ItemClass greaterLibraryBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
-    ItemClass gBook1("PRISTINE BOOK", "PRISTINE BOOK with a picture of a king on his throne.", false, gBookInteraction1);
-    ItemClass gBook2("GRASSY BOOK", "GRASSY BOOK with a picture of a king in the woods.", false, gBookInteraction2);
-    ItemClass gBook3("WOODEN BOOK", "WOODEN BOOK with a picture of a king entering a town.", false, gBookInteraction3);
+    ItemClass gBook1("PRISTINE BOOK", "PRISTINE BOOK with a picture of a king on his throne", false, gBookInteraction1);
+    ItemClass gBook2("GRASSY BOOK", "GRASSY BOOK with a picture of a king in the woods", false, gBookInteraction2);
+    ItemClass gBook3("WOODEN BOOK", "WOODEN BOOK with a picture of a king entering a town", false, gBookInteraction3);
     ItemClass gBook4("DIRTY BOOK", "DIRTY BOOK with a picture of a king sitting in the dirt", false, gBookInteraction4);
-    ItemClass gBook5("TATTERED BOOK", "TATTERED BOOK with a picture of a corpse.", false, gBookInteraction5);
-    ItemClass studyKey = ItemClass("STUDY KEY", "An ornate key with lines of text scribbled on it.", "STUDYKEY", true, true); //Adding study key
-    ItemClass combLock = ItemClass("WORD LOCK", "WORD LOCK which takes a 5 letter word.", false, greaterLibraryPuzzleStarter);
+    ItemClass gBook5("TATTERED BOOK", "TATTERED BOOK with a picture of a corpse", false, gBookInteraction5);
+    ItemClass studyKey = ItemClass("STUDY KEY", "An ornate key with lines of text scribbled on it", "STUDYKEY", true, true); //Adding study key
+    ItemClass combLock = ItemClass("WORD LOCK", "WORD LOCK which takes a 5 letter word", false, greaterLibraryPuzzleStarter);
 
     //Gallery Items
     ItemClass lordPainting = ItemClass("CRIMSON LORD PORTRAIT", "CRIMSON LORD PORTRAIT of a regal man in a crimson cloak, with blood dripping from his lips as a glass is raised to his lips.", false, lordPaintingInteraction);
@@ -404,7 +404,7 @@ void GameControllerClass::gameLoop() {
     rooms["LOUNGE CLOSET"] = RoomClass("You are in the lounge closet. You are safe from any threats.", "LOUNGE CLOSET", std::list<std::string>{"LOUNGE"}, false, true);
 
     rooms["LOUNGE"] = RoomClass("You enter the lounge, There is a staircase, however there is a black sludge blocking the way. Two blood stains which look to be from two murder victims stain the carpet.\n", "LOUNGE", std::list<std::string>{"FOYER", "DINING HALL DOOR","BATHROOM", "LOUNGE CLOSET"}, roomB_Items);
-    rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to a office , you must solve the puzzle to enter!!", "GREATER LIBRARY", std::list<std::string>{"LIBRARY", "PUZZLE","BALLROOM","STUDY DOOR"},greaterLibraryDoors, greaterLibraryItems);
+    rooms["GREATER LIBRARY"] = RoomClass("You are now in the greater library, many books and shelves are around and there seems to be a door leading to another room to an office.", "GREATER LIBRARY", std::list<std::string>{"LIBRARY","BALLROOM","STUDY DOOR"},greaterLibraryDoors, greaterLibraryItems);
 
 
    //created rooms for ballroom , guestroom, and bathroom
@@ -622,7 +622,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
+    PlayerClass userPlayer = PlayerClass(rooms["GREATER LIBRARY"]);
     
     bool inputVal = false;
     userPlayer.setSanity(100);
