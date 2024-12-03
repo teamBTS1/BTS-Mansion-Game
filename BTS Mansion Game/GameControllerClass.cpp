@@ -787,6 +787,8 @@ void GameControllerClass::gameLoop() {
         if (command == "CANDLE" && userPlayer.getRoomName() == "RITUAL ROOM") {
             if (userPlayer.getInventorySize() != 0) {
                 if (userPlayer.inInventory("CANDLE", "C1")) {
+
+                    isInProtectedAction = true;
                     system("cls");
                     userPlayer.useItem("CANDLE", "C1"); // Uses Candle from inventory, is removed
                     PlaySound(TEXT("MonsterCandeRoar.wav"), NULL, SND_FILENAME | SND_ASYNC);
@@ -813,10 +815,13 @@ void GameControllerClass::gameLoop() {
 
                     // Update the room in the map
                     rooms["RITUAL ROOM"] = currentRoom_temp;
+
+                    isInProtectedAction = false;
                     continue;
                 }
                 else if (userPlayer.inInventory("CANDLE", "C2"))
                 {
+                     isInProtectedAction = true;
                      system("cls");
                      userPlayer.useItem("CANDLE", "C2");     //Uses the specified candle with its id to be used
                      UI.displayPrompt("You have placed the 2nd candle\n");
@@ -849,9 +854,11 @@ void GameControllerClass::gameLoop() {
                     
                      //Update the room in the map
                      rooms["RITUAL ROOM"] = currentRoom_temp;
+                     isInProtectedAction = false;
                     continue;
                 }
                 else if (userPlayer.inInventory("CANDLE", "C3")) {
+                    isInProtectedAction = true;
                     system("cls");
                     UI.displayPrompt("You place the 3rd candle");
        
@@ -865,10 +872,12 @@ void GameControllerClass::gameLoop() {
                     UI.displayPrompt("L\n");
 
                     std::this_thread::sleep_for(std::chrono::seconds(8));
+                    isInProtectedAction = false;
 
                 }
                 else if (userPlayer.inInventory("CANDLE", "C4")) // candle 4 placed conditon TODO: Add functionality for 4th and possible 5th candle to be printed on screen
                 {
+                    isInProtectedAction = true;
                     system("cls");
                     UI.displayPrompt("You place the 4th candle");
 
@@ -881,13 +890,15 @@ void GameControllerClass::gameLoop() {
 
                     std::this_thread::sleep_for(std::chrono::seconds(6)); //DRAMATIC PAUSE
                     userPlayer.useItem("CANDLE", "C4"); //use the candle
-                    userPlayer.setRoom(rooms["MEMORY OF THE MANSION"]); //set user to teleport to memory of mansion
-                    playTeleportSequence(); // CALL CANDLE STYLIZE SEQUENCE
-                    std::this_thread::sleep_for(std::chrono::seconds(3)); //DRAMATIC PAUSE 2 AFER SEQUENCE
-                    system("cls"); 
+                    //userPlayer.setRoom(rooms["MEMORY OF THE MANSION"]); //set user to teleport to memory of mansion
+                    //playTeleportSequence(); // CALL CANDLE STYLIZE SEQUENCE
+                    //std::this_thread::sleep_for(std::chrono::seconds(3)); //DRAMATIC PAUSE 2 AFER SEQUENCE
+                    system("cls");
+                    isInProtectedAction = false;
                     continue;
                 }
                 else if (userPlayer.inInventory("CANDLE", "C5")) { //candle 5 placed condition
+                    isInProtectedAction = true;
                     system("cls");
 
                     UI.displayPrompt("It is final...");
@@ -905,6 +916,7 @@ void GameControllerClass::gameLoop() {
                     endingSequence(UI);
                     std::this_thread::sleep_for(std::chrono::seconds(3)); //pause after ext 
                     endGame("\nThank you for playing."); 
+                    isInProtectedAction = false;
                 }
                 else
                 {
