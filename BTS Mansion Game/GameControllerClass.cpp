@@ -624,7 +624,14 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["MEMORY OF THE MANSION"]);
+    PlayerClass userPlayer = PlayerClass(rooms["RITUAL ROOM"]);
+
+    userPlayer.addItem(Candle1);
+    userPlayer.addItem(studyCandle);
+    userPlayer.addItem(candle3);
+    userPlayer.addItem(candle4);
+    userPlayer.addItem(Candle5);
+
     
     bool inputVal = false;
     userPlayer.setSanity(100);
@@ -780,6 +787,7 @@ void GameControllerClass::gameLoop() {
         if (command == "CANDLE" && userPlayer.getRoomName() == "RITUAL ROOM") {
             if (userPlayer.getInventorySize() != 0) {
                 if (userPlayer.inInventory("CANDLE", "C1")) {
+                    system("cls");
                     userPlayer.useItem("CANDLE", "C1"); // Uses Candle from inventory, is removed
                     PlaySound(TEXT("MonsterCandeRoar.wav"), NULL, SND_FILENAME | SND_ASYNC);
                     UI.displayPrompt("You have placed a candle\n");
@@ -795,6 +803,9 @@ void GameControllerClass::gameLoop() {
                     UI.displayPrompt("As you place the candle, a hidden tunnel opens, leading to the kitchen!\n");
                     PlaySound(TEXT("TunnelOpening.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
+                    UI.displayPrompt("A significant symbol appears in your path\n");
+                    UI.displayPrompt("M\n");
+
                     // Add "KITCHEN" to the list of accessible rooms from the ritual room
                     std::list<std::string> updatedOptions = currentRoom_temp.GetRoomOption();
                     updatedOptions.push_back("KITCHEN");
@@ -806,13 +817,19 @@ void GameControllerClass::gameLoop() {
                 }
                 else if (userPlayer.inInventory("CANDLE", "C2"))
                 {
+                     system("cls");
                      userPlayer.useItem("CANDLE", "C2");     //Uses the specified candle with its id to be used
-                     UI.displayPrompt("You have placed a candle\n");
-                     currentRoom_temp.addCandle();
-                     UI.displayPrompt(std::to_string(currentRoom_temp.getCandleValue()));// for testing purposes to see if candle is added to room
+                     UI.displayPrompt("You have placed the 2nd candle\n");
+
+
                      PlaySound(TEXT("MonsterCandeRoar.wav"), NULL, SND_FILENAME | SND_ASYNC);
                      UI.displayPentacle(currentRoom_temp.getCandleValue());
                      std::this_thread::sleep_for(std::chrono::seconds(12));
+
+                     currentRoom_temp.addCandle();
+                  
+                
+
                     
 
 
@@ -820,6 +837,9 @@ void GameControllerClass::gameLoop() {
 
 
                      UI.displayPrompt("As you place the candle, a portal is revealed!\n");
+
+                     UI.displayPrompt("A significant symbol appears in your path\n");
+                     UI.displayPrompt("A\n");
 
                      PlaySound(TEXT("Portal Opening.wav"), NULL, SND_FILENAME | SND_ASYNC);
                         
@@ -831,11 +851,35 @@ void GameControllerClass::gameLoop() {
                      rooms["RITUAL ROOM"] = currentRoom_temp;
                     continue;
                 }
+                else if (userPlayer.inInventory("CANDLE", "C3")) {
+                    system("cls");
+                    UI.displayPrompt("You place the 3rd candle");
+       
+                    userPlayer.useItem("CANDLE", "C3"); //use the candle
+
+                    PlaySound(TEXT("MonsterCandeRoar.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                    UI.displayPentacle(currentRoom_temp.getCandleValue());
+                    std::this_thread::sleep_for(std::chrono::seconds(12));
+
+                    UI.displayPrompt("A significant symbol appears in your path\n");
+                    UI.displayPrompt("L\n");
+
+                    std::this_thread::sleep_for(std::chrono::seconds(8));
+
+                }
                 else if (userPlayer.inInventory("CANDLE", "C4")) // candle 4 placed conditon TODO: Add functionality for 4th and possible 5th candle to be printed on screen
                 {
                     system("cls");
                     UI.displayPrompt("You place the 4th candle");
-                    std::this_thread::sleep_for(std::chrono::seconds(2)); //DRAMATIC PAUSE
+
+                    PlaySound(TEXT("MonsterCandeRoar.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                    UI.displayPentacle(currentRoom_temp.getCandleValue());
+                    std::this_thread::sleep_for(std::chrono::seconds(12));
+
+                    UI.displayPrompt("A significant symbol appears in your path\n");
+                    UI.displayPrompt("U\n");
+
+                    std::this_thread::sleep_for(std::chrono::seconds(6)); //DRAMATIC PAUSE
                     userPlayer.useItem("CANDLE", "C4"); //use the candle
                     userPlayer.setRoom(rooms["MEMORY OF THE MANSION"]); //set user to teleport to memory of mansion
                     playTeleportSequence(); // CALL CANDLE STYLIZE SEQUENCE
@@ -844,6 +888,19 @@ void GameControllerClass::gameLoop() {
                     continue;
                 }
                 else if (userPlayer.inInventory("CANDLE", "C5")) { //candle 5 placed condition
+                    system("cls");
+
+                    UI.displayPrompt("It is final...");
+
+                    PlaySound(TEXT("MonsterCandeRoar.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                    UI.displayPentacle(currentRoom_temp.getCandleValue());
+                    std::this_thread::sleep_for(std::chrono::seconds(12));
+
+                    UI.displayPrompt("A significant symbol appears in your path\n");
+                    UI.displayPrompt("M\n");
+
+                    std::this_thread::sleep_for(std::chrono::seconds(7)); //DRAMATIC PAUSE
+
                     system("cls");
                     endingSequence(UI);
                     std::this_thread::sleep_for(std::chrono::seconds(3)); //pause after ext 
