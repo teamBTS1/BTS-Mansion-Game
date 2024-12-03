@@ -291,7 +291,7 @@ void GameControllerClass::gameLoop() {
     ItemClass kitchenBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
     // added items such as note and journal for the made classes 
     ItemClass guestroomJournal("GUESTROOM JOURNAL", "A leather-bound journal filled with notes from a guest. Some entries are scribbled hastily, mentioning strange noises and shadows in the night.", true,true);
-    ItemClass bathroomNote("BATHROOM NOTE", "A faded note, scribbled with hurried handwriting. It reads: 'The mirror is the key to the next step. Look closely.'", true, std::string("PaperPickup.wav"));
+    ItemClass bathroomNote("BATHROOM NOTE", "A faded BATHROOM NOTE, scribbled with hurried handwriting. It reads: 'The mirror is the key to the next step. Look closely.'", true, std::string("PaperPickup.wav"));
     ItemClass ballroomNote("BALLROOM NOTE", "A handwritten note left behind, detailing strange occurrences during the last grand ball.", true, std::string("PaperPickup.wav"));
     //Library Items
     ItemClass Book("OLD BOOK", "an OLD BOOK which appears to belong to a bookshelf", "BookKey", true, true, "General Pickup.wav");
@@ -624,15 +624,8 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["RITUAL ROOM"]);
+    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
 
-    userPlayer.addItem(Candle1);
-    userPlayer.addItem(studyCandle);
-    userPlayer.addItem(candle3);
-    userPlayer.addItem(candle4);
-    userPlayer.addItem(Candle5);
-
-    
     bool inputVal = false;
     userPlayer.setSanity(100);
 
