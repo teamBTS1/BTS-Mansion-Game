@@ -560,10 +560,12 @@ void GameControllerClass::gameLoop() {
     //room declaration for memory of the mansion
     rooms["MEMORY OF THE MANSION"] = RoomClass("You arrive in a broken mansion, it looks familiar but different. Its the mansion from the memories of the monster. You are no longer in your reality, but a twisted one where the mansion has been destroyed, and its debris are lingering in the air. There are portraits and pieces of staircase floating in the air with a pink nebula in the background",
         "MEMORY OF THE MANSION",
-        std::list<std::string>{"MEMORY OF THE FOYER", "MEMORY OF THE LIBRARY", "MEMORY OF THE GARDEN", "MEMORY OF THE STUDY", "THE LIFT", "THE CONSCIOUS"},//adjacent rooms
+        std::list<std::string>{"MEMORY TABLE","MEMORY OF THE FOYER", "MEMORY OF THE LIBRARY", "MEMORY OF THE GARDEN", "MEMORY OF THE STUDY", "THE LIFT", "THE CONSCIOUS"},//adjacent rooms
         memoryOfTheMansionDoors,
         memoryOfTheMansionItems
     );
+
+    rooms["MEMORY TABLE"] = RoomClass("You are now under the table. You are safe from any threats.", "LOUNGE CLOSET", std::list<std::string>{"MEMORY OF THE MANSION"}, false, true);
 
     //room for declaration of memory of the foyer
     rooms["MEMORY OF THE FOYER"] = RoomClass("You arrive to a broken foyer, you an see a floating statue and doors that are floating away from their hinges. Appartions of a family of f!?o^ur@ with their eyes blacked out watch you. You see the text UROTMU which appears to be scrambled.",
@@ -622,7 +624,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
+    PlayerClass userPlayer = PlayerClass(rooms["MEMORY OF THE MANSION"]);
     
     bool inputVal = false;
     userPlayer.setSanity(100);
