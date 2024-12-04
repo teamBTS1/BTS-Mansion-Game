@@ -177,7 +177,8 @@ void InteractClass::runInteraction(PlayerClass& player, ItemClass& greaterLibrar
                         {
                             if (item.getName() == "MIRROR HALF KEY")
                             {
-                                player.removeItem(item.getName());
+                                player.useKey(item.getKeyID());
+                                player.useKey(galleryItm.getKeyID()); //Removing both keys
                                 ui.displayPrompt("You put both halves of your key together to form the MASTER BEDROOM KEY!");
                                 player.addItem(masterItm);
                                 return;
@@ -211,7 +212,8 @@ void InteractClass::runInteraction(PlayerClass& player, ItemClass& greaterLibrar
                         {
                             if (item.getName() == "GALLERY HALF KEY")
                             {
-                                player.removeItem(item.getName());
+                                player.useKey(item.getKeyID());
+                                player.useKey(mirrorItm.getKeyID());
                                 ui.displayPrompt("You put both halves of your key together to form the MASTER BEDROOM KEY!");
                                 player.addItem(masterItm);
                                 return;

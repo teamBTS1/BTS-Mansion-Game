@@ -624,7 +624,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
+    PlayerClass userPlayer = PlayerClass(rooms["UPSTAIRS"]);
 
     bool inputVal = false;
     userPlayer.setSanity(100);
