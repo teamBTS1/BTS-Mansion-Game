@@ -630,10 +630,12 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["DINING HALL"]);
+    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
 
     bool inputVal = false;
     userPlayer.setSanity(100);
+
+    userPlayer.addItem(greaterLibraryKey);
 
     //Defining variables for timer
     MonsterClass monsterTimer(120, *this, userPlayer);
