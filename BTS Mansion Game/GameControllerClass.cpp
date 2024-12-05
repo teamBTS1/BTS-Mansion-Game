@@ -188,6 +188,7 @@ void GameControllerClass::viewInventory(PlayerClass& myPlayer) {
     }
     if (!itemFound)
     {
+        system("cls");
         std::cout << "The item you entered is not in your inventory." << std::endl;
     }
 }
