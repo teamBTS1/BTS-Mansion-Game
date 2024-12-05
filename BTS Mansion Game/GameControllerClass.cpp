@@ -573,7 +573,7 @@ void GameControllerClass::gameLoop() {
         memoryOfTheMansionItems
     );
 
-    rooms["MEMORY TABLE"] = RoomClass("You are now under the table. You are safe from any threats.", "LOUNGE CLOSET", std::list<std::string>{"MEMORY OF THE MANSION"}, false, true);
+    rooms["MEMORY TABLE"] = RoomClass("You are now under the table. You are safe from any threats.", "MEMORY TABLE", std::list<std::string>{"MEMORY OF THE MANSION"}, false, true);
 
     //room for declaration of memory of the foyer
     rooms["MEMORY OF THE FOYER"] = RoomClass("You arrive to a broken foyer and you an see a floating statue and doors that are floating away from their hinges. Appartions of a family of f!?o^ur@ with their eyes blacked out watch you. You see the text UROTMU which appears to be scrambled.",
@@ -632,7 +632,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["HEDGE MAZE EXIT"]);
+    PlayerClass userPlayer = PlayerClass(rooms["MEMORY OF THE MANSION"]);
 
     bool inputVal = false;
     userPlayer.setSanity(100);
