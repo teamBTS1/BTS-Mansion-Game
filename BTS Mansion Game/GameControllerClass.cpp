@@ -291,7 +291,7 @@ void GameControllerClass::gameLoop() {
     ItemClass tombstone3("TOMBSTONE 3", "", false, userInteractTombstone3);
     ItemClass tombstone4("TOMBSTONE 4", "", false, userInteractTombstone4);
     ItemClass galleryKey = ItemClass("GALLERY HALF KEY", "Half of the key needed to enter the master bedroom.", true, true, "KeySoundNew.wav");
-    ItemClass diningHallKey = ItemClass("DINING HALL KEY", "A Shiny DINING HALL KEY with grapes on the handle,it appears to open the greater library","DHKey",true, true,"KeySoundNew.wav");    //Initializing key from safe in dining hall
+    ItemClass greaterLibraryKey = ItemClass("GREATER LIBRARY KEY", "A Shiny GREATER LIBRARY KEY with grapes on the handle,it appears to open the greater library","DHKey",true, true,"KeySoundNew.wav");    //Initializing key from safe in dining hall
     ItemClass mirrorKey = ItemClass("MIRROR HALF KEY", "Half of the key needed to enter the master bedroom.",true, true, "KeySoundNew.wav");
     ItemClass kitchenCounter("KITCHEN COUNTER", "a kithchen counter with multiple colors", false, userInteractKitchenCounter);
     ItemClass kitchenBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
@@ -630,7 +630,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
+    PlayerClass userPlayer = PlayerClass(rooms["DINING HALL"]);
 
     bool inputVal = false;
     userPlayer.setSanity(100);
@@ -1068,16 +1068,18 @@ void GameControllerClass::gameLoop() {
 
                             if (safeInputNum == 8691)
                             {
+                                system("cls");
                                 UI.displayPrompt("You entered the correct passcode! Safe is now open and there's a key");
                                 PlaySound(TEXT("SafeOpening.wav"), NULL, SND_FILENAME | SND_ASYNC);
                                 rooms["DINING HALL"].RemoveItem(metalSafe);
-                                rooms["DINING HALL"].AddItem(diningHallKey);
+                                rooms["DINING HALL"].AddItem(greaterLibraryKey);
                                 rooms["DINING HALL"].displayRoomItems();
 
                             }
-                            else
+                            else {
                                 system("cls");
-                            UI.displayPrompt("You entered the wrong passcode. Try again\n");
+                                UI.displayPrompt("You entered the wrong passcode. Try again\n");
+                            }
                         }
                         catch (const std::invalid_argument& e) {
                             system("cls");
