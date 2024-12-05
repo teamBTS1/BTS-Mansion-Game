@@ -356,7 +356,7 @@ void GameControllerClass::gameLoop() {
     std::vector <ItemClass> storytellerItems = { storyBook, journal3 }; //Storyteller's items
     std::vector <ItemClass> masterBedroomItems = { candle3, bedroomBottle, journal4 }; //Master bedroom items
     std::vector<ItemClass> ballroomItems = { ballroomNote }; //ballroom items
-    std::vector<ItemClass> guestroomItems = { guestroomJournal, journal1 };//guestroom items
+    std::vector<ItemClass> guestroomItems = {journal1 };//guestroom items
     std::vector<ItemClass> bathroomItems = { bathroomNote };//bathroom items
     //InteractClass* userInteractCandle = new InteractClass("Would you like to look at the candle?", "Pickup the candle");
     std::vector<ItemClass>studyItem = { studyCandle };
@@ -787,7 +787,7 @@ void GameControllerClass::gameLoop() {
                     PlaySound(TEXT("MonsterCandeRoar.wav"), NULL, SND_FILENAME | SND_ASYNC);
                     UI.displayPrompt("You have placed a candle\n");
                     currentRoom_temp.addCandle();
-                    UI.displayPrompt(std::to_string(currentRoom_temp.getCandleValue())); // For testing purposes
+             
 
                     // Display the pentagram immediately after placing the candle
                     UI.displayPentacle(currentRoom_temp.getCandleValue());
