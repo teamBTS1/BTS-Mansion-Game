@@ -630,12 +630,12 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
+    PlayerClass userPlayer = PlayerClass(rooms["THE CONSCIOUS"]);
 
     bool inputVal = false;
     userPlayer.setSanity(100);
 
-    userPlayer.addItem(greaterLibraryKey);
+
 
     //Defining variables for timer
     MonsterClass monsterTimer(120, *this, userPlayer);
@@ -1097,7 +1097,11 @@ void GameControllerClass::gameLoop() {
                         if (userPlayer.inInventory("CANDLE", "C5")) { // condition that finds whether user get candle 5, whic specifically occurs right after they complete the chant puzzle sequence
                             system("cls");
                             UI.displayPrompt("The monster roars awake.");
-                            std::this_thread::sleep_for(std::chrono::seconds(3));
+                            
+                            PlaySound(TEXT("MonsterCandeRoar.wav"), NULL, SND_FILENAME | SND_ASYNC);
+                            std::this_thread::sleep_for(std::chrono::seconds(9));
+                            UI.displayPrompt("You recieve the final candle, its waiting to be set down on the pentagrams edge");
+                            std::this_thread::sleep_for(std::chrono::seconds(4));
                             userPlayer.setRoom(rooms["RITUAL ROOM"]);
                         }
 
