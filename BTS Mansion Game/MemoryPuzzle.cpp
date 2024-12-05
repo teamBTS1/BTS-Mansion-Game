@@ -21,7 +21,7 @@ void MemoryPuzzle::runPuzzle() {
 	std::string input; //Input from user
 
 	const int STARTING_LENGTH = 2; //starting size for string of letters
-	const int FINAL_LENGTH = 7; //ending size for string of letters
+	const int FINAL_LENGTH = 5; //ending size for string of letters
 	bool toContinue = true; //boolean that will listen to the display letter function and see if it returns true or false
 
 	ui.displayPrompt("You place your hand on the tank, they are testing your memory, you must recite the memories that they tell you"); //starting text

@@ -310,7 +310,7 @@ void GameControllerClass::gameLoop() {
     ItemClass journal2("JOURNAL 2", "A torn page which reads JOURNAL 2: Apparently my beloved husband Crane is related to some wealthy English family and they are coming to America! They already sent some gifts that are extravagant and they are offering Crane a very wealthy position in their family. This is amazing!", true, true);
     ItemClass journal3("JOURNAL 3", "A scroll which reads JOURNAL 3: Crane has been so busy with his new work and wealth. I do wish I could spend more time with him like we used to, but he says 'Soon he will not have to work.' I sure hope he’s right, I miss him. I wonder how Henry's doing?", true, true);
     ItemClass journal4("JOURNAL 4", "A liquid stained page which reads JOURNAL 4: Heard about Henry, apparently he lost his job and family. They left him after he got fired from his job over some drunken incident. I hope he is doing okay and if Crane has time, he should go visit him like the old days.", true, true);
-    ItemClass journal5("JOURNAL 5", "A crumpled page which reads JOURNAL 5: Layla is dead. Henry killed her and my poor son Joseph. I found her journal and felt I shouldn’t leave it without an ending. What did I do to deserve this? Henry's son, Lester sent me a letter that he would come visit in light of recent events from the past month. I hope to learn what happened to Henry and get some closure.", true, true);
+    ItemClass journal5("JOURNAL 5", "A crumpled page which reads JOURNAL 5: Layla is dead. Henry killed her and my poor son Joseph. I found her journal and felt I shouldnt leave it without an ending. What did I do to deserve this? Henry's son, Lester sent me a letter that he would come visit in light of recent events from the past month. I hope to learn what happened to Henry and get some closure.", true, true);
     ItemClass newspaperClipping("NEWSPAPER CLIPPING", "A NEWSPAPER CLIPPING with headline Mansion Murder! Crane Smith murdered in his new Mansion two months after his family were murdered. Rumors are the son of first murderer, HENRY JENKINS, whose named LESTER JENKINS, was the killer. However, nothing has been confirmed as of late.", true, true);
 
     //Greater Library Items
@@ -632,7 +632,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["FOYER"]);
+    PlayerClass userPlayer = PlayerClass(rooms["HEDGE MAZE EXIT"]);
 
     bool inputVal = false;
     userPlayer.setSanity(100);
@@ -836,13 +836,6 @@ void GameControllerClass::gameLoop() {
 
                      currentRoom_temp.addCandle();
                   
-                
-
-                    
-
-
-
-
 
                      UI.displayPrompt("As you place the candle, a portal is revealed!\n");
 
@@ -893,9 +886,9 @@ void GameControllerClass::gameLoop() {
 
                     std::this_thread::sleep_for(std::chrono::seconds(6)); //DRAMATIC PAUSE
                     userPlayer.useItem("CANDLE", "C4"); //use the candle
-                    //userPlayer.setRoom(rooms["MEMORY OF THE MANSION"]); //set user to teleport to memory of mansion
-                    //playTeleportSequence(); // CALL CANDLE STYLIZE SEQUENCE
-                    //std::this_thread::sleep_for(std::chrono::seconds(3)); //DRAMATIC PAUSE 2 AFER SEQUENCE
+                    userPlayer.setRoom(rooms["MEMORY OF THE MANSION"]); //set user to teleport to memory of mansion
+                    playTeleportSequence(); // CALL CANDLE STYLIZE SEQUENCE
+                    std::this_thread::sleep_for(std::chrono::seconds(3)); //DRAMATIC PAUSE 2 AFER SEQUENCE
                     system("cls");
                     isInProtectedAction = false;
                     continue;
@@ -1143,7 +1136,7 @@ void GameControllerClass::gameLoop() {
 
                             PlaySound(TEXT("Walking Through Tunnel.wav"), NULL, SND_FILENAME | SND_ASYNC);
                         }
-                        else if ((command == "HEDGE MAZE EXIT") || (command == "HEDGE MAZE" && previousRoom == "HEDGE MAZE EXIT"))
+                        else if ((command == "HEDGE MAZE EXIT") || (command == "HEDGE MAZE" && previousRoom == "HEDGE MAZE EXIT") || (command == "HEDGE MAZE" && previousRoom == "GARDEN"))
                         {
                             PlaySound(TEXT("Walking Through Tunnel.wav"), NULL, SND_FILENAME | SND_ASYNC);
                         }
