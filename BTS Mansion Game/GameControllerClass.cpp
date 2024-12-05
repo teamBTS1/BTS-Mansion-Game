@@ -1241,8 +1241,29 @@ void GameControllerClass::showMenu() {
             // Display instructions
             system("cls");
             UI.displayPrompt("\n--- Instructions ---");
-            UI.displayPrompt("Use keywords in ALL CAPS to perform actions during gameplay.");
+            UI.displayPrompt("\n");
+            UI.displayPrompt("All keywords and interactable items/rooms are in ALL CAPS");
             UI.displayPrompt("Examples: INSPECT, PICKUP, GARDEN.");
+            UI.displayPrompt("\n");
+
+            UI.displayPrompt("Commands to check your status: \n \n");
+            UI.displayPrompt("\n");
+            UI.displayPrompt("INSPECT: Displays any interactable items/puzzles/consumables in your current room, allowing you to type one to interact with it.\n \n");
+            UI.displayPrompt("\n");
+            UI.displayPrompt("INVENTORY: Displays items in your inventory, you use consumables like SANITY PILLS here. \n \n");
+            UI.displayPrompt("\n");
+            UI.displayPrompt("SANITY: Displays your current sanity, go low enough and your vision may become sCraMbLEd. Any lower and you will die.\n \n");
+            UI.displayPrompt("\n");
+            UI.displayPrompt("\n");
+
+            UI.displayPrompt("How to move around: \n");
+            UI.displayPrompt("\n");
+            UI.displayPrompt("Type name of an adjacent room to traverse to it. (If you see it says DOOR instead that means you probably need a key to open it. \n \n");
+            UI.displayPrompt("\n");
+            UI.displayPrompt("Keep an eye out for hiding spots, you may need them at some point.");
+            
+            UI.displayPrompt("\n");
+            UI.displayPrompt("\n");
             UI.displayPrompt("Press Enter to return to the main menu...");
             UI.userInput(); // Wait for user to press Enter
             system("cls");
