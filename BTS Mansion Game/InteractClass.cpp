@@ -115,7 +115,7 @@ void InteractClass::runInteraction() {
     }
     else {
         ui.displayPrompt(inputMessage);
-        ui.displayPrompt("Enter action (INTERACT): ");
+        ui.displayPrompt("Enter INTERACT: ");
         ui.userInput();
 
         if (ui.getCurrentInput() == "INTERACT")
@@ -129,9 +129,12 @@ void InteractClass::runInteraction() {
                 ui.waitForInput();
             }
             //ui.displayPrompt(interactMessage);
+            system("cls");
         }
         else {
             ui.displayPrompt("You walk away.");
+            ui.waitForInput();
+            system("cls");
         }
     }
     
@@ -261,7 +264,7 @@ void InteractClass::runInteraction(PlayerClass& player, ItemClass& greaterLibrar
                         if (maPuzzle.isSolved())
                         {
                             ui.displayPrompt("You solved the Maze Puzzle!");
-                            ui.displayPrompt("You find a map of the maze at the end of this sequence of symbols, picking it up to navigate the maze.");
+                            ui.displayPrompt("You find a map of the maze at the end of this sequence of symbols. You pick it up to navigate the maze.");
                             player.addItem(mazeItem);
                         }
                         else
@@ -318,7 +321,7 @@ void InteractClass::runInteraction(PlayerClass& player, ItemClass& greaterLibrar
         
     else {
         ui.displayPrompt(inputMessage);
-        ui.displayPrompt("Enter action (INTERACT): ");
+        ui.displayPrompt("Enter INTERACT: ");
         ui.userInput();
 
         if (ui.getCurrentInput() == "INTERACT")
@@ -329,6 +332,7 @@ void InteractClass::runInteraction(PlayerClass& player, ItemClass& greaterLibrar
         }
         else {
             ui.displayPrompt("You walk away.");
+         
         }
     }
 
