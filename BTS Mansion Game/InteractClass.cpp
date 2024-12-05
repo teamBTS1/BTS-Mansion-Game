@@ -177,7 +177,8 @@ void InteractClass::runInteraction(PlayerClass& player, ItemClass& greaterLibrar
                         {
                             if (item.getName() == "MIRROR HALF KEY")
                             {
-                                player.removeItem(item.getName());
+                                player.useKey(item.getKeyID());
+                                player.useKey(galleryItm.getKeyID()); //Removing both keys
                                 ui.displayPrompt("You put both halves of your key together to form the MASTER BEDROOM KEY!");
                                 player.addItem(masterItm);
                                 return;
@@ -211,7 +212,8 @@ void InteractClass::runInteraction(PlayerClass& player, ItemClass& greaterLibrar
                         {
                             if (item.getName() == "GALLERY HALF KEY")
                             {
-                                player.removeItem(item.getName());
+                                player.useKey(item.getKeyID());
+                                player.useKey(mirrorItm.getKeyID());
                                 ui.displayPrompt("You put both halves of your key together to form the MASTER BEDROOM KEY!");
                                 player.addItem(masterItm);
                                 return;
@@ -248,23 +250,33 @@ void InteractClass::runInteraction(PlayerClass& player, ItemClass& greaterLibrar
             }
 
             else if (maPuzzle.getDescription() == "Maze Puzzle") {//if in maze puzzle
-                if (maPuzzle.isSolved() == false)
+                
+                ui.displayPrompt("Are you ready to traverse the maze? (YES OR NO)");
+                if (ui.userInput() == "YES")
                 {
-                    maPuzzle.runPuzzle(); //Run maze puzzle
-                    if (maPuzzle.isSolved())
+                    system("cls");
+                    if (maPuzzle.isSolved() == false)
                     {
-                        ui.displayPrompt("You solved the Maze Puzzle!");
-                        ui.displayPrompt("You find a map of the maze at the end of this sequence of symbols, picking it up to navigate the maze.");
-                        player.addItem(mazeItem);
+                        maPuzzle.runPuzzle(); //Run maze puzzle
+                        if (maPuzzle.isSolved())
+                        {
+                            ui.displayPrompt("You solved the Maze Puzzle!");
+                            ui.displayPrompt("You find a map of the maze at the end of this sequence of symbols, picking it up to navigate the maze.");
+                            player.addItem(mazeItem);
+                        }
+                        else
+                        {
+                            ui.displayPrompt("You failed the Maze Puzzle.");
+                        }
                     }
                     else
                     {
-                        ui.displayPrompt("You failed the Maze Puzzle.");                        
+                        ui.displayPrompt("This item seems dormant.");
                     }
                 }
                 else
                 {
-                    ui.displayPrompt("This item seems dormant.");
+                    system("cls");
                 }
             }
             else if (memPuzzle.getDescription() == "Memory Puzzle") {
