@@ -632,7 +632,7 @@ void GameControllerClass::gameLoop() {
     std::string startingRoom = "A";
     bool puzzleSolved = false;
 
-    PlayerClass userPlayer = PlayerClass(rooms["MEMORY OF THE MANSION"]);
+    PlayerClass userPlayer = PlayerClass(rooms["GARDEN"]);
 
     bool inputVal = false;
     userPlayer.setSanity(100);
