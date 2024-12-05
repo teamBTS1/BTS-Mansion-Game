@@ -19,6 +19,8 @@ GalleryPuzzle::GalleryPuzzle(std::vector <ItemClass> ports, std::vector <ItemCla
 
 void GalleryPuzzle::runPuzzle()
 {
+	system("cls"); //clearing screen
+	
 	UserInterfaceClass ui;
 	std::vector <ItemClass> userPortraits;
 	std::string input;
@@ -28,12 +30,17 @@ void GalleryPuzzle::runPuzzle()
 	while (answerCount != answers.size()) // Loop through number of answer portraits for now because of initial implementation
 	{
 		ui.displayPrompt("The blood in the altar still bubbles with anticipation of your next portrait selection.");
+		ui.displayPrompt("\n");
+
 		ui.displayPrompt("The portraits inside the room are: ");
+		ui.displayPrompt("\n");
+
 		for (auto portrait : portraits) //Displaying all portraits
 		{
 			ui.displayPrompt(portrait.getName());
 		}
 
+		ui.displayPrompt("\n");
 		ui.displayPrompt("Choose which portrait to touch.");
 		input = ui.userInput();
 
