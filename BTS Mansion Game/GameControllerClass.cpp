@@ -292,10 +292,7 @@ void GameControllerClass::gameLoop() {
     ItemClass tombstone3("TOMBSTONE 3", "", false, userInteractTombstone3);
     ItemClass tombstone4("TOMBSTONE 4", "", false, userInteractTombstone4);
     ItemClass galleryKey = ItemClass("GALLERY HALF KEY", "Half of the key needed to enter the master bedroom.", true, true, "KeySoundNew.wav");
-    ItemClass diningHallKey = ItemClass("DINING HALL KEY", "A shiny DINING HALL KEY with grapes on the handle, it appears to be the key to open the greater library","DHKey",true, true,"KeySoundNew.wav");    //Initializing key from safe in dining hall
-    ItemClass mirrorKey = ItemClass("MIRROR HALF KEY", "Half of the key is needed to enter the master bedroom.",true, true, "KeySoundNew.wav");
-    ItemClass kitchenCounter("KITCHEN COUNTER", "A kithchen counter with multiple colors.", false, userInteractKitchenCounter);
-    ItemClass kitchenBottle("BOTTLE OF PILLS", "A BOTTLE OF PILLS with a faded label.", 50, true, true);
+  
     ItemClass greaterLibraryKey = ItemClass("GREATER LIBRARY KEY", "A Shiny GREATER LIBRARY KEY with grapes on the handle,it appears to open the greater library","DHKey",true, true,"KeySoundNew.wav");    //Initializing key from safe in dining hall
     ItemClass mirrorKey = ItemClass("MIRROR HALF KEY", "Half of the key needed to enter the master bedroom.",true, true, "KeySoundNew.wav");
     ItemClass kitchenCounter("KITCHEN COUNTER", "a kithchen counter with multiple colors", false, userInteractKitchenCounter);
@@ -1083,7 +1080,7 @@ void GameControllerClass::gameLoop() {
                                 rooms["DINING HALL"].displayRoomItems();
 
                             }
-                            else
+                            else{
                                 system("cls");
                                 UI.displayPrompt("You entered the wrong passcode. Try again\n");
                             }
