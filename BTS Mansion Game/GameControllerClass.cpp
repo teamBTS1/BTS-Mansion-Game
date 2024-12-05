@@ -158,9 +158,14 @@ void GameControllerClass::viewInventory(PlayerClass& myPlayer) {
         std::cout << myInventory[i].getName() << std::endl << std::endl; //Printing all of the users inventory
     }
 
-    Myuserinterface.displayPrompt("Type the name of an item to get its description.");
+    Myuserinterface.displayPrompt("Type the name of an item to get its description or type BACK to exit inventory");
     Myuserinterface.userInput(); //Allowing user to inspect from inventory getting input
 
+    if (Myuserinterface.getCurrentInput() == "BACK")
+    {
+        system("cls");
+        return;
+    }
 
     bool itemFound = false;
     for (int i = 0; i < inventorySize; i++)
