@@ -26,7 +26,7 @@ int MazePuzzle::GenerateRandomNumber(int min, int max)
 
 void MazePuzzle::runPuzzle()
 {
-	UserInterfaceClass ui; //ui for i/o
+	UserInterfaceClass ui; //ui for i/o	
 	int ROUNDS = 10; //Amount of rounds until out of maze
 	int min = 0;
 	int incMax = incorrectSymbols.size() - 1;
@@ -41,7 +41,7 @@ void MazePuzzle::runPuzzle()
 		ui.displayPrompt(symbolKey.at(i)); //Display correct answers
 	}
 
-	ui.displayPrompt("Are you ready to venture into the heart of the maze...");
+	ui.displayPrompt("Press ENTER when you've studied the animals long enough...");
 	std::string test = ui.userInput();
 	system("cls");
 
