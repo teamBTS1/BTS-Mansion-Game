@@ -296,6 +296,10 @@ void GameControllerClass::gameLoop() {
     ItemClass mirrorKey = ItemClass("MIRROR HALF KEY", "Half of the key is needed to enter the master bedroom.",true, true, "KeySoundNew.wav");
     ItemClass kitchenCounter("KITCHEN COUNTER", "A kithchen counter with multiple colors.", false, userInteractKitchenCounter);
     ItemClass kitchenBottle("BOTTLE OF PILLS", "A BOTTLE OF PILLS with a faded label.", 50, true, true);
+    ItemClass greaterLibraryKey = ItemClass("GREATER LIBRARY KEY", "A Shiny GREATER LIBRARY KEY with grapes on the handle,it appears to open the greater library","DHKey",true, true,"KeySoundNew.wav");    //Initializing key from safe in dining hall
+    ItemClass mirrorKey = ItemClass("MIRROR HALF KEY", "Half of the key needed to enter the master bedroom.",true, true, "KeySoundNew.wav");
+    ItemClass kitchenCounter("KITCHEN COUNTER", "a kithchen counter with multiple colors", false, userInteractKitchenCounter);
+    ItemClass kitchenBottle("BOTTLE OF PILLS", "a BOTTLE OF PILLS with a faded label", 50, true, true);
     // added items such as note and journal for the made classes 
     ItemClass guestroomJournal("GUESTROOM JOURNAL", "A leather-bound journal filled with notes from a guest. Some entries are scribbled hastily, mentioning strange noises and shadows in the night.", true,true);
     ItemClass bathroomNote("BATHROOM NOTE", "A faded BATHROOM NOTE, scribbled with hurried handwriting. It reads:'The mirror is the key to the next step. Look closely.'", true, std::string("PaperPickup.wav"));
@@ -363,7 +367,7 @@ void GameControllerClass::gameLoop() {
     std::vector <ItemClass> storytellerItems = { storyBook, journal3 }; //Storyteller's items
     std::vector <ItemClass> masterBedroomItems = { candle3, bedroomBottle, journal4 }; //Master bedroom items
     std::vector<ItemClass> ballroomItems = { ballroomNote }; //ballroom items
-    std::vector<ItemClass> guestroomItems = { guestroomJournal, journal1 };//guestroom items
+    std::vector<ItemClass> guestroomItems = {journal1 };//guestroom items
     std::vector<ItemClass> bathroomItems = { bathroomNote };//bathroom items
     //InteractClass* userInteractCandle = new InteractClass("Would you like to look at the candle?", "Pickup the candle");
     std::vector<ItemClass>studyItem = { studyCandle };
@@ -636,6 +640,8 @@ void GameControllerClass::gameLoop() {
     bool inputVal = false;
     userPlayer.setSanity(100);
 
+    userPlayer.addItem(greaterLibraryKey);
+
     //Defining variables for timer
     MonsterClass monsterTimer(120, *this, userPlayer);
     monsterTimer.start();
@@ -794,7 +800,7 @@ void GameControllerClass::gameLoop() {
                     PlaySound(TEXT("MonsterCandeRoar.wav"), NULL, SND_FILENAME | SND_ASYNC);
                     UI.displayPrompt("You have placed a candle.\n");
                     currentRoom_temp.addCandle();
-                    UI.displayPrompt(std::to_string(currentRoom_temp.getCandleValue())); // For testing purposes
+             
 
                     // Display the pentagram immediately after placing the candle
                     UI.displayPentacle(currentRoom_temp.getCandleValue());
@@ -1070,15 +1076,14 @@ void GameControllerClass::gameLoop() {
 
                             if (safeInputNum == 8691)
                             {
-                                UI.displayPrompt("You entered the correct passcode! Safe is now open and there's a key!");
+                                UI.displayPrompt("You entered the correct passcode! Safe is now open and there's a key");
                                 PlaySound(TEXT("SafeOpening.wav"), NULL, SND_FILENAME | SND_ASYNC);
                                 rooms["DINING HALL"].RemoveItem(metalSafe);
-                                rooms["DINING HALL"].AddItem(diningHallKey);
+                                rooms["DINING HALL"].AddItem(greaterLibraryKey);
                                 rooms["DINING HALL"].displayRoomItems();
 
                             }
                             else
-                            {
                                 system("cls");
                                 UI.displayPrompt("You entered the wrong passcode. Try again\n");
                             }

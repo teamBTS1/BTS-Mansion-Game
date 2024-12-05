@@ -128,6 +128,7 @@ void InteractClass::runInteraction() {
                 ui.displayPrompt(line);
                 ui.waitForInput();
             }
+            system("cls");
             //ui.displayPrompt(interactMessage);
             system("cls");
         }
